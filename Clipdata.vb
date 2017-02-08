@@ -39,11 +39,13 @@ Public Class ClipDataForm
     '  float  polyX[]      =  horizontal coordinates of corners
     '  float  polyY[]      =  vertical coordinates of corners
     '  float  x, y         =  point to be tested
-    Public polyCorners As Integer
+    Public polyCorners As Integer 'Alex 2017-02-08
     Public polyX() As Double
     Public polyY() As Double
     Public xP, yP As Double
+    Public b_xMax, b_xMin, b_yMax, b_yMin As Double
     Dim pointsShape As New List(Of PointLatLng)
+    'Public SPoints As IFeatureSet
     '  float  constant[] = storage for precalculated constants (same size as polyX)
     '  float  multiple[] = storage for precalculated multipliers (same size as polyX)
     Public constant() As Double
@@ -832,6 +834,7 @@ Public Class ClipDataForm
 
 ContinueProc:
         Next
+
         If filename_data_sel.Count = 0 Then
             MsgBox("No data exists for this boundary.")
             Exit Sub
@@ -934,6 +937,7 @@ ContinueProc:
                                 resultNum = Val(linetextArr(0)) 'ID
                                 resultLat = Val(linetextArr(1)) 'Lat
                                 resultLng = Val(linetextArr(2)) 'Long
+
                                 PhotoIDc = Val(linetextArr(5)) 'PhotoID
                                 UserIDc = linetextArr(7) 'UserID (String!)
                                 If photocollection Then
@@ -957,6 +961,7 @@ ContinueProc:
 
                             'Read DateValue from Line if DateLimit specified
                             If Not dateColumn = 0 Then PDate = DateTime.Parse(linetext.Split(",")(dateColumn))
+
                             If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
                                 If dateColumn = 0 OrElse LiesWithinDateRange(PDate, minDate, maxDate) Then
                                     If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
@@ -1217,6 +1222,7 @@ skip_line:              Loop
 
     Function LiesWithin(latP As Double, lngP As Double, rectBottomleft As PointLatLng, rectTopright As PointLatLng, shapefilesearch As Boolean, ShapefilePoly As Shapefile) As Boolean
         LiesWithin = False
+
         'If Rectangle Selection Search
         If shapefilesearch = False Then
             If latP > rectBottomleft.Lat Then
@@ -1230,32 +1236,52 @@ skip_line:              Loop
                 End If
             End If
         Else 'If Shapefile Selection Search
+            'PreCheck points
+            'Easy detection if point lies outside poly-max extent bound
+            'MsgBox("b_xMin: " & b_xMin & "b_xMax: " & b_xMax & "b_yMin: " & b_yMin & "b_yMax: " & b_yMax & "-----" & "lngP: " & lngP & "latP: " & latP)
+            'If (lngP < b_xMin OrElse lngP > b_xMax OrElse latP < b_yMin OrElse latP > b_yMax) Then
+            '    Exit Function
+            'End If
+            If latP > b_yMax Then
+                If lngP < b_yMin Then
+                    If lngP > b_xMax Then
+                        If lngP < b_xMin Then
+                            Exit Function
+                        End If
+                    End If
+                End If
+            End If
+            'MsgBox("Test")
+            'If raycasting disabled
             If CheckBox14.Checked = False Then
                 'Dotspatial.contains (works, but slow):
-                Dim PhotoPoint As New Coordinate(lngP, latP)
+                Dim PhotoPoint As New DotSpatial.Topology.Coordinate(lngP, latP)
                 For Each f As Feature In ShapefilePoly.Features
                     Dim pg As Polygon = TryCast(f.BasicGeometry, Polygon)
                     If pg IsNot Nothing Then
-                        If pg.Contains(New Point(PhotoPoint)) Then
+
+                        If pg.Contains(New DotSpatial.Topology.Point(PhotoPoint)) Then
+                            MsgBox("test")
                             LiesWithin = True
                             Exit Function
                         End If
                     Else
                         ' If you have a multi-part polygon then this should also handle holes I think
                         Dim polygons As MultiPolygon = TryCast(f.BasicGeometry, MultiPolygon)
-                        If polygons.Contains(New Point(PhotoPoint)) Then
+                        If polygons.Contains(New DotSpatial.Topology.Point(PhotoPoint)) Then
                             LiesWithin = True
                             Exit Function
                         End If
                     End If
                 Next
             Else
-                'Raycasting Algorithm
-                xP = lngP
-                yP = latP
-                If pointInPolygon() = True Then LiesWithin = True
+                    'Raycasting Algorithm
+                    xP = lngP
+                    yP = latP
+
+                    If pointInPolygon() = True Then LiesWithin = True
+                End If
             End If
-        End If
     End Function
 
     'Point-In-Polygon Algorithm http://alienryderflex.com/polygon/
@@ -1695,11 +1721,10 @@ Search3:  'String3
                     'If MyVertex.X < 0 Then MyVertex.X = 180 - MyVertex.X 'This line produces problems with holes!
                     pointsShape.Add(New PointLatLng(MyVertex.Y, MyVertex.X))
                     ReDim Preserve polyY(x)
-                    ReDim Preserve polyX(x)
+                        ReDim Preserve polyX(x)
                     polyY(x) = MyVertex.Y
                     polyX(x) = MyVertex.X
                     x = x + 1
-                    'End If
                 Next
                 'PolyPoints.Add(pointsShape)
                 If FirstpointsShape.Count = 0 Then FirstpointsShape = pointsShape
@@ -1714,6 +1739,30 @@ Search3:  'String3
         ReDim multiple(x)
         polyCorners = x
         Label12.Text = Math.Round(x, 0).ToString("N0") & " Vertices"
+
+        'initialize start values
+        b_yMin = polyY(1)
+        b_yMax = polyY(1)
+        b_xMin = polyX(1)
+        b_xMax = polyX(1)
+        'Precalculate Bounding Box for PointInPolygonTest (Dotspatial.contains, not used for raycasting)
+        For i As Integer = 1 To polyCorners - 1
+            If polyY(i) > b_yMax Then
+                b_yMax = polyY(i)
+            ElseIf polyY(i) < b_yMin Then
+                b_yMin = polyY(i)
+            End If
+            If polyX(i) > b_xMax Then
+                b_xMax = polyX(i)
+            ElseIf polyX(i) < b_xMin Then
+                b_xMin = polyX(i)
+            End If
+        Next
+        'MsgBox("b_xMin: " & b_xMin & "b_xMax: " & b_xMax & "b_yMin: " & b_yMin & "b_yMax: " & b_yMax)
+        'Load Shapefilepoints for dotspatial contains
+        'Dim shpprovider As New ShapefileDataProvider
+        'SPoints = shpprovider.Open(TextBox4.Text)
+
         'MsgBox(PolyPoints.Count())
         'For Each PointsList As List(Of PointLatLng) In PolyPoints
         Dim polygon3 As New GMapPolygon(FirstpointsShape, "ShapeSel")
