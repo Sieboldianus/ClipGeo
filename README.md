@@ -1,6 +1,8 @@
 **ClipGeo** is a side project I developed over the years to clip, extract and visualize simple but very 
 large georeferenced point datasets (such as 200 Million Flickr photo locations). The tool is optimized for speed. 
 For example, by using a geo-modified binary search, it is possible to map and extract 6 million photo locations in Germany in under 2 Minutes on a regular laptop.
+![ClipGeo Vis Example](https://repository.vgiscience.org/alexander.dunkel/ClipGeo/raw/499a0eaf6e051aae5146ccd12a27bfff207cf62a/ressources/Europe_b.png)
+
 
 ## Code Example
 
