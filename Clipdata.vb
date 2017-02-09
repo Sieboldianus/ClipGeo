@@ -42,7 +42,8 @@ Public Class ClipDataForm
     Public polyCorners As Integer 'Alex 2017-02-08
     Public polyX() As Double
     Public polyY() As Double
-    Public xP, yP As Double
+    Public xP As Double
+    Public yP As Double
     Public b_xMax, b_xMin, b_yMax, b_yMin As Double
     Dim pointsShape As New List(Of PointLatLng)
     'Public SPoints As IFeatureSet
@@ -173,6 +174,7 @@ Public Class ClipDataForm
             RaiseEvent updatemap(Button3, System.EventArgs.Empty)
         End If
         maploaded = True
+        savesettings()
         'GMapControl1_OnMapZoomChanged()
     End Sub
 
@@ -728,112 +730,71 @@ Public Class ClipDataForm
             End Try
             ShapefileSearch = True
 
-            'Pre-Calculate Polygon Selection Values
-            precalc_values()
+            'Pre-Calculate Polygon Selection Values for raycasting
+            If CheckBox14.Checked = True Then
+                precalc_values()
+            End If
         End If
 
+        '''''Dataset selection start''''''
         For Each DataSet As SourceData In filename_data
             completelyWithin = True
+
+            Dim fs_data As New FeatureSet(FeatureType.Polygon)
+            ' create a geometry from data_set extent
+            Dim vertices As New List(Of Coordinate)()
+            vertices.Add(New Coordinate(DataSet.leftlong, DataSet.bottomlat))
+            vertices.Add(New Coordinate(DataSet.leftlong, DataSet.toplat))
+            vertices.Add(New Coordinate(DataSet.rightlong, DataSet.toplat))
+            vertices.Add(New Coordinate(DataSet.rightlong, DataSet.bottomlat))
+            Dim geom As New Polygon(vertices)
+
+            ' add the dataset-geometry to the featureset. 
+            Dim data_feature As IFeature = fs_data.AddFeature(geom)
+
             If NoClip = True Then
+
                 filename_data_sel.Add(DataSet)
                 count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
+
             ElseIf ShapefileSearch = False Or mapPhotosFromLocals = True Then
-                'RectIntersect = RectangleF.Intersect(DatasetRect, RectSel)
-                isHorizontalCollision = False
-                isVerticalCollision = False
+                Dim fs_SelBox As New FeatureSet(FeatureType.Polygon)
+                ' create a geometry from data_set extent
+                Dim vertices_Selbox As New List(Of Coordinate)()
+                vertices_Selbox.Add(New Coordinate(rectbottomleft.Lng, rectbottomleft.Lat))
+                vertices_Selbox.Add(New Coordinate(rectbottomleft.Lng, recttopright.Lat))
+                vertices_Selbox.Add(New Coordinate(recttopright.Lng, recttopright.Lat))
+                vertices_Selbox.Add(New Coordinate(recttopright.Lng, rectbottomleft.Lat))
+                Dim geom_Selbox As New Polygon(vertices_Selbox)
 
-                DataSetrectbottomleft.Lat = DataSet.bottomlat
-                DataSetrectbottomleft.Lng = DataSet.leftlong
-                DataSetrecttopright.Lat = DataSet.toplat
-                DataSetrecttopright.Lng = DataSet.rightlong
+                ' add the dataset-geometry to the featureset. 
+                Dim SelBox_feature As IFeature = fs_SelBox.AddFeature(geom_Selbox)
 
-
-                'Check Intersection Begin
-                ' Check left edge of r2
-                If DataSetrectbottomleft.Lng < rectbottomleft.Lng AndAlso rectbottomleft.Lng < DataSetrecttopright.Lng Then
-                    isHorizontalCollision = True
-                End If
-                ' Check right edge of r2
-                If DataSetrectbottomleft.Lng < recttopright.Lng AndAlso recttopright.Lng < DataSetrecttopright.Lng Then
-                    isHorizontalCollision = True
-                End If
-                ' Check right edge of r2 contains
-                If DataSetrectbottomleft.Lng > rectbottomleft.Lng AndAlso recttopright.Lng > DataSetrecttopright.Lng Then
-                    isHorizontalCollision = True
-                Else
-                    completelyWithin = False
-                End If
-                ' Check top edge of r2
-                If DataSetrecttopright.Lat > recttopright.Lat AndAlso recttopright.Lat > DataSetrectbottomleft.Lat Then
-                    isVerticalCollision = True
-                End If
-                ' Check top edge of r2 contains
-                If DataSetrecttopright.Lat < recttopright.Lat AndAlso DataSetrectbottomleft.Lat > rectbottomleft.Lat Then
-                    isVerticalCollision = True
-                Else
-                    completelyWithin = False
-                End If
-                ' Check bottom edge of r2
-                If DataSetrecttopright.Lat > rectbottomleft.Lat AndAlso rectbottomleft.Lat > DataSetrectbottomleft.Lat Then
-                    isVerticalCollision = True
-                End If
-                If isHorizontalCollision AndAlso isVerticalCollision Then
+                'Check intersection
+                If SelBox_feature.Intersects(data_feature) Then
                     filename_data_sel.Add(DataSet)
                     count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
-                    If completelyWithin Then
-                        filename_data_sel_CompletelyWithin.Add(DataSet) 'Based on this list, datasets can be added to the output without internal parsing when no dataclip is selected!
+                    If SelBox_feature.Contains(data_feature) Then
+                        filename_data_sel_CompletelyWithin.Add(DataSet) 'Based on this list, datasets can be added to the output without detailed point-in-polygon test
                     End If
                 End If
+
             Else 'if Shapefilesearch (and no maplocaluser-search)
-                Dim listofSelPoints As New List(Of Coordinate)
-                listofSelPoints.Add(New Coordinate(DataSet.leftlong, DataSet.bottomlat))
-                listofSelPoints.Add(New Coordinate(DataSet.leftlong, DataSet.toplat))
-                listofSelPoints.Add(New Coordinate(DataSet.rightlong, DataSet.toplat))
-                listofSelPoints.Add(New Coordinate(DataSet.rightlong, DataSet.bottomlat))
-                For Each SelPoint As Coordinate In listofSelPoints
-                    For Each f As Feature In ShapefilePoly.Features
-                        Dim pg As Polygon = TryCast(f.BasicGeometry, Polygon)
-                        If pg IsNot Nothing Then
-                            If pg.Contains(New Point(SelPoint)) Then
-                                filename_data_sel.Add(DataSet)
-                                count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
-                                GoTo ContinueProc
-                            Else
-                                completelyWithin = False
-                            End If
-                        Else
-                            ' If you have a multi-part polygon then this should also handle holes I think
-                            Dim polygons As MultiPolygon = TryCast(f.BasicGeometry, MultiPolygon)
-                            If polygons.Contains(New Point(SelPoint)) Then
-                                filename_data_sel.Add(DataSet)
-                                count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
-                                GoTo ContinueProc
-                            Else
-                                completelyWithin = False
+                For Each f As Feature In ShapefilePoly.Features
+                    'Dim pg As Feature = TryCast(f.BasicGeometry, IFeature)
+                    If f IsNot Nothing Then
+                        If f.Intersects(data_feature) Then
+                            filename_data_sel.Add(DataSet)
+                            count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
+                            If f.Contains(data_feature) Then
+                                filename_data_sel_CompletelyWithin.Add(DataSet) 'Based on this list, datasets can be added to the output without detailed point-in-polygon test
                             End If
                         End If
-                    Next
-                Next
-
-                'Check for reverse Intersection (polygon only crosses borders of dataset rectangles)
-                Dim rtol As Rectangle = New Rectangle(DataSet.leftlong, DataSet.bottomlat, DataSet.rightlong - DataSet.leftlong, DataSet.toplat - DataSet.bottomlat)
-                For Each SPoint As PointLatLng In pointsShape
-                    Dim ePt As System.Drawing.Point = New System.Drawing.Point(SPoint.Lng, SPoint.Lat)
-                    If rtol.Contains(ePt) Then
-                        filename_data_sel.Add(DataSet)
-                        count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
-                        GoTo ContinueProc
                     End If
                 Next
-
-                'Never true for reverse intersection:
-                If completelyWithin Then
-                    filename_data_sel_CompletelyWithin.Add(DataSet) 'Based on this list, datasets can be added to the output without internal parsing when no dataclip is selected!
-                End If
             End If
-
-ContinueProc:
         Next
+        '''''Dataset selection end''''''
 
         If filename_data_sel.Count = 0 Then
             MsgBox("No data exists for this boundary.")
@@ -1181,6 +1142,8 @@ skip_line:              Loop
         Label40.Visible = True
         Label40.Text = "Local Users: " & localusercount.ToString("N0") & " (" & Math.Round(localusercount / (UserLocationGeocodeDict.Count / 100), 0) & "%) " & "| Visiting: " & (UserLocationGeocodeDict.Count - localusercount).ToString("N0") & " (" & Math.Round((UserLocationGeocodeDict.Count - localusercount) / (UserLocationGeocodeDict.Count / 100), 0) & "%) "
         Label5.Text &= " All done."
+
+
         ''Initialize PhotoView
         'If CheckBox30.Checked = True Then
         '    Dim count As Integer = 0
@@ -1222,7 +1185,6 @@ skip_line:              Loop
 
     Function LiesWithin(latP As Double, lngP As Double, rectBottomleft As PointLatLng, rectTopright As PointLatLng, shapefilesearch As Boolean, ShapefilePoly As Shapefile) As Boolean
         LiesWithin = False
-
         'If Rectangle Selection Search
         If shapefilesearch = False Then
             If latP > rectBottomleft.Lat Then
@@ -1236,52 +1198,40 @@ skip_line:              Loop
                 End If
             End If
         Else 'If Shapefile Selection Search
-            'PreCheck points
-            'Easy detection if point lies outside poly-max extent bound
-            'MsgBox("b_xMin: " & b_xMin & "b_xMax: " & b_xMax & "b_yMin: " & b_yMin & "b_yMax: " & b_yMax & "-----" & "lngP: " & lngP & "latP: " & latP)
-            'If (lngP < b_xMin OrElse lngP > b_xMax OrElse latP < b_yMin OrElse latP > b_yMax) Then
-            '    Exit Function
-            'End If
-            If latP > b_yMax Then
-                If lngP < b_yMin Then
-                    If lngP > b_xMax Then
-                        If lngP < b_xMin Then
-                            Exit Function
-                        End If
-                    End If
-                End If
+            'Basic PreCheck points
+            If latP > b_yMax OrElse latP < b_yMin OrElse lngP > b_xMax OrElse lngP < b_xMin Then
+                'If coordinate lies outside poly-max extent bound, exit function
+                Exit Function
             End If
-            'MsgBox("Test")
+
             'If raycasting disabled
             If CheckBox14.Checked = False Then
-                'Dotspatial.contains (works, but slow):
+                'Dotspatial.contains (works, but slower):
                 Dim PhotoPoint As New DotSpatial.Topology.Coordinate(lngP, latP)
-                For Each f As Feature In ShapefilePoly.Features
-                    Dim pg As Polygon = TryCast(f.BasicGeometry, Polygon)
+                For Each f As DotSpatial.Data.Feature In ShapefilePoly.Features
+                    Dim pg As DotSpatial.Topology.Polygon = TryCast(f.BasicGeometry, Polygon)
                     If pg IsNot Nothing Then
-
-                        If pg.Contains(New DotSpatial.Topology.Point(PhotoPoint)) Then
-                            MsgBox("test")
+                        If pg.Intersects(New DotSpatial.Topology.Point(PhotoPoint)) Then
                             LiesWithin = True
                             Exit Function
                         End If
                     Else
                         ' If you have a multi-part polygon then this should also handle holes I think
                         Dim polygons As MultiPolygon = TryCast(f.BasicGeometry, MultiPolygon)
-                        If polygons.Contains(New DotSpatial.Topology.Point(PhotoPoint)) Then
+                        If polygons.Intersects(New DotSpatial.Topology.Point(PhotoPoint)) Then
                             LiesWithin = True
                             Exit Function
                         End If
                     End If
                 Next
             Else
-                    'Raycasting Algorithm
-                    xP = lngP
-                    yP = latP
+                'Raycasting Algorithm
+                xP = lngP
+                yP = latP
 
-                    If pointInPolygon() = True Then LiesWithin = True
-                End If
+                If pointInPolygon() = True Then LiesWithin = True
             End If
+        End If
     End Function
 
     'Point-In-Polygon Algorithm http://alienryderflex.com/polygon/
@@ -1693,19 +1643,63 @@ Search3:  'String3
 
     Private Sub ClipDataForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         formfullyloaded = True
+        TextBox1.Text = My.Settings.Sourcepath
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button8.Click
         Dim filedialog As OpenFileDialog = New OpenFileDialog()
         filedialog.Title = "Select shapefile (WGS1984 Projection)"
         'filedialog.InitialDirectory = AppPath & "Output"
-        filedialog.InitialDirectory = "C:\Users\AD\studium\dresden\promotion\01_Daten\Flickr.net\ShapeSel\" 'DE_WGS1984.shp
+        If My.Settings.Shapepath = "" Then
+            If Directory.Exists(AppPath & "ShapeSel\") Then
+                filedialog.InitialDirectory = AppPath 'DE_WGS1984.shp
+            Else
+                filedialog.InitialDirectory = AppPath & "ShapeSel\" 'DE_WGS1984.shp
+            End If
+        Else
+                filedialog.InitialDirectory = My.Settings.Shapepath
+        End If
         filedialog.RestoreDirectory = True
         If filedialog.ShowDialog() = DialogResult.OK Then
             TextBox4.Text = filedialog.FileName
         Else
             Exit Sub
         End If
+        My.Settings.Shapepath = filedialog.InitialDirectory
+
+        '''''
+        '' The feature set class works directly with vector data.
+        '' Opening a shapefile from disk loads data in "Index" mode by default.
+        'Dim fs As IFeatureSet = FeatureSet.Open(layer.DataSet.Filename)
+
+        '' The shapes rely on an array of double precision interleaved
+        '' [X1, Y1, X2, Y2, ... Xn, Yn] coordinates.
+        'Dim x1 As Double = fs.Vertex(0)
+        'Dim y1 As Double = fs.Vertex(1)
+
+        '' The shaperange indexes values based on the coordinate index,
+        '' not the position in the double array.
+        '' Do access the coordinate directly from the Vertex, multiply by 2.
+        'x1 = fs.ShapeIndices(2).StartIndex * 2
+        'y1 = fs.ShapeIndices(2).StartIndex * 2 + 1
+
+        '' You can use the startindex and count in order to cycle values manually,
+        '' but it can be confusing.  To make things simpler, the ShapeIndices support an 
+        '' enumeration that allows cycling though the shapes, parts and the vertices.
+        'For Each shape As ShapeRange In fs.ShapeIndices
+        '    If shape.Intersects(extent) Then
+        '        For Each part As PartRange In shape.Parts
+        '            For Each vertex As Vertex In part
+        '                If vertex.X > 0 AndAlso vertex.Y > 0 Then
+        '                    ' do something
+        '                    Console.WriteLine(vertex.X)
+        '                End If
+        '            Next
+        '        Next
+        '    End If
+        'Next
+
+        '''''
 
         Dim ShapeOverlay As New GMapOverlay(GMapControl1, "ShapeOverlay")
         pointsShape.Clear()
@@ -1713,20 +1707,24 @@ Search3:  'String3
         Dim PolyPoints As New ArrayList
 
         'Draw Polygons on map
-        Dim ShapefilePoly As Shapefile = Shapefile.OpenFile(TextBox4.Text)
-        Dim x As Long = 1
+        'Dim ShapefilePoly As Shapefile = Shapefile.OpenFile(TextBox4.Text)
+        Dim ShapefilePoly As IFeatureSet = FeatureSet.Open(TextBox4.Text)
+        Dim x As Long = 0
         For Each MyShapeRange As ShapeRange In ShapefilePoly.ShapeIndices
             For Each MyPartRange As PartRange In MyShapeRange.Parts
                 For Each MyVertex As Vertex In MyPartRange
                     'If MyVertex.X < 0 Then MyVertex.X = 180 - MyVertex.X 'This line produces problems with holes!
+                    'If MyVertex.X > 0 AndAlso MyVertex.Y > 0 Then
                     pointsShape.Add(New PointLatLng(MyVertex.Y, MyVertex.X))
                     ReDim Preserve polyY(x)
-                        ReDim Preserve polyX(x)
+                    ReDim Preserve polyX(x)
                     polyY(x) = MyVertex.Y
                     polyX(x) = MyVertex.X
+                    'MsgBox("polyY(" & x & "):" & polyY(x) & " - polyX(" & x & "):" & polyX(x))
                     x = x + 1
+                    'End If
                 Next
-                'PolyPoints.Add(pointsShape)
+                'Only add points of first shape to GMapnet Polygon
                 If FirstpointsShape.Count = 0 Then FirstpointsShape = pointsShape
                 'pointsShape.Clear()
             Next
@@ -1741,11 +1739,12 @@ Search3:  'String3
         Label12.Text = Math.Round(x, 0).ToString("N0") & " Vertices"
 
         'initialize start values
-        b_yMin = polyY(1)
-        b_yMax = polyY(1)
-        b_xMin = polyX(1)
-        b_xMax = polyX(1)
-        'Precalculate Bounding Box for PointInPolygonTest (Dotspatial.contains, not used for raycasting)
+        b_yMin = polyY(0)
+        b_yMax = polyY(0)
+        b_xMin = polyX(0)
+        b_xMax = polyX(0)
+
+        'Precalculate Bounding Box for PointInPolygonTest and zoomTo (Dotspatial.contains, not used for raycasting)
         For i As Integer = 1 To polyCorners - 1
             If polyY(i) > b_yMax Then
                 b_yMax = polyY(i)
@@ -1758,6 +1757,10 @@ Search3:  'String3
                 b_xMin = polyX(i)
             End If
         Next
+
+        'SetZoomToFitRect: RectLatLng = Upper left Corner of Rectangle, SizeLatLng = dimensions of Rectangle (180 = max lat, 360 = maxlong)
+        GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(b_yMax, b_xMin), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(b_yMax - b_yMin, b_xMax - b_xMin))))
+
         'MsgBox("b_xMin: " & b_xMin & "b_xMax: " & b_xMax & "b_yMin: " & b_yMin & "b_yMax: " & b_yMax)
         'Load Shapefilepoints for dotspatial contains
         'Dim shpprovider As New ShapefileDataProvider
@@ -1945,6 +1948,14 @@ Search3:  'String3
         End If
 
     End Sub
+
+    Sub savesettings()
+        'Save Settings
+        My.Settings.Sourcepath = Me.TextBox1.Text
+        My.Settings.Save()
+    End Sub
+
+
 
 End Class
 

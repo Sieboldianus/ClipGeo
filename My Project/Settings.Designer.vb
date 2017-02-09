@@ -56,90 +56,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Select Profile")>  _
-        Public Property profilename() As String
-            Get
-                Return CType(Me("profilename"),String)
-            End Get
-            Set
-                Me("profilename") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2000-01-01")>  _
-        Public Property mintakendate() As Date
-            Get
-                Return CType(Me("mintakendate"),Date)
-            End Get
-            Set
-                Me("mintakendate") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2000-01-01")>  _
-        Public Property maxtakendate() As Date
-            Get
-                Return CType(Me("maxtakendate"),Date)
-            End Get
-            Set
-                Me("maxtakendate") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2000-01-01")>  _
-        Public Property minuploaddate() As Date
-            Get
-                Return CType(Me("minuploaddate"),Date)
-            End Get
-            Set
-                Me("minuploaddate") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2000-01-01")>  _
-        Public Property maxuploaddate() As Date
-            Get
-                Return CType(Me("maxuploaddate"),Date)
-            End Get
-            Set
-                Me("maxuploaddate") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("37.86941689")>  _
-        Public Property lat() As Double
-            Get
-                Return CType(Me("lat"),Double)
-            End Get
-            Set
-                Me("lat") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("-122.2786765")>  _
-        Public Property lng() As Double
-            Get
-                Return CType(Me("lng"),Double)
-            End Get
-            Set
-                Me("lng") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
         Public Property bottomleftlat() As Double
             Get
@@ -183,6 +99,30 @@ Namespace My
             End Get
             Set
                 Me("toprightlong") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("...\Output\")>  _
+        Public Property Sourcepath() As String
+            Get
+                Return CType(Me("Sourcepath"),String)
+            End Get
+            Set
+                Me("Sourcepath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Shapepath() As String
+            Get
+                Return CType(Me("Shapepath"),String)
+            End Get
+            Set
+                Me("Shapepath") = value
             End Set
         End Property
     End Class

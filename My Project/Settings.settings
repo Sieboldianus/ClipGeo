@@ -2,27 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="profilename" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Select Profile</Value>
-    </Setting>
-    <Setting Name="mintakendate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2000-01-01</Value>
-    </Setting>
-    <Setting Name="maxtakendate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2000-01-01</Value>
-    </Setting>
-    <Setting Name="minuploaddate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2000-01-01</Value>
-    </Setting>
-    <Setting Name="maxuploaddate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2000-01-01</Value>
-    </Setting>
-    <Setting Name="lat" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">37.86941689</Value>
-    </Setting>
-    <Setting Name="lng" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">-122.2786765</Value>
-    </Setting>
     <Setting Name="bottomleftlat" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -34,6 +13,12 @@
     </Setting>
     <Setting Name="toprightlong" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Sourcepath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">...\Output\</Value>
+    </Setting>
+    <Setting Name="Shapepath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
