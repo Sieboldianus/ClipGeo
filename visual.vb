@@ -31,7 +31,7 @@ Public Class visualForm
     'Dim OriginOffset As Integer = 0
     Dim YList As New List(Of Double)
     Dim XList As New List(Of Double)
-    Dim fullyloaded As Boolean = False
+    Public Shared fullyloaded As Boolean = False
     Dim YDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
     Dim XDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
     'http://flickr.com/photo.gne?id=8897171833 id=8897171833
@@ -212,7 +212,7 @@ Public Class visualForm
         ComboBox1.Items.Add(MapType.BingSatellite.ToString)
         ComboBox1.Items.Add(MapType.OpenCycleMap.ToString)
         ComboBox1.Items.Add(MapType.OpenStreetMap.ToString)
-        ComboBox1.Items.Add(MapType.ArcGIS_Imagery_World_2D.ToString)
+        'ComboBox1.Items.Add(MapType.ArcGIS_Imagery_World_2D.ToString)
         'ComboBox1.Items.Add(MapType.OviMap.ToString)
         'ComboBox1.Items.Add(MapType.YahooMap.ToString)
         'ComboBox1.Items.Add(MapType.YahooSatellite.ToString)
@@ -524,6 +524,7 @@ Public Class visualForm
 
     Private Sub visualForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         fullyloaded = True
+        ClipDataForm.syncMaps(True)
     End Sub
 
     Private Sub visualForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize

@@ -1666,41 +1666,6 @@ Search3:  'String3
             Exit Sub
         End If
         My.Settings.Shapepath = filedialog.InitialDirectory
-
-        '''''
-        '' The feature set class works directly with vector data.
-        '' Opening a shapefile from disk loads data in "Index" mode by default.
-        'Dim fs As IFeatureSet = FeatureSet.Open(layer.DataSet.Filename)
-
-        '' The shapes rely on an array of double precision interleaved
-        '' [X1, Y1, X2, Y2, ... Xn, Yn] coordinates.
-        'Dim x1 As Double = fs.Vertex(0)
-        'Dim y1 As Double = fs.Vertex(1)
-
-        '' The shaperange indexes values based on the coordinate index,
-        '' not the position in the double array.
-        '' Do access the coordinate directly from the Vertex, multiply by 2.
-        'x1 = fs.ShapeIndices(2).StartIndex * 2
-        'y1 = fs.ShapeIndices(2).StartIndex * 2 + 1
-
-        '' You can use the startindex and count in order to cycle values manually,
-        '' but it can be confusing.  To make things simpler, the ShapeIndices support an 
-        '' enumeration that allows cycling though the shapes, parts and the vertices.
-        'For Each shape As ShapeRange In fs.ShapeIndices
-        '    If shape.Intersects(extent) Then
-        '        For Each part As PartRange In shape.Parts
-        '            For Each vertex As Vertex In part
-        '                If vertex.X > 0 AndAlso vertex.Y > 0 Then
-        '                    ' do something
-        '                    Console.WriteLine(vertex.X)
-        '                End If
-        '            Next
-        '        Next
-        '    End If
-        'Next
-
-        '''''
-
         Dim ShapeOverlay As New GMapOverlay(GMapControl1, "ShapeOverlay")
         pointsShape.Clear()
         Dim FirstpointsShape As New List(Of PointLatLng)
@@ -1761,12 +1726,10 @@ Search3:  'String3
         'SetZoomToFitRect: RectLatLng = Upper left Corner of Rectangle, SizeLatLng = dimensions of Rectangle (180 = max lat, 360 = maxlong)
         GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(b_yMax, b_xMin), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(b_yMax - b_yMin, b_xMax - b_xMin))))
 
-        'MsgBox("b_xMin: " & b_xMin & "b_xMax: " & b_xMax & "b_yMin: " & b_yMin & "b_yMax: " & b_yMax)
-        'Load Shapefilepoints for dotspatial contains
-        'Dim shpprovider As New ShapefileDataProvider
-        'SPoints = shpprovider.Open(TextBox4.Text)
+        If visualForm.fullyloaded = True Then
+            syncMaps(True)
+        End If
 
-        'MsgBox(PolyPoints.Count())
         'For Each PointsList As List(Of PointLatLng) In PolyPoints
         Dim polygon3 As New GMapPolygon(FirstpointsShape, "ShapeSel")
         polygon3.Fill = New SolidBrush(Color.FromArgb(40, Color.Aquamarine))
@@ -1862,14 +1825,22 @@ Search3:  'String3
         Me.TextBox5.Text = visualForm.GMapControl1.CurrentViewArea.Top
         Me.TextBox2.Text = visualForm.GMapControl1.CurrentViewArea.Right
     End Sub
-    Public Sub syncMaps()
+    Public Sub syncMaps(Optional reverse As Boolean = False)
         Dim topleft As PointLatLng
         Dim heightLat, widthLong As Double
-        heightLat = visualForm.GMapControl1.CurrentViewArea.HeightLat
-        widthLong = visualForm.GMapControl1.CurrentViewArea.WidthLng
-        topleft.Lng = visualForm.GMapControl1.CurrentViewArea.Left
-        topleft.Lat = visualForm.GMapControl1.CurrentViewArea.Top
-        GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(topleft, New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(heightLat, widthLong))))
+        If reverse = False Then
+            heightLat = visualForm.GMapControl1.CurrentViewArea.HeightLat
+            widthLong = visualForm.GMapControl1.CurrentViewArea.WidthLng
+            topleft.Lng = visualForm.GMapControl1.CurrentViewArea.Left
+            topleft.Lat = visualForm.GMapControl1.CurrentViewArea.Top
+            GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(topleft, New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(heightLat, widthLong))))
+        Else
+            heightLat = GMapControl1.CurrentViewArea.HeightLat
+            widthLong = GMapControl1.CurrentViewArea.WidthLng
+            topleft.Lng = GMapControl1.CurrentViewArea.Left
+            topleft.Lat = GMapControl1.CurrentViewArea.Top
+            visualForm.GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(topleft, New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(heightLat, widthLong))))
+        End If
     End Sub
 
     Private Sub TextBox10_Click(sender As Object, e As EventArgs) Handles TextBox10.Click
