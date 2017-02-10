@@ -6,7 +6,8 @@ Imports GMap.NET.WindowsForms.ToolTips
 Imports System.Text
 Imports System.Net
 Imports DotSpatial.Data
-'Imports DotSpatial.Projections
+Imports DotSpatial.Projections
+Imports DotSpatial.Projections.Transforms
 Imports DotSpatial.Topology
 
 
@@ -45,7 +46,11 @@ Public Class ClipDataForm
     Public xP As Double
     Public yP As Double
     Public b_xMax, b_xMin, b_yMax, b_yMin As Double
-    Dim pointsShape As New List(Of PointLatLng)
+
+    Dim featuresShape As New List(Of List(Of PointLatLng)) 'Feature-List with Point-Lists
+    Public ShapefilePoly As IFeatureSet = Nothing
+    Public Shapecount As Integer = 1
+    Public Singleextract As Boolean = False
     'Public SPoints As IFeatureSet
     '  float  constant[] = storage for precalculated constants (same size as polyX)
     '  float  multiple[] = storage for precalculated multipliers (same size as polyX)
@@ -233,59 +238,14 @@ Public Class ClipDataForm
             .CanDragMap = True
         End With
 
-
+        'Reset Map and Draw Selection Rectangle
         GMapControl1.Overlays.Clear()
         Dim overlayOne As New GMapOverlay(GMapControl1, "OverlayOne")
         Dim MarkerOverlay As New GMapOverlay(GMapControl1, "Marker")
-        Dim MarkerRectOverlay As New GMapOverlay(GMapControl1, "RectMarker")
-        GMapControl1.Overlays.Add(overlayOne)
-
         Dim points As New List(Of PointLatLng)
-        points.Add(New PointLatLng(toplat, leftlong))
-        points.Add(New PointLatLng(toplat, rightlong))
-        points.Add(New PointLatLng(bottomlat, rightlong))
-        points.Add(New PointLatLng(bottomlat, leftlong))
-        points.Add(New PointLatLng(toplat, leftlong))
         Dim polygon_red As New GMapPolygon(points, "Rectangle")
-        polygon_red.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-        polygon_red.Stroke = New Pen(Color.Red, 0.25)
-        overlayOne.Polygons.Add(polygon_red)
-        GMapControl1.ZoomAndCenterMarkers(overlayOne.Id)
+        HelperFunctions.InitialDrawMarkers(centerlat, centerlong, toplat, bottomlat, leftlong, rightlong, points, polygon_red, startDataset, overlayOne, MarkerOverlay)
 
-        If CheckBox2.Checked = False Then
-            GMapControl1.Overlays.Add(MarkerOverlay)
-            Dim rectbottomleft As PointLatLng
-            Dim recttopright As PointLatLng
-
-            rectbottomleft.Lat = bottomlat + (Math.Abs(Math.Abs(toplat) - Math.Abs(bottomlat)) / 4)
-            rectbottomleft.Lng = leftlong + (Math.Abs(Math.Abs(rightlong) - Math.Abs(leftlong)) / 4)
-            recttopright.Lat = toplat - (Math.Abs(Math.Abs(toplat) - Math.Abs(bottomlat)) / 4)
-            recttopright.Lng = rightlong - (Math.Abs(Math.Abs(rightlong) - Math.Abs(leftlong)) / 4)
-
-
-
-            Dim pointsRect As New List(Of PointLatLng)
-            pointsRect.Add(New PointLatLng(recttopright.Lat, rectbottomleft.Lng))
-            pointsRect.Add(New PointLatLng(recttopright.Lat, recttopright.Lng))
-            pointsRect.Add(New PointLatLng(rectbottomleft.Lat, recttopright.Lng))
-            pointsRect.Add(New PointLatLng(rectbottomleft.Lat, rectbottomleft.Lng))
-            pointsRect.Add(New PointLatLng(recttopright.Lat, rectbottomleft.Lng))
-
-
-            Dim polygon2 As New GMapPolygon(pointsRect, "RectangleSel")
-            polygon2.Fill = New SolidBrush(Color.FromArgb(50, Color.Red))
-            polygon2.Stroke = New Pen(Color.Red, 0.25)
-            MarkerRectOverlay.Polygons.Add(polygon2)
-            GMapControl1.Overlays.Add(MarkerRectOverlay)
-
-            'Set Zoom/Pan to First Dataset Rect
-            'GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(filename_data.Item(0).toplat, filename_data.Item(0).leftlong), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(filename_data.Item(0).toplat - filename_data.Item(0).bottomlat, filename_data.Item(0).rightlong - filename_data.Item(0).leftlong))))
-            If startDataset IsNot Nothing Then
-                GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(startDataset.toplat, startDataset.leftlong), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(startDataset.toplat - startDataset.bottomlat, startDataset.rightlong - startDataset.leftlong))))
-            End If
-            MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerGoogleGreen(New PointLatLng(rectbottomleft.Lat, rectbottomleft.Lng)))
-            MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerGoogleGreen(New PointLatLng(recttopright.Lat, recttopright.Lng)))
-        End If
 
         'Draw all other markers / Draws rectangles for each loaded dataset
         Dim i As Integer = 0
@@ -567,49 +527,138 @@ Public Class ClipDataForm
         Dim outputdir As String = AppPath & "Output\03_ClippedData\" & outputname & "\"
         Dim filenamepath As String
         Dim newfilenamepath As String = Nothing
-        Dim i As Integer = 0
-        Dim rectbottomleft, recttopright, DataSetrectbottomleft, DataSetrecttopright As PointLatLng
-        Dim outputfile As System.IO.TextWriter = Nothing
-        Dim countlines As Long = 0
-        Dim countlines_sich As Long = 0
-        Dim countnewfiles As Integer = 0
-        Dim header_line As String
-        Dim header_line_written As Boolean = False
-        Dim minDate As System.DateTime = min_date.Value
-        Dim maxDate As System.DateTime = max_date.Value
-        Dim PDate As System.DateTime = Nothing
-        Dim filename_data_sel As New List(Of SourceData)
-        Dim filename_data_sel_CompletelyWithin As New List(Of SourceData)
-        Dim count_filelist_sel As Integer = 0
-        Dim completelyWithin As Boolean = False
-        Dim SpatialSkip As Boolean = False 'is true when dataset completely within selection, no point-based query necessary
-        Dim PhotoIDc As Long = 0
-        Dim Tagsc As Long = 0
-        Dim UserIDc As String = Nothing
-        Dim Views As Integer = 0
-        Dim PhotoURL As String = ""
-        Dim NoClip As Boolean = CheckBox2.Checked
         Dim visMap As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
-        Dim NoStatistics As Boolean = CheckBox16.Checked
-        Dim filtertext1 As String = ""
-        Dim filtertext2 As String = ""
-        Dim filtertext3 As String = ""
-        Dim retainfolderstructure As Boolean = CheckBox27.Checked
-        Dim estimateUnique As Boolean = False
-        Dim estPhotosBase As Long = 0
-        Dim estHashtagBase As Long = 0
-        Dim photocollection As Boolean = CheckBox30.Checked
-        Dim userOriginExport As Boolean = CheckBox29.Checked
-        Dim UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
-        Dim maptouristslocals As Boolean = CheckBox32.Checked
-        Dim mapPhotosFromLocals As Boolean = CheckBox33.Checked
 
-        'If mapPhotosFromLocals = True Then
-        '    NoClip = True
-        'End If
+        'Initialize Graphics/Point Map
+        Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
+        grap.Clear(Drawing.Color.Pink)
+        visMap.MakeTransparent(Color.Pink)
+        visualForm.PictureBox1.Visible = True
+        visualForm.ComboBox2.Enabled = False
+        Label5.Visible = True
+        If CheckBox15.Checked Then
+            'Precalc Coordinates for Selected Area
+            Label5.Text = "Precalculating index ..."
+            Me.Refresh()
+            visualForm.precalcValues(visualForm.PictureBox1.Height, visualForm.PictureBox1.Width)
+            Me.Refresh()
+        End If
+        visualForm.startalpha = Val(visualForm.TextBox1.Text)
+        visualForm.stepInc = visualForm.NumericUpDown1.Value
+        visualForm.TextBox1.Enabled = False
+        visualForm.NumericUpDown1.Enabled = False
+        visualForm.ComboBox2.Enabled = False
+        'visualForm.ComboBox4.Enabled = False
+        visualForm.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedToolWindow
 
-        'Check for Advanced Filter Criteria
-        If Not CheckBox26.Checked = True And Not TextBox10.Text = String.Empty Then
+        'Prepare list of datasets to be exported, based on the users selection
+        'This is the List of Row-Names, update if row names have changed!
+        Dim dataSelList As New List(Of String)
+        If Not dataselall = True Then
+            If CheckBox3.Checked = True Then
+                dataSelList.Add("Latitude")
+                dataSelList.Add("Longitude")
+            End If
+            If CheckBox4.Checked = True Then dataSelList.Add("NAME")
+            If CheckBox5.Checked = True Then dataSelList.Add("URL")
+            If CheckBox6.Checked = True Then dataSelList.Add("PhotoID")
+            If CheckBox7.Checked = True Then dataSelList.Add("Owner")
+            If CheckBox8.Checked = True Then dataSelList.Add("UserID")
+            If CheckBox9.Checked = True Then dataSelList.Add("DateTaken")
+            If CheckBox10.Checked = True Then dataSelList.Add("UploadDate")
+            If CheckBox11.Checked = True Then dataSelList.Add("Views")
+            If CheckBox12.Checked = True Then dataSelList.Add("Tags")
+            If CheckBox13.Checked = True Then dataSelList.Add("MTags")
+        End If
+
+        'Prepare Shapefile-Search (optional)
+        Dim ShapefileSearch As Boolean = False
+        Dim ShapefilePoly As Shapefile = Nothing
+        If Not TextBox4.Text = "" Then
+            Try
+                ShapefilePoly = Shapefile.OpenFile(TextBox4.Text)
+            Catch e As System.Exception
+                MsgBox(e.Message)
+                Exit Sub
+            End Try
+            ShapefileSearch = True
+        End If
+
+        'Prepare Multiple iterations for multiple features in shapefile (optional)
+        ' 1 feature: For shapenumber As Integer = 0 To 0 --> (no repetition)
+        Dim repeat As Integer = Shapecount - 1
+
+        'Run at least once, multiple times for multiple shapes in feature
+        For shapenumber As Integer = 0 To repeat
+
+            If ShapefileSearch = True Then
+                polyY = Nothing
+                polyX = Nothing
+                constant = Nothing
+                multiple = Nothing
+                Dim x As Long = 0
+                'add coordinates of current shape to List for precalculation of raycasting/dotspatial.intersect
+                For Each pointLatLng As PointLatLng In featuresShape(shapenumber)
+                    ReDim Preserve polyY(x)
+                    ReDim Preserve polyX(x)
+                    polyY(x) = pointLatLng.Lat
+                    polyX(x) = pointLatLng.Lng
+                    x = x + 1
+                Next
+
+                'ReDim PolyCorners Constant for size of Polycorners
+                ReDim constant(x)
+                ReDim multiple(x)
+                polyCorners = x
+
+                'Pre-Calculate Polygon Selection Values for raycasting
+                If CheckBox14.Checked = True Then
+                    precalc_values()
+                End If
+            End If
+
+            'Reset variables after each feature in shapefile is processed
+            Dim i As Integer = 0
+            Dim rectbottomleft, recttopright As PointLatLng
+            Dim outputfile As System.IO.TextWriter = Nothing
+            Dim countlines As Long = 0
+            Dim countlines_sich As Long = 0
+            Dim countnewfiles As Integer = 0
+            Dim header_line As String
+            Dim header_line_written As Boolean = False
+            Dim minDate As System.DateTime = min_date.Value
+            Dim maxDate As System.DateTime = max_date.Value
+            Dim PDate As System.DateTime = Nothing
+            Dim filename_data_sel As New List(Of SourceData)
+            Dim filename_data_sel_CompletelyWithin As New List(Of SourceData)
+            Dim count_filelist_sel As Integer = 0
+            Dim SpatialSkip As Boolean = False 'is true when dataset completely within selection, no point-based query necessary
+            Dim PhotoIDc As Long = 0
+            Dim Tagsc As Long = 0
+            Dim UserIDc As String = Nothing
+            Dim Views As Integer = 0
+            Dim PhotoURL As String = ""
+            Dim NoClip As Boolean = CheckBox2.Checked
+            Dim NoStatistics As Boolean = CheckBox16.Checked
+            Dim filtertext1 As String = ""
+            Dim filtertext2 As String = ""
+            Dim filtertext3 As String = ""
+            Dim retainfolderstructure As Boolean = CheckBox27.Checked
+            Dim estimateUnique As Boolean = False
+            Dim estPhotosBase As Long = 0
+            Dim estHashtagBase As Long = 0
+            Dim photocollection As Boolean = CheckBox30.Checked
+            Dim userOriginExport As Boolean = CheckBox29.Checked
+            Dim UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
+            Dim maptouristslocals As Boolean = CheckBox32.Checked
+            Dim mapPhotosFromLocals As Boolean = CheckBox33.Checked
+
+            'If mapPhotosFromLocals = True Then
+            '    NoClip = True
+            'End If
+
+            'Check for Advanced Filter Criteria
+            If Not CheckBox26.Checked = True And Not TextBox10.Text = String.Empty Then
             DataFiltering = True
             searchFullWords = CheckBox24.Checked
 
@@ -653,96 +702,31 @@ Public Class ClipDataForm
             'HelperFunctions.loadIndex()
             HelperFunctions.LoadUserLocationGeocodeIndex()
         End If
-        'Initialize Graphics/Point Map
-        Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
-        grap.Clear(Drawing.Color.Pink)
-        visMap.MakeTransparent(Color.Pink)
-        visualForm.PictureBox1.Visible = True
-        visualForm.ComboBox2.Enabled = False
-        Label5.Visible = True
-        If CheckBox15.Checked Then
-            'Precalc Coordinates for Selected Area
-            Label5.Text = "Precalculating index ..."
-            Me.Refresh()
-            visualForm.precalcValues(visualForm.PictureBox1.Height, visualForm.PictureBox1.Width)
-            Me.Refresh()
-        End If
-        visualForm.startalpha = Val(visualForm.TextBox1.Text)
-        visualForm.stepInc = visualForm.NumericUpDown1.Value
-        visualForm.TextBox1.Enabled = False
-        visualForm.NumericUpDown1.Enabled = False
-        visualForm.ComboBox2.Enabled = False
-        'visualForm.ComboBox4.Enabled = False
-        visualForm.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedToolWindow
 
-        hash.Clear()
-        hashUser.Clear()
-        hashTags.Clear()
-        Label5.Text = ""
-        Label6.Text = ""
-        Label13.Visible = False
-        Label14.Visible = False
 
-        'filename_data_sel = filename_data
-        'If mapPhotosFromLocals = True Then
-        '    syncArea()
-        'End If
-        rectbottomleft.Lat = Val(TextBox6.Text)
-        rectbottomleft.Lng = Val(TextBox3.Text)
-        recttopright.Lat = Val(TextBox5.Text)
-        recttopright.Lng = Val(TextBox2.Text)
 
-        'First check if datasets are concerned by user selected area
-        'Dim sel As Boolean = False
-        'Dim DatasetRect, RectSel As RectangleF
-        Dim isHorizontalCollision As Boolean = False
-        Dim isVerticalCollision As Boolean = False
+            hash.Clear()
+            hashUser.Clear()
+            hashTags.Clear()
+            Label5.Text = ""
+            Label6.Text = ""
+            Label13.Visible = False
+            Label14.Visible = False
 
-        'Prepare list of datasets to be exported, based on the users selection
-        'This is the List of Row-Names, update if row names have changed!
-        Dim dataSelList As New List(Of String)
-        If Not dataselall = True Then
-            If CheckBox3.Checked = True Then
-                dataSelList.Add("Latitude")
-                dataSelList.Add("Longitude")
-            End If
-            If CheckBox4.Checked = True Then dataSelList.Add("NAME")
-            If CheckBox5.Checked = True Then dataSelList.Add("URL")
-            If CheckBox6.Checked = True Then dataSelList.Add("PhotoID")
-            If CheckBox7.Checked = True Then dataSelList.Add("Owner")
-            If CheckBox8.Checked = True Then dataSelList.Add("UserID")
-            If CheckBox9.Checked = True Then dataSelList.Add("DateTaken")
-            If CheckBox10.Checked = True Then dataSelList.Add("UploadDate")
-            If CheckBox11.Checked = True Then dataSelList.Add("Views")
-            If CheckBox12.Checked = True Then dataSelList.Add("Tags")
-            If CheckBox13.Checked = True Then dataSelList.Add("MTags")
-        End If
+            rectbottomleft.Lat = Val(TextBox6.Text)
+            rectbottomleft.Lng = Val(TextBox3.Text)
+            recttopright.Lat = Val(TextBox5.Text)
+            recttopright.Lng = Val(TextBox2.Text)
 
-        'Prepare Shapefile-Search (optional)
-        Dim ShapefileSearch As Boolean = False
-        Dim ShapefilePoly As Shapefile = Nothing
-        If Not TextBox4.Text = "" Then
-            Try
-                ShapefilePoly = Shapefile.OpenFile(TextBox4.Text)
-            Catch e As System.Exception
-                MsgBox(e.Message)
-                Exit Sub
-            End Try
-            ShapefileSearch = True
+            'First check if datasets are concerned by user selected area
 
-            'Pre-Calculate Polygon Selection Values for raycasting
-            If CheckBox14.Checked = True Then
-                precalc_values()
-            End If
-        End If
 
-        '''''Dataset selection start''''''
-        For Each DataSet As SourceData In filename_data
-            completelyWithin = True
 
-            Dim fs_data As New FeatureSet(FeatureType.Polygon)
-            ' create a geometry from data_set extent
-            Dim vertices As New List(Of Coordinate)()
+            '''''Dataset selection start''''''
+            For Each DataSet As SourceData In filename_data
+                Dim fs_data As New FeatureSet(FeatureType.Polygon)
+                ' create a geometry from data_set extent
+                Dim vertices As New List(Of Coordinate)()
             vertices.Add(New Coordinate(DataSet.leftlong, DataSet.bottomlat))
             vertices.Add(New Coordinate(DataSet.leftlong, DataSet.toplat))
             vertices.Add(New Coordinate(DataSet.rightlong, DataSet.toplat))
@@ -780,8 +764,9 @@ Public Class ClipDataForm
                 End If
 
             Else 'if Shapefilesearch (and no maplocaluser-search)
-                For Each f As Feature In ShapefilePoly.Features
+                    ' For Each f As Feature In ShapefilePoly.Features
                     'Dim pg As Feature = TryCast(f.BasicGeometry, IFeature)
+                    Dim f As Feature = ShapefilePoly.Features(shapenumber)
                     If f IsNot Nothing Then
                         If f.Intersects(data_feature) Then
                             filename_data_sel.Add(DataSet)
@@ -791,8 +776,8 @@ Public Class ClipDataForm
                             End If
                         End If
                     End If
-                Next
-            End If
+                    ' Next
+                End If
         Next
         '''''Dataset selection end''''''
 
@@ -1141,6 +1126,9 @@ skip_line:              Loop
         End If
         Label40.Visible = True
         Label40.Text = "Local Users: " & localusercount.ToString("N0") & " (" & Math.Round(localusercount / (UserLocationGeocodeDict.Count / 100), 0) & "%) " & "| Visiting: " & (UserLocationGeocodeDict.Count - localusercount).ToString("N0") & " (" & Math.Round((UserLocationGeocodeDict.Count - localusercount) / (UserLocationGeocodeDict.Count / 100), 0) & "%) "
+
+        Next
+
         Label5.Text &= " All done."
 
 
@@ -1646,6 +1634,7 @@ Search3:  'String3
         TextBox1.Text = My.Settings.Sourcepath
     End Sub
 
+    'Shapefile load
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click, Button8.Click
         Dim filedialog As OpenFileDialog = New OpenFileDialog()
         filedialog.Title = "Select shapefile (WGS1984 Projection)"
@@ -1657,8 +1646,9 @@ Search3:  'String3
                 filedialog.InitialDirectory = AppPath & "ShapeSel\" 'DE_WGS1984.shp
             End If
         Else
-                filedialog.InitialDirectory = My.Settings.Shapepath
+            filedialog.InitialDirectory = My.Settings.Shapepath
         End If
+        filedialog.Filter = "shp files (*.shp)|*.shp|All files (*.*)|*.*"
         filedialog.RestoreDirectory = True
         If filedialog.ShowDialog() = DialogResult.OK Then
             TextBox4.Text = filedialog.FileName
@@ -1667,40 +1657,60 @@ Search3:  'String3
         End If
         My.Settings.Shapepath = filedialog.InitialDirectory
         Dim ShapeOverlay As New GMapOverlay(GMapControl1, "ShapeOverlay")
-        pointsShape.Clear()
-        Dim FirstpointsShape As New List(Of PointLatLng)
-        Dim PolyPoints As New ArrayList
 
-        'Draw Polygons on map
-        'Dim ShapefilePoly As Shapefile = Shapefile.OpenFile(TextBox4.Text)
-        Dim ShapefilePoly As IFeatureSet = FeatureSet.Open(TextBox4.Text)
-        Dim x As Long = 0
+        'Check projection
+        If File.Exists(filedialog.FileName.Substring(0, filedialog.FileName.Length - 4) & ".prj") Then
+            Dim sr As StreamReader = File.OpenText(filedialog.FileName.Substring(0, filedialog.FileName.Length - 4) & ".prj")
+            Dim prj As String = sr.ReadLine()
+            sr.Close()
+            If Not prj.Contains("GCS_WGS_1984") Then
+                MsgBox("Please project your shapefile to GCS_WGS_1984.")
+            End If
+        End If
+
+        'Check for Multiple Features in Shapefile
+        ShapefilePoly = FeatureSet.Open(TextBox4.Text)
+        If ShapefilePoly.Features.Count > 1 Then
+            Dim result As Integer = MessageBox.Show("Multiple Features in Shapefile (" & ShapefilePoly.Features.Count & "): Do you wish to extract data for each feature separately?", "Multiple Features in Shapefile", MessageBoxButtons.YesNoCancel)
+            If result = DialogResult.Cancel Then
+                Exit Sub
+            ElseIf result = DialogResult.No Then
+                Shapecount = ShapefilePoly.Features.Count
+                Singleextract = False
+            ElseIf result = DialogResult.Yes Then
+                Shapecount = ShapefilePoly.Features.Count
+                Singleextract = True
+            End If
+        End If
+        featuresShape.Clear()
+
+        Dim x As Integer = 0
         For Each MyShapeRange As ShapeRange In ShapefilePoly.ShapeIndices
+            Dim pointsShape As New List(Of PointLatLng) 'Points (Vettices) of each Feature
             For Each MyPartRange As PartRange In MyShapeRange.Parts
                 For Each MyVertex As Vertex In MyPartRange
-                    'If MyVertex.X < 0 Then MyVertex.X = 180 - MyVertex.X 'This line produces problems with holes!
-                    'If MyVertex.X > 0 AndAlso MyVertex.Y > 0 Then
                     pointsShape.Add(New PointLatLng(MyVertex.Y, MyVertex.X))
+                    'MsgBox(MyVertex.Y & " " & MyVertex.X)
                     ReDim Preserve polyY(x)
                     ReDim Preserve polyX(x)
                     polyY(x) = MyVertex.Y
                     polyX(x) = MyVertex.X
-                    'MsgBox("polyY(" & x & "):" & polyY(x) & " - polyX(" & x & "):" & polyX(x))
                     x = x + 1
-                    'End If
                 Next
-                'Only add points of first shape to GMapnet Polygon
-                If FirstpointsShape.Count = 0 Then FirstpointsShape = pointsShape
-                'pointsShape.Clear()
             Next
+            featuresShape.Add(pointsShape)
         Next
+
+        'Warning for complex shapes
         If x > 1000 Then
             MsgBox("Polygon geometry is very complex (" & x.ToString & " vertices). Processing of points may be very slow.")
         End If
+
         'ReDim PolyCorners Constant for size of Polycorners
         ReDim constant(x)
         ReDim multiple(x)
         polyCorners = x
+
         Label12.Text = Math.Round(x, 0).ToString("N0") & " Vertices"
 
         'initialize start values
@@ -1723,6 +1733,15 @@ Search3:  'String3
             End If
         Next
 
+        'Clear Selection Layer and Marker
+        'GMapControl1.Overlays(1).Markers.Clear()
+        'GMapControl1.Overlays(2).Polygons.Clear()
+        'Clear previous shapefile display
+        If GMapControl1.Overlays.Count > 4 Then
+            'Overlays(4) contains shapefile polygons
+            GMapControl1.Overlays(4).Polygons.Clear()
+        End If
+
         'SetZoomToFitRect: RectLatLng = Upper left Corner of Rectangle, SizeLatLng = dimensions of Rectangle (180 = max lat, 360 = maxlong)
         GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(b_yMax, b_xMin), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(b_yMax - b_yMin, b_xMax - b_xMin))))
 
@@ -1730,14 +1749,16 @@ Search3:  'String3
             syncMaps(True)
         End If
 
-        'For Each PointsList As List(Of PointLatLng) In PolyPoints
-        Dim polygon3 As New GMapPolygon(FirstpointsShape, "ShapeSel")
-        polygon3.Fill = New SolidBrush(Color.FromArgb(40, Color.Aquamarine))
-        polygon3.Stroke = New Pen(Color.Red, 0.25)
-        ShapeOverlay.Polygons.Add(polygon3)
+        Dim y As Integer = 0
+        For Each PointsShape As List(Of PointLatLng) In featuresShape
+            y = y + 1
+            Dim polygon3 As New GMapPolygon(PointsShape, "ShapeSel" & y)
+            polygon3.Fill = New SolidBrush(Color.FromArgb(40, Color.Aquamarine))
+            polygon3.Stroke = New Pen(Color.Red, 0.25)
+            ShapeOverlay.Polygons.Add(polygon3)
+        Next
         GMapControl1.Overlays.Add(ShapeOverlay)
         GMapControl1.Refresh()
-        'Next
         CheckBox14.ForeColor = SystemColors.ControlText
     End Sub
 
