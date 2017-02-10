@@ -146,6 +146,7 @@ Partial Class ClipDataForm
         Me.Label41 = New System.Windows.Forms.Label()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
+        Me.Label44 = New System.Windows.Forms.Label()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -202,7 +203,8 @@ Partial Class ClipDataForm
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(18, 451)
+        Me.ProgressBar1.AccessibleName = ""
+        Me.ProgressBar1.Location = New System.Drawing.Point(18, 469)
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(423, 23)
         Me.ProgressBar1.TabIndex = 30
@@ -447,7 +449,7 @@ Partial Class ClipDataForm
         Me.Panel3.Controls.Add(Me.Button1)
         Me.Panel3.Controls.Add(Me.TextBox9)
         Me.Panel3.Controls.Add(Me.Label7)
-        Me.Panel3.Location = New System.Drawing.Point(474, 444)
+        Me.Panel3.Location = New System.Drawing.Point(474, 462)
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(332, 39)
         Me.Panel3.TabIndex = 27
@@ -467,7 +469,7 @@ Partial Class ClipDataForm
         '
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ControlLight
-        Me.Label3.Location = New System.Drawing.Point(482, 428)
+        Me.Label3.Location = New System.Drawing.Point(482, 446)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(100, 16)
         Me.Label3.TabIndex = 28
@@ -497,9 +499,9 @@ Partial Class ClipDataForm
         '
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label5.Location = New System.Drawing.Point(22, 363)
+        Me.Label5.Location = New System.Drawing.Point(22, 364)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(165, 15)
+        Me.Label5.Size = New System.Drawing.Size(419, 14)
         Me.Label5.TabIndex = 31
         Me.Label5.Text = "Processing file xxx.txt (x of x)."
         Me.Label5.Visible = False
@@ -517,9 +519,9 @@ Partial Class ClipDataForm
         '
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label6.Location = New System.Drawing.Point(22, 379)
+        Me.Label6.Location = New System.Drawing.Point(22, 400)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(82, 15)
+        Me.Label6.Size = New System.Drawing.Size(419, 14)
         Me.Label6.TabIndex = 34
         Me.Label6.Text = "Photos found:"
         Me.Label6.Visible = False
@@ -1428,9 +1430,9 @@ Partial Class ClipDataForm
         '
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label13.Location = New System.Drawing.Point(22, 395)
+        Me.Label13.Location = New System.Drawing.Point(22, 418)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(62, 15)
+        Me.Label13.Size = New System.Drawing.Size(419, 14)
         Me.Label13.TabIndex = 37
         Me.Label13.Text = "Statistics>"
         Me.Label13.Visible = False
@@ -1439,9 +1441,9 @@ Partial Class ClipDataForm
         '
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label14.Location = New System.Drawing.Point(22, 412)
+        Me.Label14.Location = New System.Drawing.Point(22, 436)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(58, 15)
+        Me.Label14.Size = New System.Drawing.Size(419, 14)
         Me.Label14.TabIndex = 38
         Me.Label14.Text = "Statistics:"
         Me.Label14.Visible = False
@@ -1462,7 +1464,7 @@ Partial Class ClipDataForm
         Me.CheckBox16.AutoSize = True
         Me.CheckBox16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox16.ForeColor = System.Drawing.SystemColors.ControlDark
-        Me.CheckBox16.Location = New System.Drawing.Point(338, 476)
+        Me.CheckBox16.Location = New System.Drawing.Point(338, 494)
         Me.CheckBox16.Name = "CheckBox16"
         Me.CheckBox16.Size = New System.Drawing.Size(117, 19)
         Me.CheckBox16.TabIndex = 50
@@ -1496,7 +1498,7 @@ Partial Class ClipDataForm
         Me.CheckBox30.AutoSize = True
         Me.CheckBox30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox30.ForeColor = System.Drawing.SystemColors.ControlDark
-        Me.CheckBox30.Location = New System.Drawing.Point(228, 476)
+        Me.CheckBox30.Location = New System.Drawing.Point(228, 494)
         Me.CheckBox30.Name = "CheckBox30"
         Me.CheckBox30.Size = New System.Drawing.Size(110, 19)
         Me.CheckBox30.TabIndex = 50
@@ -1507,9 +1509,9 @@ Partial Class ClipDataForm
         '
         Me.Label40.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label40.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label40.Location = New System.Drawing.Point(22, 429)
+        Me.Label40.Location = New System.Drawing.Point(22, 454)
         Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(58, 15)
+        Me.Label40.Size = New System.Drawing.Size(419, 14)
         Me.Label40.TabIndex = 38
         Me.Label40.Text = "Statistics:"
         Me.Label40.Visible = False
@@ -1519,7 +1521,7 @@ Partial Class ClipDataForm
         Me.CheckBox31.AutoSize = True
         Me.CheckBox31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox31.ForeColor = System.Drawing.SystemColors.ControlDark
-        Me.CheckBox31.Location = New System.Drawing.Point(72, 476)
+        Me.CheckBox31.Location = New System.Drawing.Point(72, 494)
         Me.CheckBox31.Name = "CheckBox31"
         Me.CheckBox31.Size = New System.Drawing.Size(155, 19)
         Me.CheckBox31.TabIndex = 50
@@ -1581,12 +1583,24 @@ Partial Class ClipDataForm
         Me.Label43.TabIndex = 12
         Me.Label43.Text = "Data availability:"
         '
+        'Label44
+        '
+        Me.Label44.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label44.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.Label44.Location = New System.Drawing.Point(22, 382)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(419, 14)
+        Me.Label44.TabIndex = 51
+        Me.Label44.Text = "Shape 1 of 1."
+        Me.Label44.Visible = False
+        '
         'ClipDataForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ClientSize = New System.Drawing.Size(824, 494)
+        Me.ClientSize = New System.Drawing.Size(824, 521)
+        Me.Controls.Add(Me.Label44)
         Me.Controls.Add(Me.Label43)
         Me.Controls.Add(Me.CheckBox31)
         Me.Controls.Add(Me.Label41)
@@ -1767,4 +1781,5 @@ Partial Class ClipDataForm
     Friend WithEvents Label42 As System.Windows.Forms.Label
     Friend WithEvents Label43 As System.Windows.Forms.Label
     Friend WithEvents Label41 As System.Windows.Forms.Label
+    Friend WithEvents Label44 As Label
 End Class
