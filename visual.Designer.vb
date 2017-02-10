@@ -96,7 +96,7 @@ Partial Class visualForm
         '
         'GMapControl1
         '
-        Me.GMapControl1.Bearing = 0.0!
+        Me.GMapControl1.Bearing = 0!
         Me.GMapControl1.CanDragMap = True
         Me.GMapControl1.GrayScaleMode = False
         Me.GMapControl1.LevelsKeepInMemmory = 5
@@ -113,7 +113,7 @@ Partial Class visualForm
         Me.GMapControl1.ShowTileGridLines = False
         Me.GMapControl1.Size = New System.Drawing.Size(1200, 617)
         Me.GMapControl1.TabIndex = 28
-        Me.GMapControl1.Zoom = 0.0R
+        Me.GMapControl1.Zoom = 0R
         '
         'ComboBox1
         '
@@ -129,6 +129,7 @@ Partial Class visualForm
         '
         Me.Plot.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Plot.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Plot.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Plot.Location = New System.Drawing.Point(999, 635)
         Me.Plot.Name = "Plot"
         Me.Plot.Size = New System.Drawing.Size(56, 24)
@@ -140,6 +141,7 @@ Partial Class visualForm
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Location = New System.Drawing.Point(918, 635)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 24)
@@ -151,6 +153,7 @@ Partial Class visualForm
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Location = New System.Drawing.Point(841, 635)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(71, 24)
@@ -163,6 +166,7 @@ Partial Class visualForm
         Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button3.ContextMenuStrip = Me.ContextMenuStrip1
         Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button3.Location = New System.Drawing.Point(12, 635)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(92, 24)
@@ -172,20 +176,21 @@ Partial Class visualForm
         '
         'ContextMenuStrip1
         '
+        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(18, 18)
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem2, Me.ToolStripMenuItem1})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(308, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(355, 52)
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(307, 22)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(354, 24)
         Me.ToolStripMenuItem2.Text = "Export as PNG with background."
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(307, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(354, 24)
         Me.ToolStripMenuItem1.Text = "Export as PNG with transparent background."
         '
         'ComboBox2
@@ -205,6 +210,7 @@ Partial Class visualForm
         '
         Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button4.Location = New System.Drawing.Point(776, 635)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(59, 24)
@@ -216,6 +222,7 @@ Partial Class visualForm
         '
         Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button5.Location = New System.Drawing.Point(715, 635)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(55, 24)
@@ -304,6 +311,7 @@ Partial Class visualForm
         '
         Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button6.Location = New System.Drawing.Point(642, 635)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(67, 24)
@@ -315,6 +323,7 @@ Partial Class visualForm
         '
         Me.Button7.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button7.Location = New System.Drawing.Point(496, 635)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(67, 24)

@@ -175,7 +175,7 @@ Partial Class ClipDataForm
         Me.TextBox1.Size = New System.Drawing.Size(229, 20)
         Me.TextBox1.TabIndex = 13
         Me.TextBox1.Text = "...\Output\"
-        Me.ToolTip1.SetToolTip(Me.TextBox1, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" & _
+        Me.ToolTip1.SetToolTip(Me.TextBox1, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" &
         "inates.txt and log.txt")
         '
         'Button2
@@ -214,7 +214,7 @@ Partial Class ClipDataForm
         Me.TextBox8.Enabled = False
         Me.TextBox8.Location = New System.Drawing.Point(300, 30)
         Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox8.Size = New System.Drawing.Size(90, 19)
         Me.TextBox8.TabIndex = 41
         Me.TextBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox8, "Height of boundary box (vertical extent).")
@@ -225,7 +225,7 @@ Partial Class ClipDataForm
         Me.TextBox7.Enabled = False
         Me.TextBox7.Location = New System.Drawing.Point(161, 30)
         Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox7.Size = New System.Drawing.Size(90, 19)
         Me.TextBox7.TabIndex = 42
         Me.TextBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox7, "Width of boundary box (horizontal extent).")
@@ -234,7 +234,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox6.Location = New System.Drawing.Point(161, 82)
         Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox6.Size = New System.Drawing.Size(90, 19)
         Me.TextBox6.TabIndex = 31
         Me.TextBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox6, "Latitude value of bottom left box corner.")
@@ -243,7 +243,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox5.Location = New System.Drawing.Point(161, 56)
         Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox5.Size = New System.Drawing.Size(90, 19)
         Me.TextBox5.TabIndex = 32
         Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox5, "Latitude value of top right box corner.")
@@ -252,7 +252,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox3.Location = New System.Drawing.Point(300, 81)
         Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox3.Size = New System.Drawing.Size(90, 19)
         Me.TextBox3.TabIndex = 33
         Me.TextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox3, "Longitude value of bottom left box corner.")
@@ -261,7 +261,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox2.Location = New System.Drawing.Point(300, 55)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(90, 20)
+        Me.TextBox2.Size = New System.Drawing.Size(90, 19)
         Me.TextBox2.TabIndex = 34
         Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox2, "Longitude value of top right box corner.")
@@ -311,7 +311,7 @@ Partial Class ClipDataForm
         Me.max_date.Location = New System.Drawing.Point(238, 77)
         Me.max_date.Name = "max_date"
         Me.max_date.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.max_date.Size = New System.Drawing.Size(150, 20)
+        Me.max_date.Size = New System.Drawing.Size(150, 19)
         Me.max_date.TabIndex = 18
         Me.ToolTip1.SetToolTip(Me.max_date, "Maximum date/time of photo data.")
         Me.max_date.Value = New Date(2011, 8, 19, 0, 0, 0, 0)
@@ -325,7 +325,7 @@ Partial Class ClipDataForm
         Me.min_date.Location = New System.Drawing.Point(238, 51)
         Me.min_date.Name = "min_date"
         Me.min_date.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.min_date.Size = New System.Drawing.Size(150, 20)
+        Me.min_date.Size = New System.Drawing.Size(150, 19)
         Me.min_date.TabIndex = 19
         Me.ToolTip1.SetToolTip(Me.min_date, "Minimum date/time of photo data.")
         Me.min_date.Value = New Date(2006, 1, 1, 0, 0, 0, 0)
@@ -334,9 +334,9 @@ Partial Class ClipDataForm
         '
         Me.TextBox4.Location = New System.Drawing.Point(161, 125)
         Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(229, 20)
+        Me.TextBox4.Size = New System.Drawing.Size(229, 19)
         Me.TextBox4.TabIndex = 48
-        Me.ToolTip1.SetToolTip(Me.TextBox4, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" & _
+        Me.ToolTip1.SetToolTip(Me.TextBox4, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" &
         "inates.txt and log.txt")
         '
         'CheckBox14
@@ -356,7 +356,7 @@ Partial Class ClipDataForm
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label16.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Label16.Location = New System.Drawing.Point(22, 15)
         Me.Label16.Name = "Label16"
@@ -381,6 +381,7 @@ Partial Class ClipDataForm
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label1.Location = New System.Drawing.Point(183, 36)
         Me.Label1.Name = "Label1"
@@ -420,7 +421,7 @@ Partial Class ClipDataForm
         '
         'GMapControl1
         '
-        Me.GMapControl1.Bearing = 0.0!
+        Me.GMapControl1.Bearing = 0!
         Me.GMapControl1.CanDragMap = True
         Me.GMapControl1.GrayScaleMode = False
         Me.GMapControl1.LevelsKeepInMemmory = 5
@@ -437,7 +438,7 @@ Partial Class ClipDataForm
         Me.GMapControl1.ShowTileGridLines = False
         Me.GMapControl1.Size = New System.Drawing.Size(328, 323)
         Me.GMapControl1.TabIndex = 27
-        Me.GMapControl1.Zoom = 0.0R
+        Me.GMapControl1.Zoom = 0R
         '
         'Panel3
         '
@@ -454,6 +455,7 @@ Partial Class ClipDataForm
         'Label7
         '
         Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label7.Location = New System.Drawing.Point(156, 10)
         Me.Label7.Name = "Label7"
@@ -463,12 +465,11 @@ Partial Class ClipDataForm
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Label3.Location = New System.Drawing.Point(482, 428)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(82, 13)
+        Me.Label3.Size = New System.Drawing.Size(100, 16)
         Me.Label3.TabIndex = 28
         Me.Label3.Text = "Save Results"
         '
@@ -485,6 +486,7 @@ Partial Class ClipDataForm
         'Label4
         '
         Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label4.Location = New System.Drawing.Point(635, 16)
         Me.Label4.Name = "Label4"
@@ -494,11 +496,11 @@ Partial Class ClipDataForm
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label5.Location = New System.Drawing.Point(22, 363)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(144, 13)
+        Me.Label5.Size = New System.Drawing.Size(165, 15)
         Me.Label5.TabIndex = 31
         Me.Label5.Text = "Processing file xxx.txt (x of x)."
         Me.Label5.Visible = False
@@ -514,18 +516,18 @@ Partial Class ClipDataForm
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label6.Location = New System.Drawing.Point(22, 379)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(73, 13)
+        Me.Label6.Size = New System.Drawing.Size(82, 15)
         Me.Label6.TabIndex = 34
         Me.Label6.Text = "Photos found:"
         Me.Label6.Visible = False
         '
         'CheckBox1
         '
-        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox1.Location = New System.Drawing.Point(474, 408)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(97, 17)
@@ -540,7 +542,7 @@ Partial Class ClipDataForm
         Me.Label2.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Label2.Location = New System.Drawing.Point(482, 15)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(31, 13)
+        Me.Label2.Size = New System.Drawing.Size(38, 16)
         Me.Label2.TabIndex = 12
         Me.Label2.Text = "Map"
         '
@@ -550,6 +552,7 @@ Partial Class ClipDataForm
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(18, 101)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.Padding = New System.Drawing.Point(10, 2)
@@ -633,7 +636,7 @@ Partial Class ClipDataForm
         Me.TextBox14.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.TextBox14.Location = New System.Drawing.Point(161, 203)
         Me.TextBox14.Name = "TextBox14"
-        Me.TextBox14.Size = New System.Drawing.Size(99, 20)
+        Me.TextBox14.Size = New System.Drawing.Size(99, 21)
         Me.TextBox14.TabIndex = 48
         Me.TextBox14.Text = "from file"
         Me.TextBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -642,7 +645,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox13.Location = New System.Drawing.Point(161, 182)
         Me.TextBox13.Name = "TextBox13"
-        Me.TextBox13.Size = New System.Drawing.Size(229, 20)
+        Me.TextBox13.Size = New System.Drawing.Size(229, 19)
         Me.TextBox13.TabIndex = 48
         '
         'Label10
@@ -1277,7 +1280,7 @@ Partial Class ClipDataForm
         Me.TextBox12.Enabled = False
         Me.TextBox12.Location = New System.Drawing.Point(126, 122)
         Me.TextBox12.Name = "TextBox12"
-        Me.TextBox12.Size = New System.Drawing.Size(84, 20)
+        Me.TextBox12.Size = New System.Drawing.Size(84, 19)
         Me.TextBox12.TabIndex = 0
         '
         'CheckBox18
@@ -1299,7 +1302,7 @@ Partial Class ClipDataForm
         Me.TextBox11.Enabled = False
         Me.TextBox11.Location = New System.Drawing.Point(126, 85)
         Me.TextBox11.Name = "TextBox11"
-        Me.TextBox11.Size = New System.Drawing.Size(84, 20)
+        Me.TextBox11.Size = New System.Drawing.Size(84, 19)
         Me.TextBox11.TabIndex = 0
         '
         'CheckBox17
@@ -1320,7 +1323,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox10.Location = New System.Drawing.Point(126, 51)
         Me.TextBox10.Name = "TextBox10"
-        Me.TextBox10.Size = New System.Drawing.Size(84, 20)
+        Me.TextBox10.Size = New System.Drawing.Size(84, 19)
         Me.TextBox10.TabIndex = 0
         '
         'Panel4
@@ -1423,22 +1426,22 @@ Partial Class ClipDataForm
         '
         'Label13
         '
-        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label13.Location = New System.Drawing.Point(22, 395)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(55, 13)
+        Me.Label13.Size = New System.Drawing.Size(62, 15)
         Me.Label13.TabIndex = 37
         Me.Label13.Text = "Statistics>"
         Me.Label13.Visible = False
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label14.Location = New System.Drawing.Point(22, 412)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(52, 13)
+        Me.Label14.Size = New System.Drawing.Size(58, 15)
         Me.Label14.TabIndex = 38
         Me.Label14.Text = "Statistics:"
         Me.Label14.Visible = False
@@ -1446,7 +1449,8 @@ Partial Class ClipDataForm
         'CheckBox15
         '
         Me.CheckBox15.AutoSize = True
-        Me.CheckBox15.Location = New System.Drawing.Point(583, 360)
+        Me.CheckBox15.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox15.Location = New System.Drawing.Point(595, 360)
         Me.CheckBox15.Name = "CheckBox15"
         Me.CheckBox15.Size = New System.Drawing.Size(127, 17)
         Me.CheckBox15.TabIndex = 35
@@ -1456,6 +1460,7 @@ Partial Class ClipDataForm
         'CheckBox16
         '
         Me.CheckBox16.AutoSize = True
+        Me.CheckBox16.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox16.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox16.Location = New System.Drawing.Point(338, 476)
         Me.CheckBox16.Name = "CheckBox16"
@@ -1478,7 +1483,8 @@ Partial Class ClipDataForm
         'CheckBox29
         '
         Me.CheckBox29.AutoSize = True
-        Me.CheckBox29.Location = New System.Drawing.Point(583, 408)
+        Me.CheckBox29.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox29.Location = New System.Drawing.Point(595, 408)
         Me.CheckBox29.Name = "CheckBox29"
         Me.CheckBox29.Size = New System.Drawing.Size(130, 17)
         Me.CheckBox29.TabIndex = 35
@@ -1488,6 +1494,7 @@ Partial Class ClipDataForm
         'CheckBox30
         '
         Me.CheckBox30.AutoSize = True
+        Me.CheckBox30.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox30.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox30.Location = New System.Drawing.Point(228, 476)
         Me.CheckBox30.Name = "CheckBox30"
@@ -1498,11 +1505,11 @@ Partial Class ClipDataForm
         '
         'Label40
         '
-        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label40.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label40.Location = New System.Drawing.Point(22, 429)
         Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(52, 13)
+        Me.Label40.Size = New System.Drawing.Size(58, 15)
         Me.Label40.TabIndex = 38
         Me.Label40.Text = "Statistics:"
         Me.Label40.Visible = False
@@ -1510,6 +1517,7 @@ Partial Class ClipDataForm
         'CheckBox31
         '
         Me.CheckBox31.AutoSize = True
+        Me.CheckBox31.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox31.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox31.Location = New System.Drawing.Point(72, 476)
         Me.CheckBox31.Name = "CheckBox31"
@@ -1521,7 +1529,8 @@ Partial Class ClipDataForm
         'CheckBox32
         '
         Me.CheckBox32.AutoSize = True
-        Me.CheckBox32.Location = New System.Drawing.Point(583, 376)
+        Me.CheckBox32.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox32.Location = New System.Drawing.Point(595, 376)
         Me.CheckBox32.Name = "CheckBox32"
         Me.CheckBox32.Size = New System.Drawing.Size(126, 17)
         Me.CheckBox32.TabIndex = 35
@@ -1531,7 +1540,8 @@ Partial Class ClipDataForm
         'CheckBox33
         '
         Me.CheckBox33.AutoSize = True
-        Me.CheckBox33.Location = New System.Drawing.Point(583, 392)
+        Me.CheckBox33.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox33.Location = New System.Drawing.Point(595, 392)
         Me.CheckBox33.Name = "CheckBox33"
         Me.CheckBox33.Size = New System.Drawing.Size(140, 17)
         Me.CheckBox33.TabIndex = 35
@@ -1540,34 +1550,31 @@ Partial Class ClipDataForm
         '
         'Label41
         '
-        Me.Label41.AutoSize = True
-        Me.Label41.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label41.ForeColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(30, Byte), Integer))
         Me.Label41.Location = New System.Drawing.Point(490, 376)
         Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(58, 13)
+        Me.Label41.Size = New System.Drawing.Size(68, 16)
         Me.Label41.TabIndex = 12
         Me.Label41.Text = "2007-2015"
         '
         'Label42
         '
-        Me.Label42.AutoSize = True
-        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label42.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(191, Byte), Integer))
         Me.Label42.Location = New System.Drawing.Point(490, 392)
         Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(58, 13)
+        Me.Label42.Size = New System.Drawing.Size(68, 16)
         Me.Label42.TabIndex = 12
         Me.Label42.Text = "2007-2017"
         '
         'Label43
         '
-        Me.Label43.AutoSize = True
-        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label43.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.Label43.Location = New System.Drawing.Point(471, 360)
         Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(84, 13)
+        Me.Label43.Size = New System.Drawing.Size(107, 16)
         Me.Label43.TabIndex = 12
         Me.Label43.Text = "Data availability:"
         '
