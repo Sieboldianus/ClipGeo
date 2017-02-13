@@ -18,7 +18,7 @@ Filtering, extracting, clipping and visualizing large georeferenced point datase
 My experience was that beyond 5 million points, ArcGIS quits. This tool was build to initially extract parts of a larger point dataset to be imported into other Software, 
 such as ArcGIS, for more advanced analysis.
 
-## Installation
+## Installation/ Getting Started
 
 * currently, no installation is needed
 * DotNet framework 4.5 recommended
@@ -32,7 +32,7 @@ such as ArcGIS, for more advanced analysis.
 
 * todo: future goals, extending scope of program beyond Flickr photo data (include Twitter & Instagram, for example)
 
-## Use of other Software and Code
+## Built With
 This project includes and makes use of several other projects/libraries/frameworks:
 
 >[*FastPix*](http://www.vbforums.com/showthread.php?586709-FastPix-Rapid-Pixel-Processing-for-Dummies-and-Dudes) - (c) Vic Joseph (Boops Boops) 2009-2013
@@ -69,3 +69,4 @@ GNU GPLv3
 **- clean up the mess
 **- provide instructions for using program
 
+[//]: # (https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) 
