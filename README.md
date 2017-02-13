@@ -28,6 +28,27 @@ such as ArcGIS, for more advanced analysis.
 
 - todo: future goals, extending scope of program beyond Flickr photo data (include Twitter & Instagram, for example)
 
+## Use of other Software and Code
+This project includes and makes use of several other projects/libraries/frameworks:
+
+>[*FastPix*](http://www.vbforums.com/showthread.php?586709-FastPix-Rapid-Pixel-Processing-for-Dummies-and-Dudes) - (c) Vic Joseph (Boops Boops) 2009-2013
+>> A fast substitute for Bitmap.GetPixel and Bitmap.SetPixel
+>> Used for fast bitmap manipulations (map render, alpha values) in visual.vb
+
+>[*DotSpatial*](https://github.com/DotSpatial/DotSpatial) (DotSpatial.Data & DotSpatial.Topology)
+>>Opening Shapefiles & extracting point coordinates; Optional used in Shapefile intersect method in clipdata.vb
+
+>[*GMap.Net*](https://github.com/radioman/greatmaps)
+>>Online Tile-based map display in windows forms, visualization of shapes & overlays, interface functions (such as selecting analysis extent)
+
+>[*Super Context Menu*](https://www.codeproject.com/Articles/22780/Super-Context-Menu-Strip)
+>>Right-Click Context Menu for Photo display on maps (Photo collection based on descending popularity, including links to original photos online)
+
+.. at other times, code was slightly modified before incoorporating it into the project:
+>[*Point-In-Polygon Raycasting Algorithm*](http://alienryderflex.com/polygon/) 1998-2007 Darel Rex Finley & Patrick Mullen
+>>Slight modification to apply test in a spatial context
+
+
 ## License
 
 GNU GPLv3

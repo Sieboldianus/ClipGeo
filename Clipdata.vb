@@ -6,8 +6,8 @@ Imports GMap.NET.WindowsForms.ToolTips
 Imports System.Text
 Imports System.Net
 Imports DotSpatial.Data
-Imports DotSpatial.Projections
-Imports DotSpatial.Projections.Transforms
+'Imports DotSpatial.Projections
+'Imports DotSpatial.Projections.Transforms
 Imports DotSpatial.Topology
 
 
