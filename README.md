@@ -40,7 +40,7 @@ This project includes and makes use of several other projects/libraries/framewor
 >> Used for fast bitmap manipulations (map render, alpha values) in visual.vb
 
 >[*DotSpatial*](https://github.com/DotSpatial/DotSpatial) (DotSpatial.Data & DotSpatial.Topology)
->>Opening Shapefiles & extracting point coordinates; Optional used in Shapefile intersect method in clipdata.vb
+>> Opening Shapefiles & extracting point coordinates; Optional used in Shapefile intersect method in clipdata.vb
 
 >[*GMap.Net*](https://github.com/radioman/greatmaps)
 >>Online Tile-based map display in windows forms, visualization of shapes & overlays, interface functions (such as selecting analysis extent)
@@ -60,13 +60,14 @@ GNU GPLv3
 ## Changelog
 
 2017-02-08:
-*Initial commit: cleaned up project, removed unnecessary references to functions not used anymore.
 
-*This project is a branch of a larger project. I removed all links to the larger project to continue developing  this branch separately.
+* Initial commit: cleaned up project, removed unnecessary references to functions not used anymore.
 
-*Todo:
-**- translate comments to english
-**- clean up the mess
-**- provide instructions for using program
+* This project is a branch of a larger project. I removed all links to the larger project to continue developing  this branch separately.
 
-[//]: # (https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) 
+* Todo:
+    * translate comments to english
+    * clean up the mess
+    * provide instructions for using program
+
+[//]: # (Readme formatting based on https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) 
