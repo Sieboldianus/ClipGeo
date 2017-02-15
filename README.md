@@ -1,6 +1,6 @@
 ClipGeo 
 =============
-Spatial Point Data Extraction and Visualization
+Large Spatial Point Dataset Extraction and Visualization
 
 **ClipGeo** is a side project I developed over the years to clip, extract and visualize simple but very 
 large georeferenced point datasets (such as 200 Million Flickr photo locations). The tool is optimized for speed. 

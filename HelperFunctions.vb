@@ -96,4 +96,33 @@ Public Class HelperFunctions
             objReader.Close()
         End If
     End Sub
+
+    'See http://stackoverflow.com/questions/10175724/calculate-distance-between-two-points-in-bing-maps
+    'Haversine Formula
+    Public Shared Function GetDistanceBetweenPoints(lat1 As Double, long1 As Double, lat2 As Double, long2 As Double) As Double
+        Dim distance As Double = 0
+
+        Dim dLat As Double = (lat2 - lat1) / 180 * Math.PI
+        Dim dLong As Double = (long2 - long1) / 180 * Math.PI
+
+        Dim a As Double = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(lat1 / 180 * Math.PI) * Math.Cos(lat2 / 180 * Math.PI) * Math.Sin(dLong / 2) * Math.Sin(dLong / 2)
+        Dim c As Double = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a))
+
+        'Calculate radius of earth
+        ' For this you can assume any of the two points.
+        Dim radiusE As Double = 6378135
+        ' Equatorial radius, in metres
+        Dim radiusP As Double = 6356750
+        ' Polar Radius
+        'Numerator part of function
+        Dim nr As Double = Math.Pow(radiusE * radiusP * Math.Cos(lat1 / 180 * Math.PI), 2)
+        'Denominator part of the function
+        Dim dr As Double = Math.Pow(radiusE * Math.Cos(lat1 / 180 * Math.PI), 2) + Math.Pow(radiusP * Math.Sin(lat1 / 180 * Math.PI), 2)
+        Dim radius As Double = Math.Sqrt(nr / dr)
+
+        'Calculate distance in meters.
+        distance = radius * c
+        Return distance
+        ' distance in meters
+    End Function
 End Class

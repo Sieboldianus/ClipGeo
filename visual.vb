@@ -7,10 +7,8 @@ Imports System.Text
 Imports System.Net
 Imports System.Drawing.Imaging
 Imports System.Runtime.InteropServices
-'Imports AForge.Imaging
 Imports System.Collections.Generic
 Imports System.Drawing
-'Imports AForge.Imaging.Filters
 
 Public Class visualForm
     Public Shared IHeight As Integer
@@ -35,17 +33,15 @@ Public Class visualForm
     Dim YDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
     Dim XDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
     'http://flickr.com/photo.gne?id=8897171833 id=8897171833
-    'Dim photoDict As Dictionary(Of GMap.NET.GPoint, KeyValuePair(Of Integer, KeyValuePair(Of String, String))) = New Dictionary(Of GMap.NET.GPoint, KeyValuePair(Of Integer, KeyValuePair(Of String, String))) 'Coordinate X/Y of Point in Graphics|Integer Value of Views|String of PhotoID|PhotoURL
     Public Shared photoDict As Dictionary(Of GMap.NET.GPoint, PhotoRef) = New Dictionary(Of GMap.NET.GPoint, PhotoRef) 'Coordinate X/Y of Point in Graphics|Integer Value of Views|String of PhotoID|PhotoURL
 
     Dim datacolor As Color = Color.Black
     Dim bgColor As Color = Color.White
 
-    <STAThread> _
+    <STAThread>
     Friend Shared Sub Main()
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        'Application.Run(New MainFormContext())
     End Sub
 
     'Private m_popedContainerForButton As ContextMenuForButton
@@ -55,36 +51,10 @@ Public Class visualForm
     Private m_popedContainerForForm As ContextMenuForForm
     Private m_poperContainerForForm As PoperContainer
 
-    'Dim mRect As Rectangle
-
-    'Sub PictureBox6_OnMouseDown(sender As Object, ByVal e As MouseEventArgs) Handles PictureBox6.MouseDown
-    '    mRect = New Rectangle(e.X, e.Y, 0, 0)
-    '    Me.Invalidate()
-    'End Sub
-
-    'Sub PictureBox6_OnMouseMove(sender As Object, ByVal e As MouseEventArgs) Handles PictureBox6.MouseMove
-    '    If e.Button = Windows.Forms.MouseButtons.Left Then
-    '        mRect = New Rectangle(mRect.Left, mRect.Top, e.X - mRect.Left, e.Y - mRect.Top)
-    '        Me.Invalidate()
-    '    End If
-    'End Sub
-
-    'Sub PictureBox6_OnPaint(sender As Object, ByVal e As PaintEventArgs) Handles PictureBox6.Paint
-    '    Using pen As New Pen(Color.Red, 3)
-    '        e.Graphics.DrawRectangle(pen, mRect)
-    '    End Using
-    'End Sub
-
     Public Sub New()
         InitializeComponent()
         m_popedContainerForForm = New ContextMenuForForm()
         m_poperContainerForForm = New PoperContainer(m_popedContainerForForm)
-        'AddHandler PictureBox1.Click, New System.EventHandler(AddressOf ContextMenuForForm.openAdress)
-        'AddHandler m_popedContainerForForm.pic, New EventHandler(AddressOf Me.ChangeFormTitle)
-        'AddHandler m_popedContainerForForm.buttonColor.Click, New System.EventHandler(AddressOf Me.ChangeFormBKColor)
-
-        'For Rectangle Drawing:
-        'Me.DoubleBuffered = True
     End Sub
 
     Sub mapcoords(ByVal latitude As Double, ByVal longitude As Double, ByRef fp As FastPix, Optional ByVal localtourist As Integer = Nothing, Optional ByVal views As Integer = Nothing, Optional ByVal photoid As Long = Nothing, Optional ByVal photourl As String = Nothing)
@@ -101,8 +71,6 @@ Public Class visualForm
 
         Dim modalpha As Integer
         If GMapControl1.CurrentViewArea.Contains(New PointLatLng(latitude, longitude)) Then
-            'latcord = GMapControl1.FromLatLngToLocal(New PointLatLng(latitude, longitude)).Y
-            'longcord = GMapControl1.FromLatLngToLocal(New PointLatLng(latitude, longitude)).X
             Dim result As GMap.NET.GPoint = bestPixel(latitude, longitude)
             latcord = result.Y
             longcord = result.X
@@ -123,15 +91,6 @@ Public Class visualForm
                     modalpha = myColor.A + stepInc
                     'ColorClassification Tourists Locals
                     If Not IsNothing(localtourist) Then
-                        'If localtourist = 0 AndAlso Not myColor.R = myColor.G AndAlso Not myColor.G = myColor.B Then
-                        '    Dim colorX As Integer = (Val(myColor.R) + Val(myColor.G) + Val(myColor.B)) / 3
-
-                        '    myColor = Color.FromArgb(colorX, colorX, colorX)
-                        'ElseIf localtourist = 1 Then
-                        '    myColor = Color.FromArgb(Math.Max(myColor.R - 2, 0), myColor.G, myColor.B)
-                        'Else
-                        '    myColor = Color.FromArgb(Math.Min(myColor.R + 2, 255), myColor.G, myColor.B)
-                        'End If
                         If (myColor.R > 127 AndAlso localtourist = 1) OrElse (myColor.R <= 127 AndAlso localtourist = 2) Then
                             myColor = Color.FromArgb(Math.Min(modalpha, 255), 0, 0, 0)
                         End If
@@ -217,14 +176,6 @@ Public Class visualForm
         'ComboBox1.Items.Add(MapType.YahooMap.ToString)
         'ComboBox1.Items.Add(MapType.YahooSatellite.ToString)
         ComboBox1.SelectedIndex = 0
-
-        'items = System.Enum.GetValues(GetType(GMap.NET.MapType))
-        'For Each x As MapType In items
-        '    'ComboBox1.Items.Add(x.ToString)
-        '    If x = MapType.ArcGIS_World_Topo_Map Then
-        '        ComboBox1.SelectedIndex = ComboBox1.Items.Count - 1
-        '    End If
-        'Next
         IHeight = PictureBox1.Height
         IWidth = PictureBox1.Width
 
@@ -641,7 +592,6 @@ Public Class visualForm
 
     Private Sub Picturebox6_MouseUp(sender As Object, e As MouseEventArgs) Handles PictureBox6.MouseUp
         isMouseDown = False
-        'If m_poperContainerForForm.Visible = True Then m_poperContainerForForm.Close()
         If firstmarkerset = True Then
             firstmarkerset = False
             InitializePhotoView()
@@ -848,63 +798,8 @@ Public Class FastPix
 End Class
 
 
-'Dim visMap As New Bitmap(PictureBox1.Width, PictureBox1.Height)
-'Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
-'grap.Clear(Drawing.Color.LightGray)
-'visMap.MakeTransparent(Color.LightGray)
-'MsgBox(MapWidthPX & "x" & MapheightPX)
-'Dim PGermany As GMap.NET.GPoint = GMapControl1.FromLatLngToLocal(New PointLatLng(51, 9))
-'precalcValues2(IHeight, IWidth)
 
-'Dim pbwidth As Double = PictureBox1.Width
-'Dim pbheight As Double = PictureBox1.Height
-'Dim longratio As Double = MapWidthPX / 360
-'Dim latratio As Double = MapheightPX / 180
-'Dim latcord As Double = 90 - 51
-'Dim longcord As Double = (180 + 9)
-'latcord = latratio * latcord + upperleftPX.Y
-'longcord = longratio * longcord + upperleftPX.X
-
-'Dim test1, test2 As GMap.NET.GPoint
-'test1 = GMapControl1.FromLatLngToLocal(New PointLatLng(53.647806, -7.936993))
-'MsgBox(test1.Y - 12 & "," & test1.X - 12)
-'test2 = bestPixel(53.647806, -7.936993)
-'MsgBox(test2.Y - 12 & "," & test2.X - 12)
-
-
-''Dim P2Germany As GMap.NET.GPoint = New GPoint(longcord, latcord)
-''Dim pointLL As GMap.NET.GPoint
-'Using fp As New FastPix(visMap)
-'    'For xx As Integer = -180 To 180
-'    '    For yy As Integer = 90 To -90 Step -1
-'    '        pointLL = GMapControl1.FromLatLngToLocal(New PointLatLng(yy, xx))
-'    '        drawDot(pointLL, fp)
-'    '    Next
-'    'Next
-'    drawDot(test1, fp)
-'    drawDot(test2, fp)
-'    drawDot(maporiginPX, fp)
-'    drawDot(upperleftPX, fp)
-'    drawDot(lowerleftPX, fp)
-'    drawDot(upperrightPX, fp)
-'    drawDot(lowerrightPX, fp)
-'End Using
-
-'PictureBox1.Image = visMap
-'PictureBox1.Visible = True
-'Me.Refresh()
-
-'Sub drawDot(ByVal p As GMap.NET.GPoint, ByRef fp As FastPix)
-'    For xa As Integer = -1 To 1
-'        For ya As Integer = -1 To 1
-'            If p.X + xa - OriginOffset > 0 AndAlso p.Y + ya - OriginOffset > 0 AndAlso p.X + xa - OriginOffset < IWidth AndAlso p.Y + ya - OriginOffset < IHeight Then
-'                fp.SetPixel(p.X + xa - OriginOffset, p.Y + ya - OriginOffset, Color.Red)
-'            End If
-'        Next
-'    Next
-'End Sub
-
-'Defenition of advanced photo data (still smaller than Flickr.Net.Photo)
+'Definition of advanced photo data (still smaller than Flickr.Net.Photo)
 Public Class PhotoRef
     Private _photoid As Long
     Public Property photoid() As Long

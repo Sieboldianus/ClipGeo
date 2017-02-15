@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("GetGeo")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("GetGeo")> 
-<Assembly: AssemblyCopyright("Copyright © Alexander Dunkel 2015")> 
+<Assembly: AssemblyProduct("GetGeo")>
+<Assembly: AssemblyCopyright("Copyright © Alexander Dunkel 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

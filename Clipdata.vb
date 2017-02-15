@@ -6,8 +6,6 @@ Imports GMap.NET.WindowsForms.ToolTips
 Imports System.Text
 Imports System.Net
 Imports DotSpatial.Data
-'Imports DotSpatial.Projections
-'Imports DotSpatial.Projections.Transforms
 Imports DotSpatial.Topology
 
 
@@ -40,7 +38,7 @@ Public Class ClipDataForm
     '  float  polyX[]      =  horizontal coordinates of corners
     '  float  polyY[]      =  vertical coordinates of corners
     '  float  x, y         =  point to be tested
-    Public polyCorners As Integer 'Alex 2017-02-08
+    Public polyCorners As Integer 'Contains all point coordinates of selected shapefile(s)
     Public polyX() As Double
     Public polyY() As Double
     Public xP As Double
@@ -51,7 +49,6 @@ Public Class ClipDataForm
     Public ShapefilePoly As IFeatureSet = Nothing
     Public Shapecount As Integer = 1
     Public Singleextract As Boolean = False
-    'Public SPoints As IFeatureSet
     '  float  constant[] = storage for precalculated constants (same size as polyX)
     '  float  multiple[] = storage for precalculated multipliers (same size as polyX)
     Public constant() As Double
@@ -106,7 +103,7 @@ Public Class ClipDataForm
                 currentSourceData.photosPerFile = Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxquery"))
                 files = Directory.GetFiles(strPath & dri.Name & "\")
 
-                'Set StartItem to GTA
+                'Set StartItem to Greater Toronto Area, if exists
                 If currentSourceData.filename = SetStartDatasetName Then startDataset = currentSourceData
                 For Each filename In files
                     filenamepath = filename
@@ -122,12 +119,10 @@ Public Class ClipDataForm
                             currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + currentSourceData.photosPerFile
                         Else
                             leftpart = Strings.Left(filename, filename.LastIndexOf("_"))
-                            'MsgBox(filename & ": " & Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1)))
                             currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1))
                         End If
                     End If
                 Next
-                'MsgBox(currentSourceData.filename & ": " & currentSourceData.datafiles.Count)
                 filename_data.Add(currentSourceData)
             End If
         Next dri
@@ -158,7 +153,6 @@ Public Class ClipDataForm
             filename_data.Add(currentSourceData)
         End If
 
-        'MsgBox(filename_data.Count)
         Dim countFiles As Integer = 0
         Dim countPhotos As Long = 0
         For Each datafilesList As SourceData In filename_data
@@ -180,7 +174,6 @@ Public Class ClipDataForm
         End If
         maploaded = True
         savesettings()
-        'GMapControl1_OnMapZoomChanged()
     End Sub
 
     Private Sub ClipDataForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -205,11 +198,8 @@ Public Class ClipDataForm
             bottomlat = 10.8333059836425
             rightlong = -63.6328125
             leftlong = -129.375
-            centerlong = Math.Min(leftlong + (rightlong - leftlong) / 2, 180)
-            centerlat = Math.Min(bottomlat + (toplat - bottomlat) / 2, 90)
-
-            'centerlong = leftlong + (Math.Abs(Math.Abs(rightlong) - Math.Abs(leftlong)) / 2) 'Addiere halben Abstand zu leftlong
-            'centerlat = bottomlat + (Math.Abs(Math.Abs(toplat) - Math.Abs(bottomlat)) / 2) 'Addiere halben Abstand zu leftlong
+            centerlong = Math.Min(leftlong + (rightlong - leftlong) / 2, 180) 'Add half the distance to leftlong
+            centerlat = Math.Min(bottomlat + (toplat - bottomlat) / 2, 90) 'Add half the distance to bottomlat
         Else
             toplat = Val(Replace(TextBox5.Text, ",", "."))
             bottomlat = Val(Replace(TextBox6.Text, ",", "."))
@@ -221,8 +211,6 @@ Public Class ClipDataForm
             TextBox3.Text = leftlong
             centerlong = Math.Min(leftlong + (rightlong - leftlong) / 2, 180)
             centerlat = Math.Min(bottomlat + (toplat - bottomlat) / 2, 90)
-            'centerlong = leftlong + (Math.Abs(Math.Abs(rightlong) - Math.Abs(leftlong)) / 2) 'Addiere halben Abstand zu leftlong
-            'centerlat = bottomlat + (Math.Abs(Math.Abs(toplat) - Math.Abs(bottomlat)) / 2) 'Addiere halben Abstand zu leftlong
         End If
 
 
@@ -255,7 +243,6 @@ Public Class ClipDataForm
                 centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
                 centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
 
-                'tooltip = New GMapToolTip(Markers)
                 i = i + 1
                 toplat = x.toplat
                 bottomlat = x.bottomlat
@@ -384,8 +371,6 @@ Public Class ClipDataForm
             TextBox8.Text = Math.Round(latDist, 2).ToString & " km"
 
         ElseIf (e.Button = MouseButtons.Right) And isMouseDown = True And markerIsSelected = False Then
-            'selectedmarker.Position = GMapControl1.FromLocalToLatLng(e.X, e.Y)
-
             If firstmarkerset = False Then
                 GMapControl1.Overlays(1).Markers.Clear()
                 GMapControl1.Overlays(1).Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerGoogleGreen(New PointLatLng(GMapControl1.FromLocalToLatLng(e.X, e.Y).Lat, GMapControl1.FromLocalToLatLng(e.X, e.Y).Lng)))
@@ -428,8 +413,8 @@ Public Class ClipDataForm
                 TextBox3.Text = recttopright.Lng
                 TextBox2.Text = rectbottomleft.Lng
             End If
-            latDist = Math.Round(((Val(TextBox5.Text) - Val(TextBox6.Text)) * 60 * 1852) / 1000) 'Distanz zwischen den zwei Lat-Werten in km
-            longDist = Math.Round(((Val(TextBox2.Text) - Val(TextBox3.Text)) * 48 * 1852) / 1000) 'Distanz zwischen den zwei Long-Werten in km
+            latDist = Math.Round(((Val(TextBox5.Text) - Val(TextBox6.Text)) * 60 * 1852) / 1000) 'Distance between two lat-values (simple calculation, not accurate. Should substitute with GetDistanceBetweenPoints (Haversine Formula)
+            longDist = Math.Round(((Val(TextBox2.Text) - Val(TextBox3.Text)) * 48 * 1852) / 1000) 'Distance between two lat-values (simple calculation, not accurate. Should substitute with GetDistanceBetweenPoints (Haversine Formula)
             TextBox7.Text = Math.Round(longDist, 2).ToString & " km"
             TextBox8.Text = Math.Round(latDist, 2).ToString & " km"
         End If
@@ -474,51 +459,19 @@ Public Class ClipDataForm
     End Sub
 
     Private Sub TextBox3_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs)
-        '    Dim temp As Double
-
-
-        '    TextBox3.Text = Val(Replace(TextBox3.Text, ",", "."))
-        '    If Not IsNumeric(Val(TextBox3.Text)) Then
-        '        MsgBox("Numeric value required.")
-        '        TextBox3.Focus()
-        '    Else
-        '        If Val(TextBox3.Text) > Val(TextBox2.Text) Then
-        '            temp = TextBox2.Text
-        '            TextBox2.Text = TextBox3.Text
-        '            TextBox3.Text = temp
-        '        End If
-        '    End If
+        'Add Validating
     End Sub
 
     Private Sub TextBox2_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs)
-        'TextBox2.Text = Val(Replace(TextBox2.Text, ",", "."))
-        'If Not IsNumeric(Val(TextBox2.Text)) Then
-        '    MsgBox("Numeric value required.")
-        '    TextBox2.Focus()
-        'End If
+        'Add Validating
     End Sub
 
     Private Sub TextBox6_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs)
-        'Dim temp As Double
-        'TextBox6.Text = Val(Replace(TextBox6.Text, ",", "."))
-        'If Not IsNumeric(Val(TextBox6.Text)) Then
-        '    MsgBox("Numeric value required.")
-        '    TextBox6.Focus()
-        'Else
-        '    If Val(TextBox6.Text) > Val(TextBox5.Text) Then
-        '        temp = TextBox5.Text
-        '        TextBox5.Text = TextBox6.Text
-        '        TextBox6.Text = temp
-        '    End If
-        'End If
+        'Add Validating
     End Sub
 
     Private Sub TextBox5_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs)
-        'TextBox5.Text = Val(Replace(TextBox5.Text, ",", "."))
-        'If Not IsNumeric(Val(TextBox5.Text)) Then
-        '    MsgBox("Numeric value required.")
-        '    TextBox5.Focus()
-        'End If
+        'Add Validating
     End Sub
 
     Private Sub searchexport(export As Boolean)
@@ -580,7 +533,6 @@ Public Class ClipDataForm
         visualForm.TextBox1.Enabled = False
         visualForm.NumericUpDown1.Enabled = False
         visualForm.ComboBox2.Enabled = False
-        'visualForm.ComboBox4.Enabled = False
         visualForm.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedToolWindow
 
         'Prepare list of datasets to be exported, based on the users selection
@@ -607,7 +559,6 @@ Public Class ClipDataForm
         UserLocationGeocodeDict.Clear()
         Dim localusercount As Long = 0
         If userOriginExport = True Or CheckBox31.Checked = True Or maptouristslocals = True Or mapPhotosFromLocals = True Then
-            'HelperFunctions.loadIndex()
             HelperFunctions.LoadUserLocationGeocodeIndex()
         End If
 
@@ -764,8 +715,6 @@ Public Class ClipDataForm
                     End If
 
                 Else 'if Shapefilesearch (and no maplocaluser-search)
-                    ' For Each f As Feature In ShapefilePoly.Features
-                    'Dim pg As Feature = TryCast(f.BasicGeometry, IFeature)
                     Dim f As Feature = ShapefilePoly.Features(shapenumber)
                     If f IsNot Nothing Then
                         If f.Intersects(data_feature) Then
@@ -776,7 +725,6 @@ Public Class ClipDataForm
                             End If
                         End If
                     End If
-                    ' Next
                 End If
             Next
             '''''Dataset selection end''''''
@@ -877,7 +825,6 @@ Public Class ClipDataForm
                             Do While objReader.Peek() <> -1
                                 line = line + 1
                                 linetext = objReader.ReadLine()
-                                'result = objReader.ReadLine().Split(New String() {","}, 3, StringSplitOptions.None)
                                 linetextArr = linetext.Split(",")
                                 If linetextArr.Length >= 11 Then
                                     resultNum = Val(linetextArr(0)) 'ID
@@ -893,7 +840,7 @@ Public Class ClipDataForm
                                 Else : GoTo skip_line 'Skip erroneous line with less entries than expected
                                 End If
 
-                                'Check Local Photos
+                                'Check Local Photos (optional)
                                 If mapPhotosFromLocals = True Then
                                     If hashUser.Contains(UserIDc) OrElse HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
                                         Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
@@ -1038,7 +985,6 @@ skip_line:                  Loop
                     End If
                     countlines_sich = countlines_sich + countlines
                     countlines = 0
-                    'Dim files As String() = Directory.GetFiles(outputdir)
                     countnewfiles = 1
                     header_line_written = False
                 End If
@@ -1055,9 +1001,6 @@ skip_line:                  Loop
 
             If CheckBox15.Checked Then
                 Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCount.ToString("N0")
-                'If estimateUnique = True Then
-                '    statText = statText & " (est)"
-                'End If
                 Dim statImage As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
                 Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
                 grap2.Clear(Drawing.Color.Pink)
@@ -1074,7 +1017,7 @@ skip_line:                  Loop
             If export = True AndAlso retainfolderstructure = False Then
                 outputfile.Flush()
                 outputfile.Close()
-                'wenn keine photos geschrieben
+                'if no photos  written
                 If countlines = 0 Then
                     System.IO.File.Delete(newfilenamepath & "_" & countnewfiles & ".txt")
                     If countnewfiles = 1 Then
@@ -1086,9 +1029,6 @@ skip_line:                  Loop
             Label13.Visible = True
             Label14.Visible = True
             Label14.Text = "Users: " & hashUser.Count.ToString("N0") & " | Total # of Tags: " & Tagsc.ToString("N0") & " | Distinct # of Tags: " & uTagsCount.ToString("N0")
-            'If estimateUnique = True Then
-            '    Label14.Text = Label14.Text & " (est)"
-            'End If
             Me.Refresh()
 
             'Begin Analyze and Export UserOrigin
@@ -1109,7 +1049,6 @@ skip_line:                  Loop
                     End If
                 Next
 
-                'MsgBox("matching UserLatLng: " & UserLocationGeocodeDict.Count)
                 Label5.Text &= UserLocationGeocodeDict.Count & " matching IDs found."
                 If userOriginExport = True Then
                     Dim userfilenamepath As String = outputdir & "UserOrigin_LatLng.txt"
@@ -1229,22 +1168,9 @@ skip_line:                  Loop
     '  Note that division by zero is avoided because the division is protected
     '  by the "if" clause which surrounds it.
 
-    'Alex: Lat/long modifier
-    '    // alter longitude to cater for 180 degree crossings
-    'if (px < 0) {
-    '    px += 360
-    '};
-    'if (ax < 0) {
-    '    ax += 360
-    '};
-    'if (bx < 0) {
-    '    bx += 360
-    '};
     Private Sub precalc_values()
         Dim i As Integer, j As Integer = polyCorners - 1
         For i = 0 To polyCorners - 1
-            'If polyX(i) < 0 Then polyX(i) = polyX(i) + 360
-            'If polyX(j) < 0 Then polyX(j) = polyX(j) + 360
             If polyY(j) = polyY(i) Then
                 constant(i) = polyX(i)
                 multiple(i) = 0
@@ -1468,7 +1394,6 @@ Search3:  'String3
         Dim folderDialogBox As New FolderBrowserDialog()
 
         If folderDialogBox.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            'Dim sr As New System.IO.StreamReader(fileDialogBox.FileName)
             strPath = folderDialogBox.SelectedPath
             If strPath.EndsWith("\") Then
                 strPath = strPath.Substring(strPath.Length - 1)
@@ -1495,22 +1420,18 @@ Search3:  'String3
 
     Private Sub GMapControl1_OnMapZoomChanged() Handles GMapControl1.OnMapZoomChanged
         If maploaded = True Then
-            If MarkerVisible = True AndAlso GMapControl1.Zoom <= 6 Then 'AndAlso Not GMapControl1.Overlays(3).Markers.Count = 0 Then
+            If MarkerVisible = True AndAlso GMapControl1.Zoom <= 6 Then
                 For Each x As GMapMarker In GMapControl1.Overlays(3).Markers
                     x.IsVisible = False
                 Next
                 MarkerVisible = False
-                'MsgBox("Zoom: " & GMapControl1.Zoom & " Visible = false")
                 GMapControl1.Refresh()
 
             ElseIf MarkerVisible = False AndAlso GMapControl1.Zoom > 6 Then
                 For Each x As GMapMarker In GMapControl1.Overlays(3).Markers
-                    'If x.IsHitTestVisible = True Then
                     x.IsVisible = True
-                    'End If
                 Next
                 MarkerVisible = True
-                'MsgBox("Zoom: " & GMapControl1.Zoom & " Visible = true")
                 GMapControl1.Refresh()
             End If
         End If
@@ -1668,11 +1589,10 @@ Search3:  'String3
 
         Dim x As Integer = 0
         For Each MyShapeRange As ShapeRange In ShapefilePoly.ShapeIndices
-            Dim pointsShape As New List(Of PointLatLng) 'Points (Vettices) of each Feature
+            Dim pointsShape As New List(Of PointLatLng) 'Points (Vertices) of each Feature
             For Each MyPartRange As PartRange In MyShapeRange.Parts
                 For Each MyVertex As Vertex In MyPartRange
                     pointsShape.Add(New PointLatLng(MyVertex.Y, MyVertex.X))
-                    'MsgBox(MyVertex.Y & " " & MyVertex.X)
                     ReDim Preserve polyY(x)
                     ReDim Preserve polyX(x)
                     polyY(x) = MyVertex.Y
@@ -1716,15 +1636,12 @@ Search3:  'String3
         Next
 
         'Clear Selection Layer and Marker
-        'GMapControl1.Overlays(1).Markers.Clear()
-        'GMapControl1.Overlays(2).Polygons.Clear()
         'Clear previous shapefile display
         If GMapControl1.Overlays.Count > 4 Then
             'Overlays(4) contains shapefile polygons
             GMapControl1.Overlays(4).Polygons.Clear()
         End If
 
-        'SetZoomToFitRect: RectLatLng = Upper left Corner of Rectangle, SizeLatLng = dimensions of Rectangle (180 = max lat, 360 = maxlong)
         GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(b_yMax, b_xMin), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(b_yMax - b_yMin, b_xMax - b_xMin))))
 
         If visualForm.fullyloaded = True Then
@@ -1765,7 +1682,6 @@ Search3:  'String3
             Dim ShapefilePoly As Shapefile = Nothing
             If Not TextBox4.Text = "" Then ShapefileSearch = True
             If ShapefileSearch = True AndAlso NoClip = True OrElse TextBox6.Text = "" Then
-                'SetZoomToFitRect: RectLatLng = Upper left Corner of Rectangle, SizeLatLng = dimensions of Rectangle (180 = max lat, 360 = maxlong)
                 visualForm.GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(90, -180), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(180, 360))))
             Else
                 visualForm.GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(Val(TextBox5.Text), Val(TextBox3.Text)), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(Val(TextBox5.Text) - Val(TextBox6.Text), Val(TextBox2.Text) - Val(TextBox3.Text)))))
@@ -1774,11 +1690,9 @@ Search3:  'String3
             visualForm.PictureBox6.Parent = visualForm.PictureBox1
             visualForm.GMapControl1.Refresh()
             visualForm.PictureBox1.BackColor = Color.Transparent
-            'visualForm.BackColor = Color.LightGray
             visualForm.TransparencyKey = Color.Pink
             visualForm.PictureBox1.BackgroundImage = Nothing
             visualForm.PictureBox1.Image = Nothing
-            'visualForm.PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
             visualForm.ComboBox2.Enabled = True
         Else
             visualForm.Close()
@@ -1816,8 +1730,8 @@ Search3:  'String3
             polygon2.Fill = New SolidBrush(Color.FromArgb(50, Color.Red))
             polygon2.Stroke = New Pen(Color.Red, 0.25)
             GMapControl1.Overlays(2).Polygons.Add(polygon2)
-            latDist = Math.Round(((Val(TextBox5.Text) - Val(TextBox6.Text)) * 60 * 1852) / 1000) 'Distanz zwischen den zwei Lat-Werten in km
-            longDist = Math.Round(((Val(TextBox2.Text) - Val(TextBox3.Text)) * 48 * 1852) / 1000) 'Distanz zwischen den zwei Long-Werten in km
+            latDist = Math.Round(((Val(TextBox5.Text) - Val(TextBox6.Text)) * 60 * 1852) / 1000) 'Distance between two lng-values (simple calculation, not accurate. Should substitute with GetDistanceBetweenPoints (Haversine Formula)
+            longDist = Math.Round(((Val(TextBox2.Text) - Val(TextBox3.Text)) * 48 * 1852) / 1000) 'Distance between two lat-values (simple calculation, not accurate. Should substitute with GetDistanceBetweenPoints (Haversine Formula)
             TextBox7.Text = Math.Round(longDist, 2).ToString & " km"
             TextBox8.Text = Math.Round(latDist, 2).ToString & " km"
         End If
@@ -1933,7 +1847,7 @@ Search3:  'String3
 
 End Class
 
-'Filenamedata Object definition (Grid bestehend aus 4 Lat/Long Zahlen)
+'Filenamedata Object definition (Grid consisting of 4 Lat/Long values)
 Public Class SourceData
     Private _filename As String
     Public Property filename() As String
