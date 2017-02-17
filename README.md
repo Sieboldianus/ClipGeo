@@ -19,9 +19,16 @@ such as ArcGIS, for more advanced analysis.
 The following code is at the heart of the Lat/Lng-point mapping. It is a fast, geo-modified binary search that assigns the best pixel-location for each pair of coordinates. After doing some research, I believe this is one of the fastest ways to map millions of points in just a few seconds.
 
 ```vbnet
-    'Point Mapping function: Input (LatLng), Output (Best pixel-location on map)
-    'Needs precalculation of Pixel-LatLng-grid (Sub: precalcValues)
+    'Sorted list for binary search lat/long
+    Dim YList As New List(Of Double)
+    Dim XList As New List(Of Double)
+    'Dictionary for fast assigning of coordinates to pixels
+    Dim YDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
+    Dim XDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
+    
     Function bestPixel(ByVal searchValueLat As Double, ByVal searchValuelng As Double) As GMap.NET.GPoint
+    'Point Mapping function: Input (LatLng), Output (Best pixel-location on map)
+    'Needs precalculation of Pixel-LatLng-grid (Sub: precalcValues) 
         'Binary Search for best corresponding pixel ID on map
         Dim indexY As Long = YList.BinarySearch(searchValueLat)
         Dim indexX As Long = XList.BinarySearch(searchValuelng)
@@ -34,13 +41,13 @@ The following code is at the heart of the Lat/Lng-point mapping. It is a fast, g
         bestPixel.Y = YDict.Item(YList.Item(indexY))
         bestPixel.X = XDict.Item(XList.Item(indexX))
     End Function
-    
-    'Precalculate LatLng for each map pixel
+        
     Public Sub precalcValues(ByVal Height As Integer, ByVal Width As Integer)
-        YList.Clear() 'Sorted List for binary search
-        YDict.Clear() 'Dictionary for fast assigning of coordinates
-        XList.Clear() 'Sorted List for binary search
-        XDict.Clear() 'Dictionary for fast assigning of coordinates
+    'Precalculate LatLng for each map pixel
+        YList.Clear() 
+        YDict.Clear() 
+        XList.Clear()
+        XDict.Clear()
 
         'Precalc CoordinatesToPixelLocations
         For yy As Integer = 0 To Height
