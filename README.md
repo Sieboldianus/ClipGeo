@@ -59,19 +59,12 @@ The following code is at the heart of the Lat/Lng-point mapping. It is a fast, g
     End Sub
 ```
 
-## Installation/ Getting Started
+## Resources
 
-* currently, no installation is needed
-* DotNet framework 4.5 recommended
-* download debug folder and start executable or install using setup files
+* [Installation/ Getting Started](../../wiki/Installation-&-Getting-started)
+* [Basic File Structure](../../wiki/Basic-File-Structure)
+* [Format Conventions](../../wiki/Basic-Format-Conventions)
 
-## Formal conventions
-
-* todo: add formal conventions for file handling, code structure etc.
-
-## Tests
-
-* todo: provide tutorial
 
 ## Contributors
 
@@ -80,7 +73,7 @@ The following code is at the heart of the Lat/Lng-point mapping. It is a fast, g
 ## Built With
 This project includes and makes use of several other projects/libraries/frameworks:
 
->[*FastPix*](http://www.vbforums.com/showthread.php?586709-FastPix-Rapid-Pixel-Processing-for-Dummies-and-Dudes) - (c) Vic Joseph (Boops Boops) 2009-2013
+>[*FastPix*](http://www.vbforums.com/showthread.php?586709-FastPix-Rapid-Pixel-Processing-for-Dummies-and-Dudes) - (c) Vic Joseph 2009-2013
 >> A fast substitute for Bitmap.GetPixel and Bitmap.SetPixel
 >> Used for fast bitmap manipulations (map render, alpha values) in visual.vb
 
