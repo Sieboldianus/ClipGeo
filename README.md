@@ -27,11 +27,11 @@ The following code is at the heart of the Lat/Lng-point mapping. It is a fast, g
     Dim XDict As Dictionary(Of Double, Integer) = New Dictionary(Of Double, Integer)
     
     Function bestPixel(ByVal searchValueLat As Double, ByVal searchValuelng As Double) As GMap.NET.GPoint
-    'Point Mapping function: Input (LatLng), Output (Best pixel-location on map)
-    'Needs precalculation of Pixel-LatLng-grid (Sub: precalcValues) 
-        'Binary Search for best corresponding pixel ID on map
+        'Point Mapping function: Input (LatLng), Output (Best pixel-location on map)
+        'Needs precalculation of Pixel-LatLng-grid (Sub: precalcValues)         
         Dim indexY As Long = YList.BinarySearch(searchValueLat)
         Dim indexX As Long = XList.BinarySearch(searchValuelng)
+        'Binary Search for best corresponding pixel ID on map
         If indexY < 0 Then
             indexY = indexY Xor -1
         End If
