@@ -100,31 +100,35 @@ Public Class ClipDataForm
                     currentSourceData.fromDate = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "mintakendate")
                     currentSourceData.toDate = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxtakendate")
                 End If
-                currentSourceData.photosPerFile = Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxquery"))
+                If Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxperfile")) = "" Then
+                    currentSourceData.photosPerFile = 50000
+                Else
+                    currentSourceData.photosPerFile = Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxperfile"))
+                End If
                 files = Directory.GetFiles(strPath & dri.Name & "\")
 
-                'Set StartItem to Greater Toronto Area, if exists
-                If currentSourceData.filename = SetStartDatasetName Then startDataset = currentSourceData
-                For Each filename In files
-                    filenamepath = filename
-                    filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
-                    If filename.Length > 13 Then
-                        If filename.Substring(filename.Length - 13) = "_settings.txt" Then
-                            filename = "settings.txt"
+                    'Set StartItem to Greater Toronto Area, if exists
+                    If currentSourceData.filename = SetStartDatasetName Then startDataset = currentSourceData
+                    For Each filename In files
+                        filenamepath = filename
+                        filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
+                        If filename.Length > 13 Then
+                            If filename.Substring(filename.Length - 13) = "_settings.txt" Then
+                                filename = "settings.txt"
+                            End If
                         End If
-                    End If
-                    If Not (filename = "GridCoordinates.txt") And Not (filename.Substring(0, 3) = "log") And Not filename.Contains("settings") Then
-                        currentSourceData.datafiles.Add(filenamepath)
-                        If InStr(currentSourceData.photosPerFile.ToString, filename) Then
-                            currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + currentSourceData.photosPerFile
-                        Else
-                            leftpart = Strings.Left(filename, filename.LastIndexOf("_"))
-                            currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1))
+                        If Not (filename = "GridCoordinates.txt") And Not (filename.Substring(0, 3) = "log") And Not filename.Contains("settings") Then
+                            currentSourceData.datafiles.Add(filenamepath)
+                            If InStr(currentSourceData.photosPerFile.ToString, filename) Then
+                                currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + currentSourceData.photosPerFile
+                            Else
+                                leftpart = Strings.Left(filename, filename.LastIndexOf("_"))
+                                currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1))
+                            End If
                         End If
-                    End If
-                Next
-                filename_data.Add(currentSourceData)
-            End If
+                    Next
+                    filename_data.Add(currentSourceData)
+                End If
         Next dri
         If startDataset Is Nothing Then
             startDataset = filename_data(0)
@@ -999,6 +1003,7 @@ skip_line:                  Loop
                 uTagsCount = hashTags.Count
             End If
 
+            'If map display is on, calculate & print basic bitmap-display
             If CheckBox15.Checked Then
                 Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCount.ToString("N0")
                 Dim statImage As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
@@ -1078,8 +1083,14 @@ skip_line:                  Loop
     End Sub
 
     Sub writeTextOnBitmap(ByRef visMap As Bitmap, ByVal myText As String)
+        'Calculate DPI independent Font size
+        Dim fontSizeInPixelsInDPI96 As Single = 11.0F
+        ' the font size in pixels     
+        Dim newFontSizeInPoints As Single = fontSizeInPixelsInDPI96 * 72.0F / 96
+        ' calculate the size in points
         Dim g As Graphics = Graphics.FromImage(visMap)
-        Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", 9, FontStyle.Regular)
+        Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", newFontSizeInPoints, FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        'Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", 9, FontStyle.Regular,)
         Dim Rect As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80), New Size(200, 60))
         Dim RectBG As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 81), New Size(200, 61))
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias
