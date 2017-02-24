@@ -758,7 +758,7 @@ Public Class ClipDataForm
             'Now check each dataset for photos lying within the selection boundary + temporal constraints
             For Each dataSource As SourceData In filename_data_sel
                 If retainfolderstructure = True AndAlso export = True Then
-                    Dim split As String() = dataSource.datafiles(0).Split("\")
+                    Dim split As String() = dataSource.datafiles(0).Split("\") 'Split Full Path into segments
                     Dim parentFolder As String = split(split.Length - 2)
                     outputdir = AppPath & "Output\03_ClippedData\" & outputname & "\" & parentFolder & "\"
                     newfilenamepath = outputdir & parentFolder
