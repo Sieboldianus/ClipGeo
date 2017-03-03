@@ -126,114 +126,64 @@ Public Class HelperFunctions
         ' distance in meters
     End Function
 
-    Public Shared Function TransferSettings(OrigSettingsfile As String, NewSettingsfile As System.IO.TextWriter) As Boolean
-        Dim bottomlat As String = ""
-        Dim leftlong As String = ""
-        Dim toplat As String = ""
-        Dim rightlong As String = ""
-        Dim querytype As String = "upload_time"
-        Dim minuploaddate As String = ""
-        Dim maxuploaddate As String = ""
-        Dim maxtakendate As String = ""
-        Dim mintakendate As String = ""
-        Dim geoquery As String = "bbox"
-        Dim bboxwidth As String = ""
-        Dim bboxlength As String = ""
-        Dim tags As String = ""
-        Dim accuracy As String = "16"
-        Dim safesearch As String = "3"
-        Dim contenttype As String = ""
-        Dim profilename As String = ""
-        Dim lat As String = ""
-        Dim lng As String = ""
-        Dim perpage As String = ""
-        Dim sort As String = ""
-        Dim maxquery As String = ""
-        Dim queryname As String = ""
-        Dim subgrid As String = ""
-        Dim tilesize As String = ""
-        Dim subgridStart As String = ""
-        Dim subgridEnd As String = ""
-        Dim querysnooze As String = ""
-        Dim queryWaitTime As String = ""
-        Dim queryAPICallWait As String = ""
-        Dim radius As String = ""
+    Public Shared Function TransferSettings(OrigSettingsfile As String, NewSettingsfilePath As String) As Boolean
+        Dim NewSettingsDict As Dictionary(Of String, String) = New Dictionary(Of String, String)
+        'Add here the list of settings that need to get transferred, all others will be ignored
+        NewSettingsDict.Add("profilename", "")
+        NewSettingsDict.Add("bottomlat", "")
+        NewSettingsDict.Add("leftlong", "")
+        NewSettingsDict.Add("toplat", "")
+        NewSettingsDict.Add("rightlong", "")
+        NewSettingsDict.Add("querytype", "upload_time")
+        NewSettingsDict.Add("minuploaddate", "")
+        NewSettingsDict.Add("maxuploaddate", "")
+        NewSettingsDict.Add("maxperfile", "")
+        'NewSettingsDict.Add("maxtakendate","")
+        'NewSettingsDict.Add("mintakendate", "")
+        'NewSettingsDict.Add("geoquery","bbox")
+        'NewSettingsDict.Add("bboxwidth", "")
+        'NewSettingsDict.Add("bboxlength","")
+        'NewSettingsDict.Add("tags", "")
+        'NewSettingsDict.Add("accuracy","16")
+        'NewSettingsDict.Add("safesearch", "3")
+        'NewSettingsDict.Add("contenttype","")
+        'NewSettingsDict.Add("lat", "")
+        'NewSettingsDict.Add("lng", "")
+        'NewSettingsDict.Add("perpage","")
+        'NewSettingsDict.Add("sort", "")
+        'NewSettingsDict.Add("maxquery","")
+        'NewSettingsDict.Add("queryname", "")
+        'NewSettingsDict.Add("subgrid","")
+        'NewSettingsDict.Add("tilesize", "")
+        'NewSettingsDict.Add("subgridStart","")
+        'NewSettingsDict.Add("subgridEnd", "")
+        'NewSettingsDict.Add("querysnooze","")
+        'NewSettingsDict.Add("queryWaitTime", "")
+        'NewSettingsDict.Add("queryAPICallWait","")
+        'NewSettingsDict.Add("radius", "")
+
+        Dim OldSettingsDict As Dictionary(Of String, String) = New Dictionary(Of String, String)
+
+        Using S As New IO.StreamReader(OrigSettingsfile) : Dim Result As String = ""
+            Do While (S.Peek <> -1)
+                Dim line As String = S.ReadLine
+                If line.Contains(":") Then
+                    Dim split As String() = line.Split(":")
+                    OldSettingsDict.Add(split(1).Trim, split(2).Trim)
+                End If
+            Loop
+        End Using
 
         'Create new file / transfer items
-        NewSettingsfile = System.IO.File.CreateText(AppPath & "\settings.txt")
-
-        'MsgBox(OrigSettingsfile)
-        profilename = GetSettingItem(OrigSettingsfile, "profilename")
-        queryname = GetSettingItem(OrigSettingsfile, "queryname")
-        lat = GetSettingItem(OrigSettingsfile, "lat")
-        lng = GetSettingItem(OrigSettingsfile, "lng")
-        bottomlat = GetSettingItem(OrigSettingsfile, "bottomlat")
-        leftlong = GetSettingItem(OrigSettingsfile, "leftlong")
-        toplat = GetSettingItem(OrigSettingsfile, "toplat")
-        rightlong = GetSettingItem(OrigSettingsfile, "rightlong")
-        geoquery = GetSettingItem(OrigSettingsfile, "geoquery")
-        querytype = GetSettingItem(OrigSettingsfile, "querytype")
-
-        If geoquery = "radial" Then
-            radius = GetSettingItem(OrigSettingsfile, "radius")
-        Else
-            bboxwidth = GetSettingItem(OrigSettingsfile, "bboxwidth")
-            bboxlength = GetSettingItem(OrigSettingsfile, "bboxlength")
-        End If
-        If querytype = "upload_time" Then
-            minuploaddate = GetSettingItem(OrigSettingsfile, "minuploaddate")
-            maxuploaddate = GetSettingItem(OrigSettingsfile, "maxuploaddate")
-        Else '"date_taken"
-            mintakendate = GetSettingItem(OrigSettingsfile, "mintakendate")
-            mintakendate = GetSettingItem(OrigSettingsfile, "maxtakendate")
-        End If
-
-        tags = GetSettingItem(OrigSettingsfile, "tags")
-        accuracy = GetSettingItem(OrigSettingsfile, "accuracy")
-        bboxlength = GetSettingItem(OrigSettingsfile, "bboxlength")
-        safesearch = GetSettingItem(OrigSettingsfile, "safesearch")
-        contenttype = GetSettingItem(OrigSettingsfile, "contenttype")
-
-        'Export Settings to File
-        NewSettingsfile.WriteLine("profilename: " & profilename)
-
-        NewSettingsfile.WriteLine("lat: " & lat)
-        NewSettingsfile.WriteLine("lng: " & lng)
-        NewSettingsfile.WriteLine("bottomlat: " & bottomlat)
-        NewSettingsfile.WriteLine("leftlong: " & leftlong)
-        NewSettingsfile.WriteLine("toplat: " & toplat)
-        NewSettingsfile.WriteLine("rightlong: " & rightlong)
-
-        If querytype = "upload_time" = True Then
-            NewSettingsfile.WriteLine("querytype: upload_time")
-            NewSettingsfile.WriteLine("minuploaddate: " & minuploaddate)
-            NewSettingsfile.WriteLine("maxuploaddate: " & maxuploaddate)
-        Else
-            NewSettingsfile.WriteLine("querytype: date_taken")
-            NewSettingsfile.WriteLine("mintakendate: " & mintakendate)
-            NewSettingsfile.WriteLine("maxtakendate: " & maxtakendate)
-        End If
-
-        If geoquery = "radial" Then
-            NewSettingsfile.WriteLine("geoquery: radial")
-            NewSettingsfile.WriteLine("radius: " & Me.radius.Text)
-        Else
-            NewSettingsfile.WriteLine("geoquery: bbox")
-            NewSettingsfile.WriteLine("bboxwidth: " & bboxwidth)
-            NewSettingsfile.WriteLine("bboxlength: " & bboxlength)
-        End If
-        NewSettingsfile.WriteLine("tags: " & tags)
-        NewSettingsfile.WriteLine("accuracy: " & accuracy)
-        NewSettingsfile.WriteLine("safesearch: " & safesearch)
-        NewSettingsfile.WriteLine("contenttype: " & contenttype)
-
-        NewSettingsfile.WriteLine("sort: " & sort)
-        NewSettingsfile.WriteLine("maxquery: " & maxquery)
-        NewSettingsfile.WriteLine("queryname: " & queryname)
-
-        NewSettingsfile.WriteLine("GetGeoVersion: " & versionnumber)
-
-
+        Dim NewSettingsfile As System.IO.TextWriter = System.IO.File.CreateText(NewSettingsfilePath)
+        For Each setting As String In NewSettingsDict.Keys
+            For Each oldsetting As String In OldSettingsDict.Keys
+                If oldsetting = setting Then
+                    NewSettingsfile.WriteLine(setting & ": " & OldSettingsDict(oldsetting))
+                End If
+            Next
+        Next
+        NewSettingsfile.WriteLine("ClipGeoVersion: " & versionnumber)
         NewSettingsfile.Flush()
         NewSettingsfile.Close()
         TransferSettings = True
