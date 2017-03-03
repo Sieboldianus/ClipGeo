@@ -18,7 +18,7 @@ such as ArcGIS, for more advanced analysis.
 
 The following code is at the heart of the Lat/Lng-point mapping. It is a fast, geo-modified binary search that assigns the best pixel-location for each pair of coordinates. After doing some research, I believe this is one of the fastest ways to map millions of points in just a few seconds.
 
-```vbnet
+```vb
     'Sorted list for binary search lat/long
     Dim YList As New List(Of Double)
     Dim XList As New List(Of Double)
