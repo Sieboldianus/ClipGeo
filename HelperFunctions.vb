@@ -169,7 +169,7 @@ Public Class HelperFunctions
                 Dim line As String = S.ReadLine
                 If line.Contains(":") Then
                     Dim split As String() = line.Split(":")
-                    OldSettingsDict.Add(split(1).Trim, split(2).Trim)
+                    OldSettingsDict.Add(split(0).Trim, split(1).Trim)
                 End If
             Loop
         End Using

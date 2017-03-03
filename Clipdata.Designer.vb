@@ -147,6 +147,7 @@ Partial Class ClipDataForm
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
+        Me.CheckBox34 = New System.Windows.Forms.CheckBox()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -836,6 +837,7 @@ Partial Class ClipDataForm
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage3.Controls.Add(Me.CheckBox34)
         Me.TabPage3.Controls.Add(Me.CheckBox27)
         Me.TabPage3.Controls.Add(Me.Label17)
         Me.TabPage3.Controls.Add(Me.Label11)
@@ -1594,6 +1596,17 @@ Partial Class ClipDataForm
         Me.Label44.Text = "Shape 1 of 1."
         Me.Label44.Visible = False
         '
+        'CheckBox34
+        '
+        Me.CheckBox34.AutoSize = True
+        Me.CheckBox34.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox34.Location = New System.Drawing.Point(224, 149)
+        Me.CheckBox34.Name = "CheckBox34"
+        Me.CheckBox34.Size = New System.Drawing.Size(117, 17)
+        Me.CheckBox34.TabIndex = 51
+        Me.CheckBox34.Text = "Export settings only"
+        Me.CheckBox34.UseVisualStyleBackColor = True
+        '
         'ClipDataForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1782,4 +1795,5 @@ Partial Class ClipDataForm
     Friend WithEvents Label43 As System.Windows.Forms.Label
     Friend WithEvents Label41 As System.Windows.Forms.Label
     Friend WithEvents Label44 As Label
+    Friend WithEvents CheckBox34 As CheckBox
 End Class

@@ -100,7 +100,7 @@ Public Class ClipDataForm
                     currentSourceData.fromDate = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "mintakendate")
                     currentSourceData.toDate = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxtakendate")
                 End If
-                If Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxperfile")) = "" Then
+                If HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxperfile") = "" Then
                     currentSourceData.photosPerFile = 50000
                 Else
                     currentSourceData.photosPerFile = Val(HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "maxperfile"))
@@ -515,6 +515,7 @@ Public Class ClipDataForm
         Dim minDate As System.DateTime = min_date.Value
         Dim maxDate As System.DateTime = max_date.Value
         Dim PDate As System.DateTime = Nothing
+        Dim settingsExportOnly As Boolean = CheckBox34.Checked
 
 
 
@@ -766,216 +767,219 @@ Public Class ClipDataForm
                         Directory.CreateDirectory(outputdir)
                     End If
                     If File.Exists(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt") Then
-                        File.Copy(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
+                        'File.Copy(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
+                        HelperFunctions.TransferSettings(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
                     End If
-                    outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                    If settingsExportOnly = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt") 'create first file container for data
                 End If
 
-                SpatialSkip = False
-                If NoClip OrElse filename_data_sel_CompletelyWithin.Contains(dataSource) OrElse mapPhotosFromLocals = True Then SpatialSkip = True
-                For Each filename As String In dataSource.datafiles
-                    Using fp As New FastPix(visMap)
-                        Dim line As Long = 0
-                        filenamepath = filename
-                        filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
-                        If File.Exists(filenamepath) Then
-                            i = i + 1
-                            Label5.Text = "Processing file " & filename & " (" & i & " of " & count_filelist_sel.ToString & ")."
-                            Me.Refresh()
-                            'Start Reading File
-                            Dim objReader As New System.IO.StreamReader(filenamepath)
-                            Dim result As String() = Nothing
-                            Dim resultNum As Integer
-                            Dim resultLat, resultLng As Double
-                            Dim linetext As String
-                            Dim linetextArr As String()
-                            Dim dateColumn As Integer = 0
-                            Dim headerline_arr As String()
-                            Dim headerline_arr_sel As New List(Of String)
-                            Dim c As Integer = 0
-                            linetext = objReader.ReadLine()
-                            line = line + 1
-
-                            'Define Headerline
-                            header_line = linetext
-                            headerline_arr = header_line.Split(",")
-
-                            For Each d As String In headerline_arr
-                                If dataSelList.Contains(d) Then headerline_arr_sel.Add(d) 'Add Items to Export-Selection if user has selected them
-                                If RadioButton1.Checked = False Then
-                                    If d = "DateTaken" Then
-                                        If RadioButton3.Checked = True Then dateColumn = c
-                                    End If
-                                    If d = "UploadDate" Then
-                                        If RadioButton3.Checked = False Then dateColumn = c
-                                    End If
-                                End If
-                                c = c + 1
-                            Next
-
-                            If dateColumn = 0 AndAlso RadioButton1.Checked = False Then
-                                MsgBox("Could not find Date Column in Input Data.")
-                                Exit Sub
-                            End If
-
-                            'Re-Define Headerline if only specific data is to be exported
-                            If dataselall = False Then
-                                header_line = "ID"
-                                For Each DataRow As String In dataSelList 'for each row-name in list of selected-for-export datarows
-                                    header_line = header_line & "," & DataRow
-                                Next
-                            End If
-
-                            Do While objReader.Peek() <> -1
-                                line = line + 1
+                    If settingsExportOnly = False Then 'skip export of datafiles if only settings export selected (if true, will created empty folder structure with settings.txt's)
+                    SpatialSkip = False
+                    If NoClip OrElse filename_data_sel_CompletelyWithin.Contains(dataSource) OrElse mapPhotosFromLocals = True Then SpatialSkip = True
+                    For Each filename As String In dataSource.datafiles
+                        Using fp As New FastPix(visMap)
+                            Dim line As Long = 0
+                            filenamepath = filename
+                            filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
+                            If File.Exists(filenamepath) Then
+                                i = i + 1
+                                Label5.Text = "Processing file " & filename & " (" & i & " of " & count_filelist_sel.ToString & ")."
+                                Me.Refresh()
+                                'Start Reading File
+                                Dim objReader As New System.IO.StreamReader(filenamepath)
+                                Dim result As String() = Nothing
+                                Dim resultNum As Integer
+                                Dim resultLat, resultLng As Double
+                                Dim linetext As String
+                                Dim linetextArr As String()
+                                Dim dateColumn As Integer = 0
+                                Dim headerline_arr As String()
+                                Dim headerline_arr_sel As New List(Of String)
+                                Dim c As Integer = 0
                                 linetext = objReader.ReadLine()
-                                linetextArr = linetext.Split(",")
-                                If linetextArr.Length >= 11 Then
-                                    resultNum = Val(linetextArr(0)) 'ID
-                                    resultLat = Val(linetextArr(1)) 'Lat
-                                    resultLng = Val(linetextArr(2)) 'Long
+                                line = line + 1
 
-                                    PhotoIDc = Val(linetextArr(5)) 'PhotoID
-                                    UserIDc = linetextArr(7) 'UserID (String!)
-                                    If photocollection Then
-                                        Views = Val(linetextArr(10)) 'Views
-                                        PhotoURL = linetextArr(4) 'URL
-                                    End If
-                                Else : GoTo skip_line 'Skip erroneous line with less entries than expected
-                                End If
+                                'Define Headerline
+                                header_line = linetext
+                                headerline_arr = header_line.Split(",")
 
-                                'Check Local Photos (optional)
-                                If mapPhotosFromLocals = True Then
-                                    If hashUser.Contains(UserIDc) OrElse HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
-                                        Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
-                                        If Not LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) = True Then
-                                            GoTo skip_line 'Skip all photos not from locals
+                                For Each d As String In headerline_arr
+                                    If dataSelList.Contains(d) Then headerline_arr_sel.Add(d) 'Add Items to Export-Selection if user has selected them
+                                    If RadioButton1.Checked = False Then
+                                        If d = "DateTaken" Then
+                                            If RadioButton3.Checked = True Then dateColumn = c
                                         End If
-                                    Else
-                                        GoTo skip_line 'Skip all photos from users with no info
+                                        If d = "UploadDate" Then
+                                            If RadioButton3.Checked = False Then dateColumn = c
+                                        End If
                                     End If
+                                    c = c + 1
+                                Next
+
+                                If dateColumn = 0 AndAlso RadioButton1.Checked = False Then
+                                    MsgBox("Could not find Date Column in Input Data.")
+                                    Exit Sub
                                 End If
 
-                                'Read DateValue from Line if DateLimit specified
-                                If Not dateColumn = 0 Then PDate = DateTime.Parse(linetext.Split(",")(dateColumn))
+                                'Re-Define Headerline if only specific data is to be exported
+                                If dataselall = False Then
+                                    header_line = "ID"
+                                    For Each DataRow As String In dataSelList 'for each row-name in list of selected-for-export datarows
+                                        header_line = header_line & "," & DataRow
+                                    Next
+                                End If
 
-                                If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
-                                    If dateColumn = 0 OrElse LiesWithinDateRange(PDate, minDate, maxDate) Then
-                                        If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
-                                            countlines = countlines + 1
+                                Do While objReader.Peek() <> -1
+                                    line = line + 1
+                                    linetext = objReader.ReadLine()
+                                    linetextArr = linetext.Split(",")
+                                    If linetextArr.Length >= 11 Then
+                                        resultNum = Val(linetextArr(0)) 'ID
+                                        resultLat = Val(linetextArr(1)) 'Lat
+                                        resultLng = Val(linetextArr(2)) 'Long
 
-                                            'Statistics
-                                            hash.Add(PhotoIDc) 'Hash-List for Duplicate Detection
-                                            If hash.Count > 100000 Then 'Clear List if Hash gets too large (Duplicate Detection above 500,000 makes no sense anyway..)
-                                                hash.Clear()
+                                        PhotoIDc = Val(linetextArr(5)) 'PhotoID
+                                        UserIDc = linetextArr(7) 'UserID (String!)
+                                        If photocollection Then
+                                            Views = Val(linetextArr(10)) 'Views
+                                            PhotoURL = linetextArr(4) 'URL
+                                        End If
+                                    Else : GoTo skip_line 'Skip erroneous line with less entries than expected
+                                    End If
+
+                                    'Check Local Photos (optional)
+                                    If mapPhotosFromLocals = True Then
+                                        If hashUser.Contains(UserIDc) OrElse HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
+                                            Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
+                                            If Not LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) = True Then
+                                                GoTo skip_line 'Skip all photos not from locals
                                             End If
-                                            If Not NoStatistics = True Then
-                                                'Measure Photo Views
-                                                'If Views > MostViews Then
-                                                '    PhotosListTop10View.Add(New KeyValuePair(Of String, Integer)(PhotoIDc, Views))
-                                                '    If PhotosListTop10View.Count > 10 Then
-                                                '        MostViews = Views
-                                                '        PhotosListTop10View.RemoveAt(PhotosListTop10View.Count - 1)
-                                                '    End If
-                                                'End If
+                                        Else
+                                            GoTo skip_line 'Skip all photos from users with no info
+                                        End If
+                                    End If
 
-                                                hashUser.Add(UserIDc) 'Count Unique Users
-                                                Tagsc = Tagsc + CountCharacter(linetextArr(11), ";"c) - 2
-                                                If estimateUnique = False AndAlso hashTags.Count > 10000000 Then 'Max size of Hashset = 2 Billion, but Strings consume more. Test Exception reached at 11,998,949
-                                                    estimateUnique = True
-                                                    estPhotosBase = countlines_sich + countlines
-                                                    estHashtagBase = hashTags.Count
-                                                    hashTags.Clear()
-                                                Else
-                                                    Try
-                                                        hashTags.UnionWith(linetextArr(11).Split(";")) 'Count Unique Tags
-                                                    Catch ex As OutOfMemoryException
-                                                        If Not IsNothing(ex.Message) Then
-                                                            MsgBox("System.OutOfMemoryException at HashTagsCount: " & hashTags.Count & ", freeing up memory..")
-                                                            estimateUnique = True
-                                                            estPhotosBase = countlines_sich + countlines
-                                                            estHashtagBase = hashTags.Count
-                                                            hashTags.Clear()
-                                                        Else
-                                                            Exit Sub
-                                                        End If
-                                                    End Try
+                                    'Read DateValue from Line if DateLimit specified
+                                    If Not dateColumn = 0 Then PDate = DateTime.Parse(linetext.Split(",")(dateColumn))
+
+                                    If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
+                                        If dateColumn = 0 OrElse LiesWithinDateRange(PDate, minDate, maxDate) Then
+                                            If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
+                                                countlines = countlines + 1
+
+                                                'Statistics
+                                                hash.Add(PhotoIDc) 'Hash-List for Duplicate Detection
+                                                If hash.Count > 100000 Then 'Clear List if Hash gets too large (Duplicate Detection above 500,000 makes no sense anyway..)
+                                                    hash.Clear()
                                                 End If
-                                            End If
-                                            'Statistics End
+                                                If Not NoStatistics = True Then
+                                                    'Measure Photo Views
+                                                    'If Views > MostViews Then
+                                                    '    PhotosListTop10View.Add(New KeyValuePair(Of String, Integer)(PhotoIDc, Views))
+                                                    '    If PhotosListTop10View.Count > 10 Then
+                                                    '        MostViews = Views
+                                                    '        PhotosListTop10View.RemoveAt(PhotosListTop10View.Count - 1)
+                                                    '    End If
+                                                    'End If
 
-                                            'Plot Point on map
-                                            If CheckBox15.Checked Then 'Exclude erroneous data on draw (?)
-                                                Dim localtourist As Integer = Nothing
-                                                'Colormapping of locals
-                                                If maptouristslocals = True Then
-                                                    localtourist = 0
-                                                    If HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
-                                                        Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
-                                                        If LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) Then
-                                                            localtourist = 1
-                                                        Else
-                                                            localtourist = 2
-                                                        End If
+                                                    hashUser.Add(UserIDc) 'Count Unique Users
+                                                    Tagsc = Tagsc + CountCharacter(linetextArr(11), ";"c) - 2
+                                                    If estimateUnique = False AndAlso hashTags.Count > 10000000 Then 'Max size of Hashset = 2 Billion, but Strings consume more. Test Exception reached at 11,998,949
+                                                        estimateUnique = True
+                                                        estPhotosBase = countlines_sich + countlines
+                                                        estHashtagBase = hashTags.Count
+                                                        hashTags.Clear()
+                                                    Else
+                                                        Try
+                                                            hashTags.UnionWith(linetextArr(11).Split(";")) 'Count Unique Tags
+                                                        Catch ex As OutOfMemoryException
+                                                            If Not IsNothing(ex.Message) Then
+                                                                MsgBox("System.OutOfMemoryException at HashTagsCount: " & hashTags.Count & ", freeing up memory..")
+                                                                estimateUnique = True
+                                                                estPhotosBase = countlines_sich + countlines
+                                                                estHashtagBase = hashTags.Count
+                                                                hashTags.Clear()
+                                                            Else
+                                                                Exit Sub
+                                                            End If
+                                                        End Try
                                                     End If
                                                 End If
-                                                If photocollection Then
-                                                    visualForm.mapcoords(resultLat, resultLng, fp, localtourist, Views, PhotoIDc, PhotoURL)
-                                                Else
-                                                    visualForm.mapcoords(resultLat, resultLng, fp, localtourist)
+                                                'Statistics End
+
+                                                'Plot Point on map
+                                                If CheckBox15.Checked Then 'Exclude erroneous data on draw (?)
+                                                    Dim localtourist As Integer = Nothing
+                                                    'Colormapping of locals
+                                                    If maptouristslocals = True Then
+                                                        localtourist = 0
+                                                        If HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
+                                                            Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
+                                                            If LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) Then
+                                                                localtourist = 1
+                                                            Else
+                                                                localtourist = 2
+                                                            End If
+                                                        End If
+                                                    End If
+                                                    If photocollection Then
+                                                        visualForm.mapcoords(resultLat, resultLng, fp, localtourist, Views, PhotoIDc, PhotoURL)
+                                                    Else
+                                                        visualForm.mapcoords(resultLat, resultLng, fp, localtourist)
+                                                    End If
                                                 End If
-                                            End If
-                                            If export = True Then
-                                                If header_line_written = False Then
-                                                    outputfile.WriteLine(header_line)
-                                                    header_line_written = True
-                                                End If
-                                                If dataselall = True Then 'If all data is to be exported
-                                                    linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
-                                                Else 'if only some data is to be exported
-                                                    linetext = countlines
-                                                    Dim ii As Integer = 0
-                                                    For Each d As String In headerline_arr
-                                                        If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
-                                                        ii = ii + 1
-                                                    Next
-                                                End If
-                                                outputfile.WriteLine(linetext)
-                                            End If
-                                            If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'Update Progress 
-                                                Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
-                                                Me.Refresh()
-                                            End If
-                                            If countlines >= 50000 Then
-                                                countlines_sich = countlines_sich + countlines
-                                                countlines = 0
-                                                countnewfiles = countnewfiles + 1
                                                 If export = True Then
-                                                    outputfile.Flush()
-                                                    outputfile.Close()
-                                                    If retainfolderstructure = True Then
-                                                        FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & ".txt", newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part.txt")
+                                                    If header_line_written = False Then
+                                                        outputfile.WriteLine(header_line)
+                                                        header_line_written = True
                                                     End If
-                                                    outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
-                                                    header_line_written = False
+                                                    If dataselall = True Then 'If all data is to be exported
+                                                        linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
+                                                    Else 'if only some data is to be exported
+                                                        linetext = countlines
+                                                        Dim ii As Integer = 0
+                                                        For Each d As String In headerline_arr
+                                                            If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
+                                                            ii = ii + 1
+                                                        Next
+                                                    End If
+                                                    outputfile.WriteLine(linetext)
+                                                End If
+                                                If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'Update Progress 
+                                                    Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
+                                                    Me.Refresh()
+                                                End If
+                                                If countlines >= 50000 Then
+                                                    countlines_sich = countlines_sich + countlines
+                                                    countlines = 0
+                                                    countnewfiles = countnewfiles + 1
+                                                    If export = True Then
+                                                        outputfile.Flush()
+                                                        outputfile.Close()
+                                                        If retainfolderstructure = True Then
+                                                            FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & ".txt", newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part.txt")
+                                                        End If
+                                                        outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                                                        header_line_written = False
+                                                    End If
                                                 End If
                                             End If
                                         End If
                                     End If
-                                End If
-skip_line:                  Loop
-                            objReader.Close()
+skip_line:                      Loop
+                                objReader.Close()
+                            End If
+                            ProgressBar1.Value = ProgressBar1.Value + 1
+                        End Using
+                        If CheckBox15.Checked Then
+                            'Update VisMap for each Dataset
+                            visualForm.PictureBox1.Image = visMap
+                            visualForm.Refresh()
                         End If
-                        ProgressBar1.Value = ProgressBar1.Value + 1
-                    End Using
-                    If CheckBox15.Checked Then
-                        'Update VisMap for each Dataset
-                        visualForm.PictureBox1.Image = visMap
-                        visualForm.Refresh()
-                    End If
-                Next
+                    Next
+                End If
                 'Delete Outputdirectory if Empty
-                If retainfolderstructure = True And export = True Then
+                If retainfolderstructure = True And export = True And settingsExportOnly = False Then
                     outputfile.Flush()
                     outputfile.Close()
                     'Delete Empty Output File
