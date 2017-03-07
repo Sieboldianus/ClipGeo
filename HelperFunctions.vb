@@ -127,17 +127,20 @@ Public Class HelperFunctions
     End Function
 
     Public Shared Function TransferSettings(OrigSettingsfile As String, NewSettingsfilePath As String) As Boolean
-        Dim NewSettingsDict As Dictionary(Of String, String) = New Dictionary(Of String, String)
+        Dim NewSettingsDict As Dictionary(Of String, String) = New Dictionary(Of String, String)(System.StringComparer.OrdinalIgnoreCase)
         'Add here the list of settings that need to get transferred, all others will be ignored
-        NewSettingsDict.Add("profilename", "")
+        'Settings that have values will overwrite values upon transfer
+        Dim splitPath As String() = OrigSettingsfile.Split("\")
+        Dim parentFolder As String = splitPath(splitPath.Length - 2)
+        NewSettingsDict.Add("profilename", parentFolder)
         NewSettingsDict.Add("bottomlat", "")
         NewSettingsDict.Add("leftlong", "")
         NewSettingsDict.Add("toplat", "")
         NewSettingsDict.Add("rightlong", "")
-        NewSettingsDict.Add("querytype", "upload_time")
-        NewSettingsDict.Add("minuploaddate", "")
-        NewSettingsDict.Add("maxuploaddate", "")
-        NewSettingsDict.Add("maxperfile", "")
+        NewSettingsDict.Add("querytype", "") 'upload_time
+        NewSettingsDict.Add("minuploaddate", "") '1/1/2007
+        NewSettingsDict.Add("maxuploaddate", "") '1/1/2017
+        NewSettingsDict.Add("maxperfile", "") '50000
         'NewSettingsDict.Add("maxtakendate","")
         'NewSettingsDict.Add("mintakendate", "")
         'NewSettingsDict.Add("geoquery","bbox")
@@ -161,6 +164,8 @@ Public Class HelperFunctions
         'NewSettingsDict.Add("queryWaitTime", "")
         'NewSettingsDict.Add("queryAPICallWait","")
         'NewSettingsDict.Add("radius", "")
+        'NewSettingsDict.Add("GetGeoVersion", "")
+
 
         Dim OldSettingsDict As Dictionary(Of String, String) = New Dictionary(Of String, String)
 
@@ -177,13 +182,17 @@ Public Class HelperFunctions
         'Create new file / transfer items
         Dim NewSettingsfile As System.IO.TextWriter = System.IO.File.CreateText(NewSettingsfilePath)
         For Each setting As String In NewSettingsDict.Keys
-            For Each oldsetting As String In OldSettingsDict.Keys
-                If oldsetting = setting Then
-                    NewSettingsfile.WriteLine(setting & ": " & OldSettingsDict(oldsetting))
-                End If
-            Next
+            If NewSettingsDict(setting) = "" Then 'Only copy settings if not otherwise pre-configured
+                For Each oldsetting As String In OldSettingsDict.Keys
+                    If oldsetting = setting Then
+                        NewSettingsfile.WriteLine(setting & ": " & OldSettingsDict(oldsetting))
+                    End If
+                Next
+            Else
+                NewSettingsfile.WriteLine(setting & ": " & NewSettingsDict(setting))
+            End If
         Next
-        NewSettingsfile.WriteLine("ClipGeoVersion: " & versionnumber)
+        'NewSettingsfile.WriteLine("ClipGeoVersion: " & versionnumber)
         NewSettingsfile.Flush()
         NewSettingsfile.Close()
         TransferSettings = True
