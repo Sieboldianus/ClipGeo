@@ -76,11 +76,12 @@ Public Class HelperFunctions
 
 
     '' User Location Functions
-    Public Shared UserGeocodeIndex_Path As String = AppPath & "\Output\02_UserData\00_Index\UserGeocodeIndex.txt"
+    Public Shared UserGeocodeIndex_Path As String '= AppPath & "\Output\02_UserData\00_Index\UserGeocodeIndex.txt"
     Public Shared UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
 
     'Read UserGeocodeLocationDatabase into Dictionary
     Public Shared Sub LoadUserLocationGeocodeIndex()
+
         Dim filenamepath As String = UserGeocodeIndex_Path
         Dim linetextArr As String()
         UserLocationGeocodeDict.Clear()

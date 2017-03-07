@@ -83,6 +83,12 @@ Public Class ClipDataForm
         Dim dri As DirectoryInfo
         Dim currentSourceData As New SourceData
 
+        If File.Exists(strPath & "02_UserData\00_Index\UserGeocodeIndex.txt") Then
+            HelperFunctions.UserGeocodeIndex_Path = strPath & "02_UserData\00_Index\UserGeocodeIndex.txt"
+            'MsgBox(strPath & "02 _UserData\00_Index\UserGeocodeIndex.txt")
+        End If
+
+
         'Load Multifolder
         For Each dri In diArr
             currentSourceData = New SourceData
