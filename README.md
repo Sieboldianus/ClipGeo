@@ -104,6 +104,13 @@ GNU GPLv3
 
 ## Changelog
 
+2017-03-07: ClipGeo v0.9.300
+
+* First published version
+* Added Wiki
+* Solved some DPI Display issues
+* Minor Bugfixes and improvements, cleaned up code
+
 2017-02-08:
 
 * Initial commit: cleaned up project, removed unnecessary references to functions not used anymore.
