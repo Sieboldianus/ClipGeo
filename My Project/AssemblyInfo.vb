@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("GetGeo")> 
+<Assembly: AssemblyTitle("ClipGeo")>
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("GetGeo")>
-<Assembly: AssemblyCopyright("Copyright © Alexander Dunkel 2017")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("ClipGeo")>
+<Assembly: AssemblyCopyright("License GNU GPLv3 - Author: Alexander Dunkel 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("f70d8ab0-6dc7-4781-8290-4e0d0f3a5199")> 
+<Assembly: Guid("f70d8ab0-6dc7-4781-8290-4e0d0f3a5199")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("0.9.210.*")> 
+<Assembly: AssemblyVersion("0.9.300.*")>
 '<Assembly: AssemblyFileVersion("0.9.1.*")> 
