@@ -102,9 +102,9 @@ This project includes and makes use of several other projects/libraries/framewor
 
 GNU GPLv3
 
-## Changelog
+## Changelog & download of versions
 
-2017-03-07: ClipGeo v0.9.300
+2017-03-07: [ClipGeo v0.9.300](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_300.zip)
 
 * First published version
 * Added Wiki
