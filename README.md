@@ -114,9 +114,7 @@ GNU GPLv3
 2017-02-08:
 
 * Initial commit: cleaned up project, removed unnecessary references to functions not used anymore.
-
 * This project is a branch of a larger project. I removed all links to the larger project to continue developing  this branch separately.
-
 * Todo:
     * translate comments to english
     * clean up the mess

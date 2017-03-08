@@ -28,6 +28,8 @@ Partial Class MainForm
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -89,12 +91,34 @@ Partial Class MainForm
         '
         Me.ErrorProvider1.ContainerControl = Me
         '
+        'Button2
+        '
+        Me.Button2.Enabled = False
+        Me.Button2.Location = New System.Drawing.Point(15, 72)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(104, 24)
+        Me.Button2.TabIndex = 16
+        Me.Button2.Text = "Filter Tools"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Enabled = False
+        Me.Button5.Location = New System.Drawing.Point(15, 42)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(104, 24)
+        Me.Button5.TabIndex = 16
+        Me.Button5.Text = "Graph Tools"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.ClientSize = New System.Drawing.Size(292, 142)
+        Me.Controls.Add(Me.Button5)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button1)
@@ -116,4 +140,6 @@ Partial Class MainForm
     Private WithEvents Button1 As System.Windows.Forms.Button
     Private WithEvents Button4 As Button
     Private WithEvents Button3 As Button
+    Private WithEvents Button5 As Button
+    Private WithEvents Button2 As Button
 End Class
