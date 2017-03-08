@@ -104,7 +104,7 @@ GNU GPLv3
 
 ## Changelog & Download
 
-2017-03-07: [ClipGeo v0.9.300](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_300.zip)
+2017-03-08: [**ClipGeo v0.9.300 Rev19**](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_300_Rev19.zip)
 
 * First published version
 * Added Wiki
