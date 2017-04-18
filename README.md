@@ -7,7 +7,7 @@ large georeferenced point datasets (such as 200 Million Flickr photo locations).
 For example, by using a geo-modified binary search, it is possible to map and extract 6 million photo locations in Germany in under 2 Minutes on a regular laptop.
 
 ![ClipGeo Vis Example](https://github.com/Sieboldianus/ClipGeo/blob/master/ressources/Europe_b.png?raw=true)
-![ClipGeo Interface Ani](https://github.com/Sieboldianus/ClipGeo/blob/master/ressources/interface2.gif?raw=true)
+![ClipGeo Interface Ani](https://github.com/Sieboldianus/ClipGeo/blob/master/ressources/interface.gif?raw=true)
 
 ## Motivation
 
