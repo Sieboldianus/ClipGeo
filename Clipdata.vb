@@ -522,8 +522,7 @@ Public Class ClipDataForm
         Dim maxDate As System.DateTime = max_date.Value
         Dim PDate As System.DateTime = Nothing
         Dim settingsExportOnly As Boolean = CheckBox34.Checked
-
-
+        Dim timetransponse As Boolean = CheckBox36.Checked
 
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)

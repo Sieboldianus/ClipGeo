@@ -149,6 +149,7 @@ Partial Class ClipDataForm
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
+        Me.CheckBox36 = New System.Windows.Forms.CheckBox()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -218,7 +219,7 @@ Partial Class ClipDataForm
         Me.TextBox8.Enabled = False
         Me.TextBox8.Location = New System.Drawing.Point(300, 30)
         Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox8.Size = New System.Drawing.Size(90, 19)
         Me.TextBox8.TabIndex = 41
         Me.TextBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox8, "Height of boundary box (vertical extent).")
@@ -229,7 +230,7 @@ Partial Class ClipDataForm
         Me.TextBox7.Enabled = False
         Me.TextBox7.Location = New System.Drawing.Point(161, 30)
         Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox7.Size = New System.Drawing.Size(90, 19)
         Me.TextBox7.TabIndex = 42
         Me.TextBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox7, "Width of boundary box (horizontal extent).")
@@ -238,7 +239,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox6.Location = New System.Drawing.Point(161, 82)
         Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox6.Size = New System.Drawing.Size(90, 19)
         Me.TextBox6.TabIndex = 31
         Me.TextBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox6, "Latitude value of bottom left box corner.")
@@ -247,7 +248,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox5.Location = New System.Drawing.Point(161, 56)
         Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox5.Size = New System.Drawing.Size(90, 19)
         Me.TextBox5.TabIndex = 32
         Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox5, "Latitude value of top right box corner.")
@@ -256,7 +257,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox3.Location = New System.Drawing.Point(300, 81)
         Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox3.Size = New System.Drawing.Size(90, 19)
         Me.TextBox3.TabIndex = 33
         Me.TextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox3, "Longitude value of bottom left box corner.")
@@ -265,7 +266,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox2.Location = New System.Drawing.Point(300, 55)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(90, 18)
+        Me.TextBox2.Size = New System.Drawing.Size(90, 19)
         Me.TextBox2.TabIndex = 34
         Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.TextBox2, "Longitude value of top right box corner.")
@@ -276,7 +277,7 @@ Partial Class ClipDataForm
         Me.RadioButton1.Checked = True
         Me.RadioButton1.Location = New System.Drawing.Point(325, 194)
         Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(62, 17)
+        Me.RadioButton1.Size = New System.Drawing.Size(63, 17)
         Me.RadioButton1.TabIndex = 20
         Me.RadioButton1.TabStop = True
         Me.RadioButton1.Text = "No Limit"
@@ -289,7 +290,7 @@ Partial Class ClipDataForm
         Me.RadioButton4.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.RadioButton4.Location = New System.Drawing.Point(303, 22)
         Me.RadioButton4.Name = "RadioButton4"
-        Me.RadioButton4.Size = New System.Drawing.Size(84, 17)
+        Me.RadioButton4.Size = New System.Drawing.Size(85, 17)
         Me.RadioButton4.TabIndex = 16
         Me.RadioButton4.Text = "Upload Date"
         Me.ToolTip1.SetToolTip(Me.RadioButton4, "Use Photo Upload Date Information.")
@@ -301,7 +302,7 @@ Partial Class ClipDataForm
         Me.RadioButton3.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.RadioButton3.Location = New System.Drawing.Point(182, 22)
         Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(79, 17)
+        Me.RadioButton3.Size = New System.Drawing.Size(82, 17)
         Me.RadioButton3.TabIndex = 17
         Me.RadioButton3.Text = "Date Taken"
         Me.ToolTip1.SetToolTip(Me.RadioButton3, "Use Photo Date Taken Information.")
@@ -315,7 +316,7 @@ Partial Class ClipDataForm
         Me.max_date.Location = New System.Drawing.Point(238, 77)
         Me.max_date.Name = "max_date"
         Me.max_date.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.max_date.Size = New System.Drawing.Size(150, 18)
+        Me.max_date.Size = New System.Drawing.Size(150, 19)
         Me.max_date.TabIndex = 18
         Me.ToolTip1.SetToolTip(Me.max_date, "Maximum date/time of photo data.")
         Me.max_date.Value = New Date(2011, 8, 19, 0, 0, 0, 0)
@@ -329,7 +330,7 @@ Partial Class ClipDataForm
         Me.min_date.Location = New System.Drawing.Point(238, 51)
         Me.min_date.Name = "min_date"
         Me.min_date.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.min_date.Size = New System.Drawing.Size(150, 18)
+        Me.min_date.Size = New System.Drawing.Size(150, 19)
         Me.min_date.TabIndex = 19
         Me.ToolTip1.SetToolTip(Me.min_date, "Minimum date/time of photo data.")
         Me.min_date.Value = New Date(2006, 1, 1, 0, 0, 0, 0)
@@ -338,7 +339,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox4.Location = New System.Drawing.Point(161, 125)
         Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(229, 18)
+        Me.TextBox4.Size = New System.Drawing.Size(229, 19)
         Me.TextBox4.TabIndex = 48
         Me.ToolTip1.SetToolTip(Me.TextBox4, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" &
         "inates.txt and log.txt")
@@ -351,7 +352,7 @@ Partial Class ClipDataForm
         Me.CheckBox14.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox14.Location = New System.Drawing.Point(161, 151)
         Me.CheckBox14.Name = "CheckBox14"
-        Me.CheckBox14.Size = New System.Drawing.Size(98, 17)
+        Me.CheckBox14.Size = New System.Drawing.Size(101, 17)
         Me.CheckBox14.TabIndex = 45
         Me.CheckBox14.Text = "Use Raycasting"
         Me.ToolTip1.SetToolTip(Me.CheckBox14, "Raycasting is fast. Deselect for complex Polygons (Holes etc.)")
@@ -364,7 +365,7 @@ Partial Class ClipDataForm
         Me.Label16.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Label16.Location = New System.Drawing.Point(22, 15)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(221, 13)
+        Me.Label16.Size = New System.Drawing.Size(267, 16)
         Me.Label16.TabIndex = 12
         Me.Label16.Text = "Load data and choose clipping extent"
         '
@@ -389,7 +390,7 @@ Partial Class ClipDataForm
         Me.Label1.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label1.Location = New System.Drawing.Point(183, 36)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(79, 13)
+        Me.Label1.Size = New System.Drawing.Size(80, 13)
         Me.Label1.TabIndex = 24
         Me.Label1.Text = "Number of files:"
         '
@@ -463,7 +464,7 @@ Partial Class ClipDataForm
         Me.Label7.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label7.Location = New System.Drawing.Point(156, 10)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(63, 13)
+        Me.Label7.Size = New System.Drawing.Size(72, 15)
         Me.Label7.TabIndex = 30
         Me.Label7.Text = "New Name:"
         '
@@ -495,7 +496,7 @@ Partial Class ClipDataForm
         Me.Label4.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label4.Location = New System.Drawing.Point(635, 16)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(161, 13)
+        Me.Label4.Size = New System.Drawing.Size(167, 13)
         Me.Label4.TabIndex = 24
         Me.Label4.Text = "Use Right-click to draw rectangle."
         '
@@ -547,7 +548,7 @@ Partial Class ClipDataForm
         Me.Label2.ForeColor = System.Drawing.SystemColors.ControlLight
         Me.Label2.Location = New System.Drawing.Point(482, 15)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(31, 13)
+        Me.Label2.Size = New System.Drawing.Size(38, 16)
         Me.Label2.TabIndex = 12
         Me.Label2.Text = "Map"
         '
@@ -642,7 +643,7 @@ Partial Class ClipDataForm
         Me.TextBox14.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.TextBox14.Location = New System.Drawing.Point(161, 203)
         Me.TextBox14.Name = "TextBox14"
-        Me.TextBox14.Size = New System.Drawing.Size(99, 20)
+        Me.TextBox14.Size = New System.Drawing.Size(99, 21)
         Me.TextBox14.TabIndex = 48
         Me.TextBox14.Text = "from file"
         Me.TextBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -651,7 +652,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox13.Location = New System.Drawing.Point(161, 182)
         Me.TextBox13.Name = "TextBox13"
-        Me.TextBox13.Size = New System.Drawing.Size(229, 18)
+        Me.TextBox13.Size = New System.Drawing.Size(229, 19)
         Me.TextBox13.TabIndex = 48
         '
         'Label10
@@ -689,7 +690,7 @@ Partial Class ClipDataForm
         Me.Label9.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.Label9.Location = New System.Drawing.Point(14, 9)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(57, 13)
+        Me.Label9.Size = New System.Drawing.Size(59, 13)
         Me.Label9.TabIndex = 47
         Me.Label9.Text = "Rectangle:"
         '
@@ -707,7 +708,7 @@ Partial Class ClipDataForm
         Me.CheckBox2.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox2.Location = New System.Drawing.Point(333, 209)
         Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(77, 17)
+        Me.CheckBox2.Size = New System.Drawing.Size(79, 17)
         Me.CheckBox2.TabIndex = 45
         Me.CheckBox2.Text = "No clipping"
         Me.CheckBox2.UseVisualStyleBackColor = True
@@ -758,7 +759,7 @@ Partial Class ClipDataForm
         Me.Label36.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label36.Location = New System.Drawing.Point(89, 206)
         Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(42, 13)
+        Me.Label36.Size = New System.Drawing.Size(43, 13)
         Me.Label36.TabIndex = 44
         Me.Label36.Text = "Radius:"
         '
@@ -840,6 +841,7 @@ Partial Class ClipDataForm
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage3.Controls.Add(Me.CheckBox36)
         Me.TabPage3.Controls.Add(Me.CheckBox35)
         Me.TabPage3.Controls.Add(Me.CheckBox34)
         Me.TabPage3.Controls.Add(Me.CheckBox27)
@@ -890,7 +892,7 @@ Partial Class ClipDataForm
         Me.CheckBox27.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox27.Location = New System.Drawing.Point(224, 126)
         Me.CheckBox27.Name = "CheckBox27"
-        Me.CheckBox27.Size = New System.Drawing.Size(164, 17)
+        Me.CheckBox27.Size = New System.Drawing.Size(166, 17)
         Me.CheckBox27.TabIndex = 51
         Me.CheckBox27.Text = "Retain original folder structure"
         Me.CheckBox27.UseVisualStyleBackColor = True
@@ -901,7 +903,7 @@ Partial Class ClipDataForm
         Me.Label17.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.Label17.Location = New System.Drawing.Point(14, 16)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(134, 13)
+        Me.Label17.Size = New System.Drawing.Size(135, 13)
         Me.Label17.TabIndex = 50
         Me.Label17.Text = "Select data to be exported:"
         '
@@ -921,7 +923,7 @@ Partial Class ClipDataForm
         Me.CheckBox13.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox13.Location = New System.Drawing.Point(331, 92)
         Me.CheckBox13.Name = "CheckBox13"
-        Me.CheckBox13.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox13.Size = New System.Drawing.Size(59, 17)
         Me.CheckBox13.TabIndex = 38
         Me.CheckBox13.Text = "MTags"
         Me.CheckBox13.UseVisualStyleBackColor = True
@@ -934,7 +936,7 @@ Partial Class ClipDataForm
         Me.CheckBox12.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox12.Location = New System.Drawing.Point(268, 92)
         Me.CheckBox12.Name = "CheckBox12"
-        Me.CheckBox12.Size = New System.Drawing.Size(48, 17)
+        Me.CheckBox12.Size = New System.Drawing.Size(50, 17)
         Me.CheckBox12.TabIndex = 39
         Me.CheckBox12.Text = "Tags"
         Me.CheckBox12.UseVisualStyleBackColor = True
@@ -960,7 +962,7 @@ Partial Class ClipDataForm
         Me.CheckBox10.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox10.Location = New System.Drawing.Point(119, 92)
         Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(82, 17)
+        Me.CheckBox10.Size = New System.Drawing.Size(83, 17)
         Me.CheckBox10.TabIndex = 41
         Me.CheckBox10.Text = "UploadDate"
         Me.CheckBox10.UseVisualStyleBackColor = True
@@ -973,7 +975,7 @@ Partial Class ClipDataForm
         Me.CheckBox9.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox9.Location = New System.Drawing.Point(119, 59)
         Me.CheckBox9.Name = "CheckBox9"
-        Me.CheckBox9.Size = New System.Drawing.Size(77, 17)
+        Me.CheckBox9.Size = New System.Drawing.Size(80, 17)
         Me.CheckBox9.TabIndex = 42
         Me.CheckBox9.Text = "DateTaken"
         Me.CheckBox9.UseVisualStyleBackColor = True
@@ -986,7 +988,7 @@ Partial Class ClipDataForm
         Me.CheckBox8.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox8.Location = New System.Drawing.Point(331, 59)
         Me.CheckBox8.Name = "CheckBox8"
-        Me.CheckBox8.Size = New System.Drawing.Size(58, 17)
+        Me.CheckBox8.Size = New System.Drawing.Size(59, 17)
         Me.CheckBox8.TabIndex = 43
         Me.CheckBox8.Text = "UserID"
         Me.CheckBox8.UseVisualStyleBackColor = True
@@ -1025,7 +1027,7 @@ Partial Class ClipDataForm
         Me.CheckBox5.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox5.Location = New System.Drawing.Point(331, 28)
         Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(46, 17)
+        Me.CheckBox5.Size = New System.Drawing.Size(48, 17)
         Me.CheckBox5.TabIndex = 46
         Me.CheckBox5.Text = "URL"
         Me.CheckBox5.UseVisualStyleBackColor = True
@@ -1038,7 +1040,7 @@ Partial Class ClipDataForm
         Me.CheckBox4.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox4.Location = New System.Drawing.Point(268, 28)
         Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(44, 17)
+        Me.CheckBox4.Size = New System.Drawing.Size(46, 17)
         Me.CheckBox4.TabIndex = 47
         Me.CheckBox4.Text = "Title"
         Me.CheckBox4.UseVisualStyleBackColor = True
@@ -1051,7 +1053,7 @@ Partial Class ClipDataForm
         Me.CheckBox3.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox3.Location = New System.Drawing.Point(205, 28)
         Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(62, 17)
+        Me.CheckBox3.Size = New System.Drawing.Size(64, 17)
         Me.CheckBox3.TabIndex = 48
         Me.CheckBox3.Text = "Lat/Lng"
         Me.CheckBox3.UseVisualStyleBackColor = True
@@ -1097,7 +1099,7 @@ Partial Class ClipDataForm
         Me.Label32.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label32.Location = New System.Drawing.Point(9, 192)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(326, 13)
+        Me.Label32.Size = New System.Drawing.Size(333, 13)
         Me.Label32.TabIndex = 57
         Me.Label32.Text = "# = Any single digit (0–9) | [ charlist ]  = Any single character in charlist"
         '
@@ -1107,7 +1109,7 @@ Partial Class ClipDataForm
         Me.Label31.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label31.Location = New System.Drawing.Point(9, 175)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(253, 13)
+        Me.Label31.Size = New System.Drawing.Size(258, 13)
         Me.Label31.TabIndex = 57
         Me.Label31.Text = "? = Any single character | * = Zero or more characters"
         '
@@ -1117,7 +1119,7 @@ Partial Class ClipDataForm
         Me.Label26.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label26.Location = New System.Drawing.Point(9, 160)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(136, 13)
+        Me.Label26.Size = New System.Drawing.Size(138, 13)
         Me.Label26.TabIndex = 57
         Me.Label26.Text = "Use the following wildcards:"
         '
@@ -1127,7 +1129,7 @@ Partial Class ClipDataForm
         Me.Label25.ForeColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label25.Location = New System.Drawing.Point(137, 210)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(168, 13)
+        Me.Label25.Size = New System.Drawing.Size(172, 13)
         Me.Label25.TabIndex = 57
         Me.Label25.Text = "(i.e. ""Wind"" will not find 'Windfarm')"
         '
@@ -1163,7 +1165,7 @@ Partial Class ClipDataForm
         Me.Label21.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.Label21.Location = New System.Drawing.Point(137, 28)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(32, 13)
+        Me.Label21.Size = New System.Drawing.Size(34, 13)
         Me.Label21.TabIndex = 51
         Me.Label21.Text = "[Text]"
         '
@@ -1173,7 +1175,7 @@ Partial Class ClipDataForm
         Me.Label20.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.Label20.Location = New System.Drawing.Point(235, 28)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(87, 13)
+        Me.Label20.Size = New System.Drawing.Size(88, 13)
         Me.Label20.TabIndex = 51
         Me.Label20.Text = "[Search in Fields]"
         '
@@ -1183,7 +1185,7 @@ Partial Class ClipDataForm
         Me.Label18.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.Label18.Location = New System.Drawing.Point(9, 8)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(198, 13)
+        Me.Label18.Size = New System.Drawing.Size(199, 13)
         Me.Label18.TabIndex = 51
         Me.Label18.Text = "Filter data based on the following criteria:"
         '
@@ -1196,7 +1198,7 @@ Partial Class ClipDataForm
         Me.CheckBox28.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox28.Location = New System.Drawing.Point(7, 209)
         Me.CheckBox28.Name = "CheckBox28"
-        Me.CheckBox28.Size = New System.Drawing.Size(128, 17)
+        Me.CheckBox28.Size = New System.Drawing.Size(129, 17)
         Me.CheckBox28.TabIndex = 1
         Me.CheckBox28.Text = "Search only full words"
         Me.CheckBox28.UseVisualStyleBackColor = True
@@ -1208,7 +1210,7 @@ Partial Class ClipDataForm
         Me.CheckBox26.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CheckBox26.Location = New System.Drawing.Point(338, 209)
         Me.CheckBox26.Name = "CheckBox26"
-        Me.CheckBox26.Size = New System.Drawing.Size(75, 17)
+        Me.CheckBox26.Size = New System.Drawing.Size(76, 17)
         Me.CheckBox26.TabIndex = 1
         Me.CheckBox26.Text = "No filtering"
         Me.CheckBox26.UseVisualStyleBackColor = True
@@ -1220,7 +1222,7 @@ Partial Class ClipDataForm
         Me.CheckBox25.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox25.Location = New System.Drawing.Point(329, 124)
         Me.CheckBox25.Name = "CheckBox25"
-        Me.CheckBox25.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox25.Size = New System.Drawing.Size(59, 17)
         Me.CheckBox25.TabIndex = 1
         Me.CheckBox25.Text = "MTags"
         Me.CheckBox25.UseVisualStyleBackColor = True
@@ -1234,7 +1236,7 @@ Partial Class ClipDataForm
         Me.CheckBox24.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox24.Location = New System.Drawing.Point(228, 124)
         Me.CheckBox24.Name = "CheckBox24"
-        Me.CheckBox24.Size = New System.Drawing.Size(44, 17)
+        Me.CheckBox24.Size = New System.Drawing.Size(46, 17)
         Me.CheckBox24.TabIndex = 1
         Me.CheckBox24.Text = "Title"
         Me.CheckBox24.UseVisualStyleBackColor = True
@@ -1246,7 +1248,7 @@ Partial Class ClipDataForm
         Me.CheckBox22.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox22.Location = New System.Drawing.Point(329, 87)
         Me.CheckBox22.Name = "CheckBox22"
-        Me.CheckBox22.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox22.Size = New System.Drawing.Size(59, 17)
         Me.CheckBox22.TabIndex = 1
         Me.CheckBox22.Text = "MTags"
         Me.CheckBox22.UseVisualStyleBackColor = True
@@ -1260,7 +1262,7 @@ Partial Class ClipDataForm
         Me.CheckBox21.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox21.Location = New System.Drawing.Point(228, 87)
         Me.CheckBox21.Name = "CheckBox21"
-        Me.CheckBox21.Size = New System.Drawing.Size(44, 17)
+        Me.CheckBox21.Size = New System.Drawing.Size(46, 17)
         Me.CheckBox21.TabIndex = 1
         Me.CheckBox21.Text = "Title"
         Me.CheckBox21.UseVisualStyleBackColor = True
@@ -1274,7 +1276,7 @@ Partial Class ClipDataForm
         Me.CheckBox23.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox23.Location = New System.Drawing.Point(276, 124)
         Me.CheckBox23.Name = "CheckBox23"
-        Me.CheckBox23.Size = New System.Drawing.Size(48, 17)
+        Me.CheckBox23.Size = New System.Drawing.Size(50, 17)
         Me.CheckBox23.TabIndex = 1
         Me.CheckBox23.Text = "Tags"
         Me.CheckBox23.UseVisualStyleBackColor = True
@@ -1286,7 +1288,7 @@ Partial Class ClipDataForm
         Me.CheckBox19.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox19.Location = New System.Drawing.Point(329, 53)
         Me.CheckBox19.Name = "CheckBox19"
-        Me.CheckBox19.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox19.Size = New System.Drawing.Size(59, 17)
         Me.CheckBox19.TabIndex = 1
         Me.CheckBox19.Text = "MTags"
         Me.CheckBox19.UseVisualStyleBackColor = True
@@ -1300,7 +1302,7 @@ Partial Class ClipDataForm
         Me.CheckBox20.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox20.Location = New System.Drawing.Point(276, 87)
         Me.CheckBox20.Name = "CheckBox20"
-        Me.CheckBox20.Size = New System.Drawing.Size(48, 17)
+        Me.CheckBox20.Size = New System.Drawing.Size(50, 17)
         Me.CheckBox20.TabIndex = 1
         Me.CheckBox20.Text = "Tags"
         Me.CheckBox20.UseVisualStyleBackColor = True
@@ -1310,7 +1312,7 @@ Partial Class ClipDataForm
         Me.TextBox12.Enabled = False
         Me.TextBox12.Location = New System.Drawing.Point(126, 122)
         Me.TextBox12.Name = "TextBox12"
-        Me.TextBox12.Size = New System.Drawing.Size(84, 18)
+        Me.TextBox12.Size = New System.Drawing.Size(84, 19)
         Me.TextBox12.TabIndex = 0
         '
         'CheckBox18
@@ -1322,7 +1324,7 @@ Partial Class ClipDataForm
         Me.CheckBox18.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox18.Location = New System.Drawing.Point(228, 53)
         Me.CheckBox18.Name = "CheckBox18"
-        Me.CheckBox18.Size = New System.Drawing.Size(44, 17)
+        Me.CheckBox18.Size = New System.Drawing.Size(46, 17)
         Me.CheckBox18.TabIndex = 1
         Me.CheckBox18.Text = "Title"
         Me.CheckBox18.UseVisualStyleBackColor = True
@@ -1332,7 +1334,7 @@ Partial Class ClipDataForm
         Me.TextBox11.Enabled = False
         Me.TextBox11.Location = New System.Drawing.Point(126, 85)
         Me.TextBox11.Name = "TextBox11"
-        Me.TextBox11.Size = New System.Drawing.Size(84, 18)
+        Me.TextBox11.Size = New System.Drawing.Size(84, 19)
         Me.TextBox11.TabIndex = 0
         '
         'CheckBox17
@@ -1344,7 +1346,7 @@ Partial Class ClipDataForm
         Me.CheckBox17.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.CheckBox17.Location = New System.Drawing.Point(276, 53)
         Me.CheckBox17.Name = "CheckBox17"
-        Me.CheckBox17.Size = New System.Drawing.Size(48, 17)
+        Me.CheckBox17.Size = New System.Drawing.Size(50, 17)
         Me.CheckBox17.TabIndex = 1
         Me.CheckBox17.Text = "Tags"
         Me.CheckBox17.UseVisualStyleBackColor = True
@@ -1353,7 +1355,7 @@ Partial Class ClipDataForm
         '
         Me.TextBox10.Location = New System.Drawing.Point(126, 51)
         Me.TextBox10.Name = "TextBox10"
-        Me.TextBox10.Size = New System.Drawing.Size(84, 18)
+        Me.TextBox10.Size = New System.Drawing.Size(84, 19)
         Me.TextBox10.TabIndex = 0
         '
         'Panel4
@@ -1373,7 +1375,7 @@ Partial Class ClipDataForm
         Me.RadioButton8.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.RadioButton8.Location = New System.Drawing.Point(80, 3)
         Me.RadioButton8.Name = "RadioButton8"
-        Me.RadioButton8.Size = New System.Drawing.Size(41, 17)
+        Me.RadioButton8.Size = New System.Drawing.Size(42, 17)
         Me.RadioButton8.TabIndex = 6
         Me.RadioButton8.TabStop = True
         Me.RadioButton8.Text = "Not"
@@ -1422,7 +1424,7 @@ Partial Class ClipDataForm
         Me.RadioButton6.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.RadioButton6.Location = New System.Drawing.Point(80, 3)
         Me.RadioButton6.Name = "RadioButton6"
-        Me.RadioButton6.Size = New System.Drawing.Size(41, 17)
+        Me.RadioButton6.Size = New System.Drawing.Size(42, 17)
         Me.RadioButton6.TabIndex = 6
         Me.RadioButton6.TabStop = True
         Me.RadioButton6.Text = "Not"
@@ -1482,7 +1484,7 @@ Partial Class ClipDataForm
         Me.CheckBox15.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!)
         Me.CheckBox15.Location = New System.Drawing.Point(595, 360)
         Me.CheckBox15.Name = "CheckBox15"
-        Me.CheckBox15.Size = New System.Drawing.Size(126, 17)
+        Me.CheckBox15.Size = New System.Drawing.Size(127, 17)
         Me.CheckBox15.TabIndex = 35
         Me.CheckBox15.Text = "Map Photo Locations"
         Me.CheckBox15.UseVisualStyleBackColor = True
@@ -1494,7 +1496,7 @@ Partial Class ClipDataForm
         Me.CheckBox16.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox16.Location = New System.Drawing.Point(338, 494)
         Me.CheckBox16.Name = "CheckBox16"
-        Me.CheckBox16.Size = New System.Drawing.Size(104, 17)
+        Me.CheckBox16.Size = New System.Drawing.Size(117, 19)
         Me.CheckBox16.TabIndex = 50
         Me.CheckBox16.Text = "Disable statistics"
         Me.CheckBox16.UseVisualStyleBackColor = True
@@ -1516,7 +1518,7 @@ Partial Class ClipDataForm
         Me.CheckBox29.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox29.Location = New System.Drawing.Point(595, 408)
         Me.CheckBox29.Name = "CheckBox29"
-        Me.CheckBox29.Size = New System.Drawing.Size(128, 17)
+        Me.CheckBox29.Size = New System.Drawing.Size(130, 17)
         Me.CheckBox29.TabIndex = 35
         Me.CheckBox29.Text = "Export User Locations"
         Me.CheckBox29.UseVisualStyleBackColor = True
@@ -1528,7 +1530,7 @@ Partial Class ClipDataForm
         Me.CheckBox30.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox30.Location = New System.Drawing.Point(228, 494)
         Me.CheckBox30.Name = "CheckBox30"
-        Me.CheckBox30.Size = New System.Drawing.Size(99, 17)
+        Me.CheckBox30.Size = New System.Drawing.Size(110, 19)
         Me.CheckBox30.TabIndex = 50
         Me.CheckBox30.Text = "Photocollection"
         Me.CheckBox30.UseVisualStyleBackColor = True
@@ -1551,7 +1553,7 @@ Partial Class ClipDataForm
         Me.CheckBox31.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.CheckBox31.Location = New System.Drawing.Point(72, 494)
         Me.CheckBox31.Name = "CheckBox31"
-        Me.CheckBox31.Size = New System.Drawing.Size(140, 17)
+        Me.CheckBox31.Size = New System.Drawing.Size(155, 19)
         Me.CheckBox31.TabIndex = 50
         Me.CheckBox31.Text = "Classify Tourists/ Locals"
         Me.CheckBox31.UseVisualStyleBackColor = True
@@ -1562,7 +1564,7 @@ Partial Class ClipDataForm
         Me.CheckBox32.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox32.Location = New System.Drawing.Point(595, 376)
         Me.CheckBox32.Name = "CheckBox32"
-        Me.CheckBox32.Size = New System.Drawing.Size(121, 17)
+        Me.CheckBox32.Size = New System.Drawing.Size(126, 17)
         Me.CheckBox32.TabIndex = 35
         Me.CheckBox32.Text = "Map Tourists/ Locals"
         Me.CheckBox32.UseVisualStyleBackColor = True
@@ -1573,7 +1575,7 @@ Partial Class ClipDataForm
         Me.CheckBox33.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox33.Location = New System.Drawing.Point(595, 392)
         Me.CheckBox33.Name = "CheckBox33"
-        Me.CheckBox33.Size = New System.Drawing.Size(139, 17)
+        Me.CheckBox33.Size = New System.Drawing.Size(140, 17)
         Me.CheckBox33.TabIndex = 35
         Me.CheckBox33.Text = "Map Photos from Locals"
         Me.CheckBox33.UseVisualStyleBackColor = True
@@ -1624,6 +1626,17 @@ Partial Class ClipDataForm
         Me.Label44.TabIndex = 51
         Me.Label44.Text = "Shape 1 of 1."
         Me.Label44.Visible = False
+        '
+        'CheckBox36
+        '
+        Me.CheckBox36.AutoSize = True
+        Me.CheckBox36.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox36.Location = New System.Drawing.Point(224, 195)
+        Me.CheckBox36.Name = "CheckBox36"
+        Me.CheckBox36.Size = New System.Drawing.Size(181, 17)
+        Me.CheckBox36.TabIndex = 51
+        Me.CheckBox36.Text = "Transponse to temporal structure"
+        Me.CheckBox36.UseVisualStyleBackColor = True
         '
         'ClipDataForm
         '
@@ -1815,4 +1828,5 @@ Partial Class ClipDataForm
     Friend WithEvents Label44 As Label
     Friend WithEvents CheckBox34 As CheckBox
     Friend WithEvents CheckBox35 As CheckBox
+    Friend WithEvents CheckBox36 As CheckBox
 End Class
