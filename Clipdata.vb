@@ -33,6 +33,9 @@ Public Class ClipDataForm
     Public searchFullWords As Boolean = True
     Public DataFiltering As Boolean = False
 
+    'Global Declaration of PhotosPerDayLists for speed (used in case of temporal transponse)
+    Public PhotosPerDayLists As Dictionary(Of String, List(Of String)) = New Dictionary(Of String, List(Of String))(System.StringComparer.OrdinalIgnoreCase)
+
     'global variables for speed in point-in-polygon test
     '  int    polyCorners  =  how many corners the polygon has (no repeats)
     '  float  polyX[]      =  horizontal coordinates of corners
@@ -522,7 +525,9 @@ Public Class ClipDataForm
         Dim maxDate As System.DateTime = max_date.Value
         Dim PDate As System.DateTime = Nothing
         Dim settingsExportOnly As Boolean = CheckBox34.Checked
-        Dim timetransponse As Boolean = CheckBox36.Checked
+        Dim timetransponse As Boolean = CheckBox36.Checked 'whether data output to yyyy-MM-dd or not
+        Dim dirCreatedHash As New HashSet(Of String) 'contains list of yyyy-values to remember which years (timetransponse) were already created
+        Dim keyCreatedHash As New HashSet(Of String) 'Contains keys of yyyy-mm-dd for check before add
 
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
@@ -570,6 +575,12 @@ Public Class ClipDataForm
         Dim localusercount As Long = 0
         If userOriginExport = True Or CheckBox31.Checked = True Or maptouristslocals = True Or mapPhotosFromLocals = True Then
             HelperFunctions.LoadUserLocationGeocodeIndex()
+        End If
+
+        If timetransponse Then
+            PhotosPerDayLists.Clear()
+            dirCreatedHash.Clear()
+            keyCreatedHash.Clear()
         End If
 
         'Check for Advanced Filter Criteria
@@ -755,7 +766,7 @@ Public Class ClipDataForm
                     If Not (Directory.Exists(outputdir)) Then
                         Directory.CreateDirectory(outputdir)
                     End If
-                    If export = True Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                    If export = True And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
                 End If
             End If
 
@@ -775,10 +786,10 @@ Public Class ClipDataForm
                         'File.Copy(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
                         HelperFunctions.TransferSettings(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
                     End If
-                    If settingsExportOnly = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt") 'create first file container for data
+                    If settingsExportOnly = False And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt") 'create first file container for data
                 End If
 
-                    If settingsExportOnly = False Then 'skip export of datafiles if only settings export selected (if true, will created empty folder structure with settings.txt's)
+                If settingsExportOnly = False Then 'skip export of datafiles if only settings export selected (if true, will created empty folder structure with settings.txt's)
                     SpatialSkip = False
                     If NoClip OrElse filename_data_sel_CompletelyWithin.Contains(dataSource) OrElse mapPhotosFromLocals = True Then SpatialSkip = True
                     For Each filename As String In dataSource.datafiles
@@ -872,6 +883,18 @@ Public Class ClipDataForm
                                             If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
                                                 countlines = countlines + 1
 
+                                                If timetransponse Then
+                                                    Dim daykey As String = PDate.ToString("yyyy-MM-d")
+                                                    If keyCreatedHash.Contains(daykey) = False Then
+                                                        Dim newPList As New List(Of String)
+                                                        newPList.Add(linetext)
+                                                        PhotosPerDayLists.Add(daykey, newPList) 'add key, initialize list
+                                                        keyCreatedHash.Add(daykey)
+                                                    Else
+                                                        PhotosPerDayLists(daykey).Add(linetext) 'add line to list based on key
+                                                    End If
+                                                End If
+
                                                 'Statistics
                                                 hash.Add(PhotoIDc) 'Hash-List for Duplicate Detection
                                                 If hash.Count > 100000 Then 'Clear List if Hash gets too large (Duplicate Detection above 500,000 makes no sense anyway..)
@@ -934,21 +957,25 @@ Public Class ClipDataForm
                                                     End If
                                                 End If
                                                 If export = True Then
-                                                    If header_line_written = False Then
-                                                        outputfile.WriteLine(header_line)
-                                                        header_line_written = True
+                                                    If timetransponse = False Then
+                                                        If header_line_written = False Then
+                                                            outputfile.WriteLine(header_line)
+                                                            header_line_written = True
+                                                        End If
+                                                        If dataselall = True Then 'If all data is to be exported
+                                                            linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
+                                                        Else 'if only some data is to be exported
+                                                            linetext = countlines
+                                                            Dim ii As Integer = 0
+                                                            For Each d As String In headerline_arr
+                                                                If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
+                                                                ii = ii + 1
+                                                            Next
+                                                        End If
+                                                        outputfile.WriteLine(linetext)
+                                                    Else 'timetransponse true 
+
                                                     End If
-                                                    If dataselall = True Then 'If all data is to be exported
-                                                        linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
-                                                    Else 'if only some data is to be exported
-                                                        linetext = countlines
-                                                        Dim ii As Integer = 0
-                                                        For Each d As String In headerline_arr
-                                                            If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
-                                                            ii = ii + 1
-                                                        Next
-                                                    End If
-                                                    outputfile.WriteLine(linetext)
                                                 End If
                                                 If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'Update Progress 
                                                     Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
@@ -959,13 +986,31 @@ Public Class ClipDataForm
                                                     countlines = 0
                                                     countnewfiles = countnewfiles + 1
                                                     If export = True Then
-                                                        outputfile.Flush()
-                                                        outputfile.Close()
-                                                        If retainfolderstructure = True Then
-                                                            FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & ".txt", newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part.txt")
+                                                        If timetransponse = False Then
+                                                            outputfile.Flush()
+                                                            outputfile.Close()
+                                                            If retainfolderstructure = True Then
+                                                                FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & ".txt", newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part.txt")
+                                                            End If
+                                                            outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                                                            header_line_written = False
+                                                        Else 'timetransponse true
+                                                            For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
+                                                                Dim year As String = Daylist.Key.Substring(4)
+                                                                newfilenamepath = newfilenamepath & year & "\"
+                                                                If dirCreatedHash.Contains(year) = False Then
+                                                                    If Directory.Exists(newfilenamepath) = False Then
+                                                                        Directory.CreateDirectory(newfilenamepath)
+                                                                        dirCreatedHash.Add(year)
+                                                                        MsgBox(newfilenamepath)
+                                                                    End If
+                                                                End If
+                                                                Dim path As String = newfilenamepath & Daylist.Key.Substring(5, Daylist.Key.Length - 5) & ".txt"
+                                                                System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
+                                                            Next
+                                                            PhotosPerDayLists.Clear()
+                                                            keyCreatedHash.Clear()
                                                         End If
-                                                        outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
-                                                        header_line_written = False
                                                     End If
                                                 End If
                                             End If
@@ -983,7 +1028,8 @@ skip_line:                      Loop
                         End If
                     Next
                 End If
-                'Delete Outputdirectory if Empty
+
+                'Delete Outputdirectory if Empty & Retainfolderstructure true
                 If retainfolderstructure = True And export = True And settingsExportOnly = False Then
                     outputfile.Flush()
                     outputfile.Close()
@@ -1003,6 +1049,23 @@ skip_line:                      Loop
                 End If
             Next
 
+            'Write one last time if timetransponse (below 50k)
+            If timetransponse = True Then
+                For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
+                    Dim year As String = Daylist.Key.Substring(4)
+                    newfilenamepath = newfilenamepath & year & "\"
+                    If dirCreatedHash.Contains(year) = False Then
+                        If Directory.Exists(newfilenamepath) = False Then
+                            Directory.CreateDirectory(newfilenamepath)
+                            dirCreatedHash.Add(year)
+                            MsgBox(newfilenamepath)
+                        End If
+                    End If
+                    Dim path As String = newfilenamepath & Daylist.Key.Substring(5, Daylist.Key.Length - 5) & ".txt"
+                    System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
+                Next
+                PhotosPerDayLists.Clear()
+            End If
 
             Dim uTagsCount As Long = 0
             If estimateUnique = True Then
@@ -1028,7 +1091,7 @@ skip_line:                      Loop
                 visualForm.Refresh()
                 visualForm.bmOrig = visMap
             End If
-            If export = True AndAlso retainfolderstructure = False Then
+            If export = True AndAlso retainfolderstructure = False AndAlso timetransponse = False Then
                 outputfile.Flush()
                 outputfile.Close()
                 'if no photos  written
