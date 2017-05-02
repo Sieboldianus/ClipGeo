@@ -12,7 +12,7 @@ Imports DotSpatial.Topology
 Public Class ClipDataForm
     Public AppPath As String = Application.StartupPath() & "\"
     Public strPath As String = ""
-    Public Event uUDatemap(sender As System.Object, e As System.EventArgs)
+    Public Event updatemap(sender As System.Object, e As System.EventArgs)
     Public selectedmarker As GMapMarker = Nothing
     Public markerIsSelected As Boolean = False
     Public isMouseDown As Boolean
@@ -183,7 +183,7 @@ Public Class ClipDataForm
                 Me.TextBox2.Text = startDataset.rightlong
                 Me.TextBox9.Text = startDataset.filename & "_Clip"
             End If
-            RaiseEvent uUDatemap(Button3, System.EventArgs.Empty)
+            RaiseEvent updatemap(Button3, System.EventArgs.Empty)
         End If
         maploaded = True
         savesettings()
@@ -203,7 +203,7 @@ Public Class ClipDataForm
 
 
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Me.uUDatemap
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Me.updatemap
         Dim centerlat, centerlong, toplat, bottomlat, leftlong, rightlong As Double
 
         If TextBox6.Text = "" Or CheckBox2.Checked = True Then
@@ -552,7 +552,7 @@ Public Class ClipDataForm
         visualForm.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedToolWindow
 
         'Prepare list of datasets to be exported, based on the users selection
-        'This is the List of Row-Names, uUDate if row names have changed!
+        'This is the List of Row-Names, update if row names have changed!
         Dim dataSelList As New List(Of String)
         If Not dataselall = True Then
             If CheckBox3.Checked = True Then
@@ -990,7 +990,7 @@ Public Class ClipDataForm
 
                                                     End If
                                                 End If
-                                                If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'UUDate Progress 
+                                                If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'update Progress 
                                                     Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
                                                     Me.Refresh()
                                                 End If
@@ -1026,7 +1026,7 @@ skip_line:                      Loop
                             ProgressBar1.Value = ProgressBar1.Value + 1
                         End Using
                         If CheckBox15.Checked Then
-                            'UUDate VisMap for each Dataset
+                            'update VisMap for each Dataset
                             visualForm.PictureBox1.Image = visMap
                             visualForm.Refresh()
                         End If
