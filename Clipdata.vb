@@ -12,7 +12,7 @@ Imports DotSpatial.Topology
 Public Class ClipDataForm
     Public AppPath As String = Application.StartupPath() & "\"
     Public strPath As String = ""
-    Public Event updatemap(sender As System.Object, e As System.EventArgs)
+    Public Event uUDatemap(sender As System.Object, e As System.EventArgs)
     Public selectedmarker As GMapMarker = Nothing
     Public markerIsSelected As Boolean = False
     Public isMouseDown As Boolean
@@ -116,28 +116,28 @@ Public Class ClipDataForm
                 End If
                 files = Directory.GetFiles(strPath & dri.Name & "\")
 
-                    'Set StartItem to Greater Toronto Area, if exists
-                    If currentSourceData.filename = SetStartDatasetName Then startDataset = currentSourceData
-                    For Each filename In files
-                        filenamepath = filename
-                        filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
-                        If filename.Length > 13 Then
-                            If filename.Substring(filename.Length - 13) = "_settings.txt" Then
-                                filename = "settings.txt"
-                            End If
+                'Set StartItem to Greater Toronto Area, if exists
+                If currentSourceData.filename = SetStartDatasetName Then startDataset = currentSourceData
+                For Each filename In files
+                    filenamepath = filename
+                    filename = filename.Substring(filename.LastIndexOf("\"c) + 1)
+                    If filename.Length > 13 Then
+                        If filename.Substring(filename.Length - 13) = "_settings.txt" Then
+                            filename = "settings.txt"
                         End If
-                        If Not (filename = "GridCoordinates.txt") And Not (filename.Substring(0, 3) = "log") And Not filename.Contains("settings") Then
-                            currentSourceData.datafiles.Add(filenamepath)
-                            If InStr(currentSourceData.photosPerFile.ToString, filename) Then
-                                currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + currentSourceData.photosPerFile
-                            Else
-                                leftpart = Strings.Left(filename, filename.LastIndexOf("_"))
-                                currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1))
-                            End If
+                    End If
+                    If Not (filename = "GridCoordinates.txt") And Not (filename.Substring(0, 3) = "log") And Not filename.Contains("settings") Then
+                        currentSourceData.datafiles.Add(filenamepath)
+                        If InStr(currentSourceData.photosPerFile.ToString, filename) Then
+                            currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + currentSourceData.photosPerFile
+                        Else
+                            leftpart = Strings.Left(filename, filename.LastIndexOf("_"))
+                            currentSourceData.TotalPhotos = currentSourceData.TotalPhotos + Val(Strings.Right(leftpart, Strings.Len(leftpart) - leftpart.LastIndexOf("_") - 1))
                         End If
-                    Next
-                    filename_data.Add(currentSourceData)
-                End If
+                    End If
+                Next
+                filename_data.Add(currentSourceData)
+            End If
         Next dri
         If startDataset Is Nothing Then
             startDataset = filename_data(0)
@@ -183,7 +183,7 @@ Public Class ClipDataForm
                 Me.TextBox2.Text = startDataset.rightlong
                 Me.TextBox9.Text = startDataset.filename & "_Clip"
             End If
-            RaiseEvent updatemap(Button3, System.EventArgs.Empty)
+            RaiseEvent uUDatemap(Button3, System.EventArgs.Empty)
         End If
         maploaded = True
         savesettings()
@@ -203,7 +203,7 @@ Public Class ClipDataForm
 
 
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Me.updatemap
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Me.uUDatemap
         Dim centerlat, centerlong, toplat, bottomlat, leftlong, rightlong As Double
 
         If TextBox6.Text = "" Or CheckBox2.Checked = True Then
@@ -523,11 +523,12 @@ Public Class ClipDataForm
         Dim header_line_written As Boolean = False
         Dim minDate As System.DateTime = min_date.Value
         Dim maxDate As System.DateTime = max_date.Value
-        Dim PDate As System.DateTime = Nothing
+        Dim UDate, PDate As System.DateTime 'Upload date, PhotoDate
         Dim settingsExportOnly As Boolean = CheckBox34.Checked
         Dim timetransponse As Boolean = CheckBox36.Checked 'whether data output to yyyy-MM-dd or not
         Dim dirCreatedHash As New HashSet(Of String) 'contains list of yyyy-values to remember which years (timetransponse) were already created
         Dim keyCreatedHash As New HashSet(Of String) 'Contains keys of yyyy-mm-dd for check before add
+        Dim GroupByTime As String = "yyyy-MM-d"
 
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
@@ -551,7 +552,7 @@ Public Class ClipDataForm
         visualForm.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedToolWindow
 
         'Prepare list of datasets to be exported, based on the users selection
-        'This is the List of Row-Names, update if row names have changed!
+        'This is the List of Row-Names, uUDate if row names have changed!
         Dim dataSelList As New List(Of String)
         If Not dataselall = True Then
             If CheckBox3.Checked = True Then
@@ -581,6 +582,13 @@ Public Class ClipDataForm
             PhotosPerDayLists.Clear()
             dirCreatedHash.Clear()
             keyCreatedHash.Clear()
+            If RadioButton12.Checked Then
+                GroupByTime = "yyyy-MM-d"
+            ElseIf RadioButton11.Checked Then
+                GroupByTime = "yyyy-MM"
+            Else
+                GroupByTime = "yyyy"
+            End If
         End If
 
         'Check for Advanced Filter Criteria
@@ -761,7 +769,11 @@ Public Class ClipDataForm
 
             countnewfiles = countnewfiles + 1
             If retainfolderstructure = False Then
-                newfilenamepath = outputdir & outputname
+                If timetransponse = False Then
+                    newfilenamepath = outputdir & outputname
+                Else
+                    newfilenamepath = outputdir
+                End If
                 If export = True Or userOriginExport = True Then
                     If Not (Directory.Exists(outputdir)) Then
                         Directory.CreateDirectory(outputdir)
@@ -821,7 +833,7 @@ Public Class ClipDataForm
 
                                 For Each d As String In headerline_arr
                                     If dataSelList.Contains(d) Then headerline_arr_sel.Add(d) 'Add Items to Export-Selection if user has selected them
-                                    If RadioButton1.Checked = False Then
+                                    If RadioButton1.Checked = False Or timetransponse = True Then
                                         If d = "DateTaken" Then
                                             If RadioButton3.Checked = True Then dateColumn = c
                                         End If
@@ -832,7 +844,7 @@ Public Class ClipDataForm
                                     c = c + 1
                                 Next
 
-                                If dateColumn = 0 AndAlso RadioButton1.Checked = False Then
+                                If dateColumn = 0 AndAlso (RadioButton1.Checked = False Or timetransponse = True) Then
                                     MsgBox("Could not find Date Column in Input Data.")
                                     Exit Sub
                                 End If
@@ -856,6 +868,7 @@ Public Class ClipDataForm
 
                                         PhotoIDc = Val(linetextArr(5)) 'PhotoID
                                         UserIDc = linetextArr(7) 'UserID (String!)
+                                        If timetransponse Then PDate = DateTime.Parse(linetextArr(8))
                                         If photocollection Then
                                             Views = Val(linetextArr(10)) 'Views
                                             PhotoURL = linetextArr(4) 'URL
@@ -876,15 +889,15 @@ Public Class ClipDataForm
                                     End If
 
                                     'Read DateValue from Line if DateLimit specified
-                                    If Not dateColumn = 0 Then PDate = DateTime.Parse(linetext.Split(",")(dateColumn))
+                                    If Not dateColumn = 0 Then UDate = DateTime.Parse(linetext.Split(",")(dateColumn))
 
                                     If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
-                                        If dateColumn = 0 OrElse LiesWithinDateRange(PDate, minDate, maxDate) Then
+                                        If dateColumn = 0 OrElse LiesWithinDateRange(UDate, minDate, maxDate) Then
                                             If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
                                                 countlines = countlines + 1
 
                                                 If timetransponse Then
-                                                    Dim daykey As String = PDate.ToString("yyyy-MM-d")
+                                                    Dim daykey As String = PDate.ToString(GroupByTime)
                                                     If keyCreatedHash.Contains(daykey) = False Then
                                                         Dim newPList As New List(Of String)
                                                         newPList.Add(linetext)
@@ -977,7 +990,7 @@ Public Class ClipDataForm
 
                                                     End If
                                                 End If
-                                                If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'Update Progress 
+                                                If (countlines_sich + countlines) Mod (1 + ProgressBar1.Value) * 1000 = 0 Then 'UUDate Progress 
                                                     Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
                                                     Me.Refresh()
                                                 End If
@@ -996,16 +1009,7 @@ Public Class ClipDataForm
                                                             header_line_written = False
                                                         Else 'timetransponse true
                                                             For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
-                                                                Dim year As String = Daylist.Key.Substring(4)
-                                                                newfilenamepath = newfilenamepath & year & "\"
-                                                                If dirCreatedHash.Contains(year) = False Then
-                                                                    If Directory.Exists(newfilenamepath) = False Then
-                                                                        Directory.CreateDirectory(newfilenamepath)
-                                                                        dirCreatedHash.Add(year)
-                                                                        MsgBox(newfilenamepath)
-                                                                    End If
-                                                                End If
-                                                                Dim path As String = newfilenamepath & Daylist.Key.Substring(5, Daylist.Key.Length - 5) & ".txt"
+                                                                Dim path As String = newfilenamepath & Daylist.Key & ".txt"
                                                                 System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
                                                             Next
                                                             PhotosPerDayLists.Clear()
@@ -1022,7 +1026,7 @@ skip_line:                      Loop
                             ProgressBar1.Value = ProgressBar1.Value + 1
                         End Using
                         If CheckBox15.Checked Then
-                            'Update VisMap for each Dataset
+                            'UUDate VisMap for each Dataset
                             visualForm.PictureBox1.Image = visMap
                             visualForm.Refresh()
                         End If
@@ -1049,22 +1053,15 @@ skip_line:                      Loop
                 End If
             Next
 
-            'Write one last time if timetransponse (below 50k)
+            'Write one last time if timetransponse (below 50k) and then Sort Data based on Date Taken
             If timetransponse = True Then
                 For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
-                    Dim year As String = Daylist.Key.Substring(4)
-                    newfilenamepath = newfilenamepath & year & "\"
-                    If dirCreatedHash.Contains(year) = False Then
-                        If Directory.Exists(newfilenamepath) = False Then
-                            Directory.CreateDirectory(newfilenamepath)
-                            dirCreatedHash.Add(year)
-                            MsgBox(newfilenamepath)
-                        End If
-                    End If
-                    Dim path As String = newfilenamepath & Daylist.Key.Substring(5, Daylist.Key.Length - 5) & ".txt"
+                    Dim path As String = newfilenamepath & Daylist.Key & ".txt"
                     System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
                 Next
                 PhotosPerDayLists.Clear()
+                'Load Data & Sort based on DateTaken
+                '...
             End If
 
             Dim uTagsCount As Long = 0
@@ -1281,10 +1278,10 @@ skip_line:                      Loop
         Return oddNodes
     End Function
 
-    Function LiesWithinDateRange(PDate As System.DateTime, MinDate As System.DateTime, MaxDate As System.DateTime) As Boolean
+    Function LiesWithinDateRange(UDate As System.DateTime, MinDate As System.DateTime, MaxDate As System.DateTime) As Boolean
         LiesWithinDateRange = False
-        If DateTime.Compare(PDate, MinDate) >= 0 Then
-            If DateTime.Compare(PDate, MaxDate) <= 0 Then
+        If DateTime.Compare(UDate, MinDate) >= 0 Then
+            If DateTime.Compare(UDate, MaxDate) <= 0 Then
                 LiesWithinDateRange = True
                 Exit Function
             End If
