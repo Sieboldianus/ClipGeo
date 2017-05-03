@@ -7,6 +7,7 @@ Imports System.Text
 Imports System.Net
 Imports DotSpatial.Data
 Imports DotSpatial.Topology
+Imports System.Linq
 
 
 Public Class ClipDataForm
@@ -1060,8 +1061,32 @@ skip_line:                      Loop
                     System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
                 Next
                 PhotosPerDayLists.Clear()
+                Dim unsortedFiles As New List(Of String)
                 'Load Data & Sort based on DateTaken
-                '...
+                Label5.Text = "Sorting Data based on Photo Timestamps.."
+                Me.Refresh()
+                unsortedFiles.AddRange(Directory.GetFiles(newfilenamepath))
+                For Each unsortedFile As String In unsortedFiles
+                    Dim objReader As New System.IO.StreamReader(unsortedFile)
+                    Dim linetext_all As New List(Of KeyValuePair(Of DateTime, String))
+                    Do While objReader.Peek() <> -1
+                        Dim linetext As String = objReader.ReadLine()
+                        PDate = DateTime.Parse(linetext.Split(",")(8)) 'DateTaken
+                        linetext_all.Add(New KeyValuePair(Of DateTime, String)(PDate, linetext))
+                    Loop
+                    objReader.Close()
+                    linetext_all.Sort(Function(x, y) x.Key.CompareTo(y.Key))
+                    'Sort list of keyvaluepair & convert to simple list
+                    'Can be done better!
+                    Dim linetext_all_sorted As New List(Of String)
+                    For Each entry As KeyValuePair(Of DateTime, String) In linetext_all
+                        linetext_all_sorted.Add(entry.Value)
+                    Next
+                    'Now Overwrite File with sorted List
+                    'System.IO.File.WriteAllText(unsortedFile, header_line)
+                    System.IO.File.WriteAllLines(unsortedFile, linetext_all_sorted)
+                Next
+                    Label5.Text = ""
             End If
 
             Dim uTagsCount As Long = 0
@@ -2025,4 +2050,3 @@ Public Class SourceData
         End Set
     End Property
 End Class
-
