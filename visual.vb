@@ -218,7 +218,8 @@ Public Class visualForm
             'Dim color As System.Drawing.Color = System.Drawing.Color.FromArgb(red, green, blue)
             'Dim hue As Single = datacolor.GetHue()
             'hue = 360 - hue 'Inverts color, see http://stackoverflow.com/questions/1165107/how-do-i-invert-a-colour-color
-            datacolor = Color.Cyan
+            'datacolor = Color.Cyan
+            datacolor = Color.FromArgb(datacolor.ToArgb() Xor &HFFFFFF)
         End If
     End Sub
 
