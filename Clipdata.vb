@@ -1075,16 +1075,19 @@ skip_line:                      Loop
                         linetext_all.Add(New KeyValuePair(Of DateTime, String)(PDate, linetext))
                     Loop
                     objReader.Close()
+
+                    'Sort list of keyvaluepair & write to file (existing is overwritten)
+                    'First Value is replaced by DateTaken:
+                    '2004-02-01 14:00:55,43.469554,-79.711578,My workstation!,https://fa...
                     linetext_all.Sort(Function(x, y) x.Key.CompareTo(y.Key))
-                    'Sort list of keyvaluepair & convert to simple list
-                    'Can be done better!
-                    Dim linetext_all_sorted As New List(Of String)
+                    Dim file As System.IO.StreamWriter
+                    file = My.Computer.FileSystem.OpenTextFileWriter(unsortedFile, False)
+                    file.WriteLine("ID,Latitude,Longitude,NAME,URL,PhotoID,Owner,UserID,DateTaken,UploadDate,Views,Tags,MTags")
                     For Each entry As KeyValuePair(Of DateTime, String) In linetext_all
-                        linetext_all_sorted.Add(entry.Value)
+                        Dim linetext As String = entry.Key.ToString("yyyy-MM-dd HH:mm:ss") & entry.Value.Substring(entry.Value.IndexOf(",")) 'Structure: Date (Sorted), Linetext
+                        file.WriteLine(linetext)
                     Next
-                    'Now Overwrite File with sorted List
-                    'System.IO.File.WriteAllText(unsortedFile, header_line)
-                    System.IO.File.WriteAllLines(unsortedFile, linetext_all_sorted)
+                    file.Close()
                 Next
                     Label5.Text = ""
             End If
