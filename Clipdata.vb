@@ -33,6 +33,7 @@ Public Class ClipDataForm
     Public SearchTitle1, SearchMtags1, SearchTags1, SearchTitle2, SearchMtags2, SearchTags2, SearchTitle3, SearchMtags3, SearchTags3 As Boolean
     Public searchFullWords As Boolean = True
     Public DataFiltering As Boolean = False
+    Public noboundary As Boolean = False
 
     'Global Declaration of PhotosPerDayLists for speed (used in case of temporal transponse)
     Public PhotosPerDayLists As Dictionary(Of String, List(Of String)) = New Dictionary(Of String, List(Of String))(System.StringComparer.OrdinalIgnoreCase)
@@ -140,17 +141,23 @@ Public Class ClipDataForm
                 filename_data.Add(currentSourceData)
             End If
         Next dri
-        If startDataset Is Nothing Then
-            startDataset = filename_data(0)
-        End If
+
         'Load Single Folder (if no subfolders are found)
-        If File.Exists(strPath & "settings.txt") And diArr.Length = 0 Then
+        If diArr.Length = 0 Then
             currentSourceData = New SourceData
-            currentSourceData.filename = HelperFunctions.GetSettingItem(strPath & "settings.txt", "profilename")
-            currentSourceData.bottomlat = HelperFunctions.GetSettingItem(strPath & "settings.txt", "bottomlat")
-            currentSourceData.leftlong = HelperFunctions.GetSettingItem(strPath & "settings.txt", "leftlong")
-            currentSourceData.toplat = HelperFunctions.GetSettingItem(strPath & "settings.txt", "toplat")
-            currentSourceData.rightlong = HelperFunctions.GetSettingItem(strPath & "settings.txt", "rightlong")
+            If File.Exists(strPath & "settings.txt") Then
+                currentSourceData.filename = HelperFunctions.GetSettingItem(strPath & "settings.txt", "profilename")
+                currentSourceData.bottomlat = HelperFunctions.GetSettingItem(strPath & "settings.txt", "bottomlat")
+                currentSourceData.leftlong = HelperFunctions.GetSettingItem(strPath & "settings.txt", "leftlong")
+                currentSourceData.toplat = HelperFunctions.GetSettingItem(strPath & "settings.txt", "toplat")
+                currentSourceData.rightlong = HelperFunctions.GetSettingItem(strPath & "settings.txt", "rightlong")
+            Else
+                currentSourceData.filename = "World"
+                currentSourceData.bottomlat = -90
+                currentSourceData.leftlong = -180
+                currentSourceData.toplat = 90
+                currentSourceData.rightlong = 180
+            End If
             files = Directory.GetFiles(strPath)
             For Each filename In files
                 filenamepath = filename
@@ -167,6 +174,10 @@ Public Class ClipDataForm
             filename_data.Add(currentSourceData)
         End If
 
+        If startDataset Is Nothing Then
+            startDataset = filename_data(0)
+        End If
+
         Dim countFiles As Integer = 0
         Dim countPhotos As Long = 0
         For Each datafilesList As SourceData In filename_data
@@ -177,16 +188,17 @@ Public Class ClipDataForm
         If Not countFiles = 0 Then
             Me.Label1.Text = "Number of files: " & countFiles & " (" & Math.Round(countPhotos, 0).ToString("N0") & " Photos)"
             Me.Refresh()
+
             If startDataset IsNot Nothing Then
                 Me.TextBox6.Text = startDataset.bottomlat
                 Me.TextBox3.Text = startDataset.leftlong
                 Me.TextBox5.Text = startDataset.toplat
                 Me.TextBox2.Text = startDataset.rightlong
                 Me.TextBox9.Text = startDataset.filename & "_Clip"
+                RaiseEvent updatemap(Button3, System.EventArgs.Empty)
+                maploaded = True
             End If
-            RaiseEvent updatemap(Button3, System.EventArgs.Empty)
         End If
-        maploaded = True
         savesettings()
     End Sub
 
@@ -252,77 +264,84 @@ Public Class ClipDataForm
         'Draw all other markers / Draws rectangles for each loaded dataset
         Dim i As Integer = 0
         For Each x As SourceData In filename_data
-            'First Draw red & grey rectangles
-            If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2015 Then
-                centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
-                centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
-
-                i = i + 1
-                toplat = x.toplat
-                bottomlat = x.bottomlat
-                rightlong = x.rightlong
-                leftlong = x.leftlong
-
-                points = New List(Of PointLatLng)
-                points.Add(New PointLatLng(toplat, leftlong))
-                points.Add(New PointLatLng(toplat, rightlong))
-                points.Add(New PointLatLng(bottomlat, rightlong))
-                points.Add(New PointLatLng(bottomlat, leftlong))
-                points.Add(New PointLatLng(toplat, leftlong))
-
-                Dim polygon_grey As GMapPolygon = Nothing
+            If Not IsNothing(x.toDate) Then
+                'First Draw red & grey rectangles
                 If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2015 Then
-                    polygon_red = New GMapPolygon(points, x.filename)
-                    polygon_red.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-                    polygon_red.Stroke = New Pen(Color.Red, 0.25)
-                Else
-                    polygon_grey = New GMapPolygon(points, x.filename)
-                    polygon_grey.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-                    polygon_grey.Stroke = New Pen(Color.DarkGray, 0.25)
-                End If
+                    centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
+                    centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
 
-                MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
-                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
-                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
-                If Not IsNothing(polygon_grey) Then overlayOne.Polygons.Add(polygon_grey)
-                If Not IsNothing(polygon_red) Then overlayOne.Polygons.Add(polygon_red)
-                GMapControl1.Overlays.Add(MarkerOverlay)
+                    i = i + 1
+                    toplat = x.toplat
+                    bottomlat = x.bottomlat
+                    rightlong = x.rightlong
+                    leftlong = x.leftlong
+
+                    points = New List(Of PointLatLng)
+                    points.Add(New PointLatLng(toplat, leftlong))
+                    points.Add(New PointLatLng(toplat, rightlong))
+                    points.Add(New PointLatLng(bottomlat, rightlong))
+                    points.Add(New PointLatLng(bottomlat, leftlong))
+                    points.Add(New PointLatLng(toplat, leftlong))
+
+                    Dim polygon_grey As GMapPolygon = Nothing
+                    If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2015 Then
+                        polygon_red = New GMapPolygon(points, x.filename)
+                        polygon_red.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
+                        polygon_red.Stroke = New Pen(Color.Red, 0.25)
+                    Else
+                        polygon_grey = New GMapPolygon(points, x.filename)
+                        polygon_grey.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
+                        polygon_grey.Stroke = New Pen(Color.DarkGray, 0.25)
+                    End If
+
+                    MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
+                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
+                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
+                    If Not IsNothing(polygon_grey) Then overlayOne.Polygons.Add(polygon_grey)
+                    If Not IsNothing(polygon_red) Then overlayOne.Polygons.Add(polygon_red)
+                    GMapControl1.Overlays.Add(MarkerOverlay)
+                End If
             End If
         Next
         For Each x As SourceData In filename_data
-            'then Draw all blue rectangles
-            If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2017 Then
-                centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
-                centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
+            If Not IsNothing(x.toDate) Then
+                'then Draw all blue rectangles
+                If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2017 Then
+                    centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
+                    centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
 
-                'tooltip = New GMapToolTip(Markers)
-                i = i + 1
-                toplat = x.toplat
-                bottomlat = x.bottomlat
-                rightlong = x.rightlong
-                leftlong = x.leftlong
+                    'tooltip = New GMapToolTip(Markers)
+                    i = i + 1
+                    toplat = x.toplat
+                    bottomlat = x.bottomlat
+                    rightlong = x.rightlong
+                    leftlong = x.leftlong
 
-                points = New List(Of PointLatLng)
-                points.Add(New PointLatLng(toplat, leftlong))
-                points.Add(New PointLatLng(toplat, rightlong))
-                points.Add(New PointLatLng(bottomlat, rightlong))
-                points.Add(New PointLatLng(bottomlat, leftlong))
-                points.Add(New PointLatLng(toplat, leftlong))
+                    points = New List(Of PointLatLng)
+                    points.Add(New PointLatLng(toplat, leftlong))
+                    points.Add(New PointLatLng(toplat, rightlong))
+                    points.Add(New PointLatLng(bottomlat, rightlong))
+                    points.Add(New PointLatLng(bottomlat, leftlong))
+                    points.Add(New PointLatLng(toplat, leftlong))
 
 
-                Dim polygon_blue As GMapPolygon = Nothing
-                polygon_blue = New GMapPolygon(points, x.filename)
-                polygon_blue.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-                polygon_blue.Stroke = New Pen(Color.Blue, 0.25)
+                    Dim polygon_blue As GMapPolygon = Nothing
+                    polygon_blue = New GMapPolygon(points, x.filename)
+                    polygon_blue.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
+                    polygon_blue.Stroke = New Pen(Color.Blue, 0.25)
 
-                MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
-                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
-                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
-                If Not IsNothing(polygon_blue) Then overlayOne.Polygons.Add(polygon_blue)
-                GMapControl1.Overlays.Add(MarkerOverlay)
+                    MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
+                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
+                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
+                    If Not IsNothing(polygon_blue) Then overlayOne.Polygons.Add(polygon_blue)
+                    GMapControl1.Overlays.Add(MarkerOverlay)
+                End If
             End If
         Next
-
+        If i = 0 Then
+            noboundary = True
+            GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(toplat, leftlong), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(toplat - bottomlat, rightlong - leftlong))))
+        End If
     End Sub
 
     Private Sub GMapControl1_MouseDown(sender As Object, e As MouseEventArgs) Handles GMapControl1.MouseDown
@@ -1075,7 +1094,6 @@ skip_line:                      Loop
                         linetext_all.Add(New KeyValuePair(Of DateTime, String)(PDate, linetext))
                     Loop
                     objReader.Close()
-
                     'Sort list of keyvaluepair & write to file (existing is overwritten)
                     'First Value is replaced by DateTaken:
                     '2004-02-01 14:00:55,43.469554,-79.711578,My workstation!,https://fa...
@@ -1514,7 +1532,7 @@ Search3:  'String3
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        If CheckBox1.Checked = True Then
+        If CheckBox1.Checked = True AndAlso noboundary = False Then
             For Each x As GMapMarker In GMapControl1.Overlays(3).Markers
                 x.ToolTipMode = MarkerTooltipMode.Always
             Next
@@ -1527,7 +1545,7 @@ Search3:  'String3
     End Sub
 
     Private Sub GMapControl1_OnMapZoomChanged() Handles GMapControl1.OnMapZoomChanged
-        If maploaded = True Then
+        If maploaded = True AndAlso noboundary = False Then
             If MarkerVisible = True AndAlso GMapControl1.Zoom <= 6 Then
                 For Each x As GMapMarker In GMapControl1.Overlays(3).Markers
                     x.IsVisible = False
