@@ -520,7 +520,7 @@ Public Class ClipDataForm
         Dim countlines As Long = 0
         Dim countlines_sich As Long = 0
         Dim countnewfiles As Integer = 0
-        Dim header_line As String
+        Dim header_line As String = Nothing
         Dim header_line_written As Boolean = False
         Dim minDate As System.DateTime = min_date.Value
         Dim maxDate As System.DateTime = max_date.Value
@@ -1082,7 +1082,7 @@ skip_line:                      Loop
                     linetext_all.Sort(Function(x, y) x.Key.CompareTo(y.Key))
                     Dim file As System.IO.StreamWriter
                     file = My.Computer.FileSystem.OpenTextFileWriter(unsortedFile, False)
-                    file.WriteLine("ID,Latitude,Longitude,NAME,URL,PhotoID,Owner,UserID,DateTaken,UploadDate,Views,Tags,MTags")
+                    If Not IsNothing(header_line) Then file.WriteLine(header_line)
                     For Each entry As KeyValuePair(Of DateTime, String) In linetext_all
                         Dim linetext As String = entry.Key.ToString("yyyy-MM-dd HH:mm:ss") & entry.Value.Substring(entry.Value.IndexOf(",")) 'Structure: Date (Sorted), Linetext
                         file.WriteLine(linetext)
