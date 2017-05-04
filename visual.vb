@@ -201,18 +201,25 @@ Public Class visualForm
     End Sub
 
     Private Sub Plot_Click(sender As Object, e As EventArgs) Handles Plot.Click
-        Dim bm As New Bitmap(PictureBox1.Image)
-        Dim intTransparent As Integer = Color.Transparent.ToArgb
-        Using fp As New FastPix(bm)
-            Dim pixels As Integer() = fp.PixelArray
-            For i As Integer = 0 To pixels.Length - 1
-                If Not pixels(i) = Color.Transparent.ToArgb Then 'Pink = transparent
-                    pixels(i) = pixels(i) Xor &HFFFFFF
-                End If
-            Next
-        End Using
-        bm.MakeTransparent(Color.Pink)
-        PictureBox1.Image = bm
+        If Not PictureBox1.Image Is Nothing Then
+            Dim bm As New Bitmap(PictureBox1.Image)
+            Dim intTransparent As Integer = Color.Transparent.ToArgb
+            Using fp As New FastPix(bm)
+                Dim pixels As Integer() = fp.PixelArray
+                For i As Integer = 0 To pixels.Length - 1
+                    If Not pixels(i) = Color.Transparent.ToArgb Then 'Pink = transparent
+                        pixels(i) = pixels(i) Xor &HFFFFFF
+                    End If
+                Next
+            End Using
+            bm.MakeTransparent(Color.Pink)
+            PictureBox1.Image = bm
+        Else
+            'Dim color As System.Drawing.Color = System.Drawing.Color.FromArgb(red, green, blue)
+            'Dim hue As Single = datacolor.GetHue()
+            'hue = 360 - hue 'Inverts color, see http://stackoverflow.com/questions/1165107/how-do-i-invert-a-colour-color
+            datacolor = Color.Cyan
+        End If
     End Sub
 
 
@@ -620,6 +627,40 @@ Public Class visualForm
 
         End If
     End Sub
+
+    Public Shared Sub ColorToHSV(color As Color, ByRef hue As Double, ByRef saturation As Double, ByRef value As Double)
+        Dim max As Integer = Math.Max(color.R, Math.Max(color.G, color.B))
+        Dim min As Integer = Math.Min(color.R, Math.Min(color.G, color.B))
+
+        hue = color.GetHue()
+        saturation = If((max = 0), 0, 1.0 - (1.0 * min / max))
+        value = max / 255.0
+    End Sub
+
+    Public Shared Function ColorFromHSV(hue As Double, saturation As Double, value As Double) As Color
+        Dim hi As Integer = Convert.ToInt32(Math.Floor(hue / 60)) Mod 6
+        Dim f As Double = hue / 60 - Math.Floor(hue / 60)
+
+        value = value * 255
+        Dim v As Integer = Convert.ToInt32(value)
+        Dim p As Integer = Convert.ToInt32(value * (1 - saturation))
+        Dim q As Integer = Convert.ToInt32(value * (1 - f * saturation))
+        Dim t As Integer = Convert.ToInt32(value * (1 - (1 - f) * saturation))
+
+        If hi = 0 Then
+            Return Color.FromArgb(255, v, t, p)
+        ElseIf hi = 1 Then
+            Return Color.FromArgb(255, q, v, p)
+        ElseIf hi = 2 Then
+            Return Color.FromArgb(255, p, v, t)
+        ElseIf hi = 3 Then
+            Return Color.FromArgb(255, p, q, v)
+        ElseIf hi = 4 Then
+            Return Color.FromArgb(255, t, p, v)
+        Else
+            Return Color.FromArgb(255, v, p, q)
+        End If
+    End Function
 End Class
 
 Public Class FastPix
@@ -849,3 +890,4 @@ Public Class PhotoRef
         End Set
     End Property
 End Class
+

@@ -8,6 +8,7 @@ Imports System.Net
 Imports DotSpatial.Data
 Imports DotSpatial.Topology
 Imports System.Linq
+Imports System.Drawing.Imaging
 
 
 Public Class ClipDataForm
@@ -549,7 +550,8 @@ Public Class ClipDataForm
         Dim dirCreatedHash As New HashSet(Of String) 'contains list of yyyy-values to remember which years (timetransponse) were already created
         Dim keyCreatedHash As New HashSet(Of String) 'Contains keys of yyyy-mm-dd for check before add
         Dim GroupByTime As String = "yyyy-MM-d"
-
+        Dim exportSequentialPNG As Boolean = True 'Set for true to export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
+        Dim seqFileNumber As Integer = 0
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
         grap.Clear(Drawing.Color.Pink)
@@ -1049,6 +1051,47 @@ skip_line:                      Loop
                             'update VisMap for each Dataset
                             visualForm.PictureBox1.Image = visMap
                             visualForm.Refresh()
+                            'export sequential PNG after each datafile is processed (and mapped)
+                            If exportSequentialPNG Then
+                                'Update stat display
+                                Dim uTagsCountB As Long = 0
+                                If estimateUnique = True Then
+                                    Dim photoTotalCount As Long = countlines_sich + countlines
+                                    uTagsCountB = Math.Round(((estHashtagBase / estPhotosBase) * photoTotalCount) / 5000, 0) * 5000 'Round to rough 5000s if estimation is true
+                                Else
+                                    uTagsCountB = hashTags.Count
+                                End If
+
+                                'If map display is on, calculate & print basic bitmap-display
+                                If CheckBox15.Checked Then
+                                    Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCountB.ToString("N0")
+                                    Dim statImage As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
+                                    Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
+                                    grap2.Clear(Drawing.Color.Pink)
+                                    statImage.MakeTransparent(Color.Pink)
+                                    If visualForm.Button6.Text = "Stats On" Then
+                                        visualForm.PictureBox6.Visible = True
+                                    End If
+                                    writeTextOnBitmap(statImage, statText)
+                                    visualForm.PictureBox6.Image = statImage
+                                    visualForm.PictureBox1.Image = visMap
+                                    visualForm.Refresh()
+                                    visualForm.bmOrig = visMap
+                                End If
+                                'End Update stat display
+                                seqFileNumber += 1
+                                Dim sp As System.Drawing.Point = visualForm.GMapControl1.PointToScreen(New Drawing.Point(0, 0)) 'Absolute Position of GMapControl1
+                                Dim ds As System.Drawing.Size = visualForm.GMapControl1.Size
+                                Dim sr As New System.Drawing.Rectangle(sp, ds)
+                                'Convert the Image to a PNG
+                                Dim tmpImage As System.Drawing.Image
+                                tmpImage = visualForm.CaptureImage(sp, System.Drawing.Point.Empty, sr, "")
+                                Dim AppPath As String = Application.StartupPath() & "\"
+                                If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
+                                    Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
+                                End If
+                                tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
+                            End If
                         End If
                     Next
                 End If
