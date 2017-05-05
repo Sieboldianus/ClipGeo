@@ -1075,9 +1075,7 @@ skip_line:                      Loop
                                     End If
                                     writeTextOnBitmap(statImage, statText)
                                     visualForm.PictureBox6.Image = statImage
-                                    visualForm.PictureBox1.Image = visMap
                                     visualForm.Refresh()
-                                    visualForm.bmOrig = visMap
                                 End If
                                 'End Update stat display
                                 seqFileNumber += 1
@@ -1151,7 +1149,7 @@ skip_line:                      Loop
                     Next
                     file.Close()
                 Next
-                    Label5.Text = ""
+                Label5.Text = ""
             End If
 
             Dim uTagsCount As Long = 0
