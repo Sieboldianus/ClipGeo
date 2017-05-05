@@ -637,31 +637,6 @@ Public Class visualForm
         saturation = If((max = 0), 0, 1.0 - (1.0 * min / max))
         value = max / 255.0
     End Sub
-
-    Public Shared Function ColorFromHSV(hue As Double, saturation As Double, value As Double) As Color
-        Dim hi As Integer = Convert.ToInt32(Math.Floor(hue / 60)) Mod 6
-        Dim f As Double = hue / 60 - Math.Floor(hue / 60)
-
-        value = value * 255
-        Dim v As Integer = Convert.ToInt32(value)
-        Dim p As Integer = Convert.ToInt32(value * (1 - saturation))
-        Dim q As Integer = Convert.ToInt32(value * (1 - f * saturation))
-        Dim t As Integer = Convert.ToInt32(value * (1 - (1 - f) * saturation))
-
-        If hi = 0 Then
-            Return Color.FromArgb(255, v, t, p)
-        ElseIf hi = 1 Then
-            Return Color.FromArgb(255, q, v, p)
-        ElseIf hi = 2 Then
-            Return Color.FromArgb(255, p, v, t)
-        ElseIf hi = 3 Then
-            Return Color.FromArgb(255, p, q, v)
-        ElseIf hi = 4 Then
-            Return Color.FromArgb(255, t, p, v)
-        Else
-            Return Color.FromArgb(255, v, p, q)
-        End If
-    End Function
 End Class
 
 Public Class FastPix

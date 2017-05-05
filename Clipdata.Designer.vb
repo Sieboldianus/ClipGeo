@@ -82,6 +82,12 @@ Partial Class ClipDataForm
         Me.Label28 = New System.Windows.Forms.Label()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RadioButton12 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton11 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton10 = New System.Windows.Forms.RadioButton()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.CheckBox36 = New System.Windows.Forms.CheckBox()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
@@ -89,6 +95,7 @@ Partial Class ClipDataForm
         Me.CheckBox34 = New System.Windows.Forms.CheckBox()
         Me.CheckBox27 = New System.Windows.Forms.CheckBox()
         Me.Label17 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.CheckBox13 = New System.Windows.Forms.CheckBox()
         Me.CheckBox12 = New System.Windows.Forms.CheckBox()
         Me.CheckBox11 = New System.Windows.Forms.CheckBox()
@@ -148,13 +155,7 @@ Partial Class ClipDataForm
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
-        Me.CheckBox36 = New System.Windows.Forms.CheckBox()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label45 = New System.Windows.Forms.Label()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.RadioButton12 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton11 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton10 = New System.Windows.Forms.RadioButton()
+        Me.CheckBox37 = New System.Windows.Forms.CheckBox()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -162,11 +163,11 @@ Partial Class ClipDataForm
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel5.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TextBox9
@@ -829,6 +830,70 @@ Partial Class ClipDataForm
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Timespan"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.RadioButton12)
+        Me.GroupBox1.Controls.Add(Me.RadioButton11)
+        Me.GroupBox1.Controls.Add(Me.RadioButton10)
+        Me.GroupBox1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.GroupBox1.Location = New System.Drawing.Point(226, 158)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(158, 68)
+        Me.GroupBox1.TabIndex = 59
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Group By"
+        '
+        'RadioButton12
+        '
+        Me.RadioButton12.AutoSize = True
+        Me.RadioButton12.Checked = True
+        Me.RadioButton12.Location = New System.Drawing.Point(24, 47)
+        Me.RadioButton12.Name = "RadioButton12"
+        Me.RadioButton12.Size = New System.Drawing.Size(79, 17)
+        Me.RadioButton12.TabIndex = 21
+        Me.RadioButton12.TabStop = True
+        Me.RadioButton12.Text = "yyyy-mm-dd"
+        Me.RadioButton12.UseVisualStyleBackColor = True
+        '
+        'RadioButton11
+        '
+        Me.RadioButton11.AutoSize = True
+        Me.RadioButton11.Location = New System.Drawing.Point(24, 30)
+        Me.RadioButton11.Name = "RadioButton11"
+        Me.RadioButton11.Size = New System.Drawing.Size(64, 17)
+        Me.RadioButton11.TabIndex = 22
+        Me.RadioButton11.Text = "yyyy-mm"
+        Me.RadioButton11.UseVisualStyleBackColor = True
+        '
+        'RadioButton10
+        '
+        Me.RadioButton10.AutoSize = True
+        Me.RadioButton10.Location = New System.Drawing.Point(24, 13)
+        Me.RadioButton10.Name = "RadioButton10"
+        Me.RadioButton10.Size = New System.Drawing.Size(45, 17)
+        Me.RadioButton10.TabIndex = 23
+        Me.RadioButton10.Text = "yyyy"
+        Me.RadioButton10.UseVisualStyleBackColor = True
+        '
+        'Label45
+        '
+        Me.Label45.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label45.Location = New System.Drawing.Point(31, 114)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(353, 1)
+        Me.Label45.TabIndex = 53
+        '
+        'CheckBox36
+        '
+        Me.CheckBox36.AutoSize = True
+        Me.CheckBox36.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox36.Location = New System.Drawing.Point(207, 135)
+        Me.CheckBox36.Name = "CheckBox36"
+        Me.CheckBox36.Size = New System.Drawing.Size(181, 17)
+        Me.CheckBox36.TabIndex = 52
+        Me.CheckBox36.Text = "Transponse to temporal structure"
+        Me.CheckBox36.UseVisualStyleBackColor = True
+        '
         'Label24
         '
         Me.Label24.AutoSize = True
@@ -914,6 +979,14 @@ Partial Class ClipDataForm
         Me.Label17.Size = New System.Drawing.Size(135, 13)
         Me.Label17.TabIndex = 50
         Me.Label17.Text = "Select data to be exported:"
+        '
+        'Label11
+        '
+        Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label11.Location = New System.Drawing.Point(37, 121)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(353, 1)
+        Me.Label11.TabIndex = 49
         '
         'CheckBox13
         '
@@ -1627,76 +1700,16 @@ Partial Class ClipDataForm
         Me.Label44.Text = "Shape 1 of 1."
         Me.Label44.Visible = False
         '
-        'CheckBox36
+        'CheckBox37
         '
-        Me.CheckBox36.AutoSize = True
-        Me.CheckBox36.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox36.Location = New System.Drawing.Point(207, 135)
-        Me.CheckBox36.Name = "CheckBox36"
-        Me.CheckBox36.Size = New System.Drawing.Size(181, 17)
-        Me.CheckBox36.TabIndex = 52
-        Me.CheckBox36.Text = "Transponse to temporal structure"
-        Me.CheckBox36.UseVisualStyleBackColor = True
-        '
-        'Label11
-        '
-        Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label11.Location = New System.Drawing.Point(37, 121)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(353, 1)
-        Me.Label11.TabIndex = 49
-        '
-        'Label45
-        '
-        Me.Label45.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label45.Location = New System.Drawing.Point(31, 114)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(353, 1)
-        Me.Label45.TabIndex = 53
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.RadioButton12)
-        Me.GroupBox1.Controls.Add(Me.RadioButton11)
-        Me.GroupBox1.Controls.Add(Me.RadioButton10)
-        Me.GroupBox1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.GroupBox1.Location = New System.Drawing.Point(226, 158)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(158, 68)
-        Me.GroupBox1.TabIndex = 59
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Group By"
-        '
-        'RadioButton12
-        '
-        Me.RadioButton12.AutoSize = True
-        Me.RadioButton12.Checked = True
-        Me.RadioButton12.Location = New System.Drawing.Point(24, 47)
-        Me.RadioButton12.Name = "RadioButton12"
-        Me.RadioButton12.Size = New System.Drawing.Size(79, 17)
-        Me.RadioButton12.TabIndex = 21
-        Me.RadioButton12.Text = "yyyy-mm-dd"
-        Me.RadioButton12.UseVisualStyleBackColor = True
-        '
-        'RadioButton11
-        '
-        Me.RadioButton11.AutoSize = True
-        Me.RadioButton11.Location = New System.Drawing.Point(24, 30)
-        Me.RadioButton11.Name = "RadioButton11"
-        Me.RadioButton11.Size = New System.Drawing.Size(64, 17)
-        Me.RadioButton11.TabIndex = 22
-        Me.RadioButton11.Text = "yyyy-mm"
-        Me.RadioButton11.UseVisualStyleBackColor = True
-        '
-        'RadioButton10
-        '
-        Me.RadioButton10.AutoSize = True
-        Me.RadioButton10.Location = New System.Drawing.Point(24, 13)
-        Me.RadioButton10.Name = "RadioButton10"
-        Me.RadioButton10.Size = New System.Drawing.Size(45, 17)
-        Me.RadioButton10.TabIndex = 23
-        Me.RadioButton10.Text = "yyyy"
-        Me.RadioButton10.UseVisualStyleBackColor = True
+        Me.CheckBox37.AutoSize = True
+        Me.CheckBox37.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox37.Location = New System.Drawing.Point(595, 424)
+        Me.CheckBox37.Name = "CheckBox37"
+        Me.CheckBox37.Size = New System.Drawing.Size(140, 17)
+        Me.CheckBox37.TabIndex = 35
+        Me.CheckBox37.Text = "Export Image Sequence"
+        Me.CheckBox37.UseVisualStyleBackColor = True
         '
         'ClipDataForm
         '
@@ -1716,6 +1729,7 @@ Partial Class ClipDataForm
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.CheckBox33)
+        Me.Controls.Add(Me.CheckBox37)
         Me.Controls.Add(Me.CheckBox29)
         Me.Controls.Add(Me.CheckBox32)
         Me.Controls.Add(Me.CheckBox15)
@@ -1748,6 +1762,8 @@ Partial Class ClipDataForm
         Me.TabPage1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
@@ -1756,8 +1772,6 @@ Partial Class ClipDataForm
         Me.Panel4.PerformLayout()
         Me.Panel5.ResumeLayout(False)
         Me.Panel5.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1896,4 +1910,5 @@ Partial Class ClipDataForm
     Friend WithEvents Label45 As Label
     Friend WithEvents CheckBox36 As CheckBox
     Friend WithEvents Label11 As Label
+    Friend WithEvents CheckBox37 As CheckBox
 End Class

@@ -550,7 +550,7 @@ Public Class ClipDataForm
         Dim dirCreatedHash As New HashSet(Of String) 'contains list of yyyy-values to remember which years (timetransponse) were already created
         Dim keyCreatedHash As New HashSet(Of String) 'Contains keys of yyyy-mm-dd for check before add
         Dim GroupByTime As String = "yyyy-MM-d"
-        Dim exportSequentialPNG As Boolean = True 'Set for true to export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
+        Dim exportSequentialPNG As Boolean = CheckBox37.Checked 'If true: export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
         Dim seqFileNumber As Integer = 0
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
@@ -1047,6 +1047,7 @@ skip_line:                      Loop
                             End If
                             ProgressBar1.Value = ProgressBar1.Value + 1
                         End Using
+                        'if map photo locations is checked
                         If CheckBox15.Checked Then
                             'update VisMap for each Dataset
                             visualForm.PictureBox1.Image = visMap
