@@ -318,6 +318,7 @@ Public Class visualForm
             Dim ms As New MemoryStream()
             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
             tmpImage = System.Drawing.Image.FromStream(ms)
+            ms.Dispose()
             Return tmpImage
         End Using
         tmpImage.Dispose()

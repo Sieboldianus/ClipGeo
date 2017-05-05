@@ -1054,45 +1054,54 @@ skip_line:                      Loop
                             visualForm.Refresh()
                             'export sequential PNG after each datafile is processed (and mapped)
                             If exportSequentialPNG Then
-                                'Update stat display
-                                Dim uTagsCountB As Long = 0
-                                If estimateUnique = True Then
-                                    Dim photoTotalCount As Long = countlines_sich + countlines
-                                    uTagsCountB = Math.Round(((estHashtagBase / estPhotosBase) * photoTotalCount) / 5000, 0) * 5000 'Round to rough 5000s if estimation is true
-                                Else
-                                    uTagsCountB = hashTags.Count
-                                End If
+                                Using tmpImage As Bitmap = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
+                                    Using g As Graphics = Graphics.FromImage(tmpImage)
+                                        g.DrawImage(visualForm.PictureBox1.BackgroundImage, 0, 0)
+                                        g.DrawImage(visMap, 0, 0)
+                                    End Using
+                                    'If map display is on, calculate & print basic bitmap-display
+                                    If CheckBox15.Checked Then
+                                        'Update stat display
+                                        Dim uTagsCountB As Long = 0
+                                        If estimateUnique = True Then
+                                            Dim photoTotalCount As Long = countlines_sich + countlines
+                                            uTagsCountB = Math.Round(((estHashtagBase / estPhotosBase) * photoTotalCount) / 5000, 0) * 5000 'Round to rough 5000s if estimation is true
+                                        Else
+                                            uTagsCountB = hashTags.Count
+                                        End If
+                                        Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCountB.ToString("N0")
+                                        'Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
+                                        'grap2.Clear(Drawing.Color.Pink)
+                                        Using statImageTmp As Bitmap = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
+                                            statImageTmp.MakeTransparent(Color.Pink)
+                                            If visualForm.Button6.Text = "Stats On" Then
+                                                visualForm.PictureBox6.Visible = True
+                                            End If
+                                            writeTextOnBitmap(statImageTmp, statText)
+                                            'visualForm.PictureBox6.Image = statImageTmp
 
-                                'If map display is on, calculate & print basic bitmap-display
-                                If CheckBox15.Checked Then
-                                    Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCountB.ToString("N0")
-                                    'Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
-                                    'grap2.Clear(Drawing.Color.Pink)
-                                    statImage = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
-                                    statImage.MakeTransparent(Color.Pink)
-                                    If visualForm.Button6.Text = "Stats On" Then
-                                        visualForm.PictureBox6.Visible = True
+                                            Using g As Graphics = Graphics.FromImage(tmpImage)
+                                                g.DrawImage(statImageTmp, 0, 0)
+                                            End Using
+                                        End Using
                                     End If
-                                    writeTextOnBitmap(statImage, statText)
-                                    visualForm.PictureBox6.Image = statImage
-                                    'grap2.Dispose()
-                                End If
-                                'End Update stat display
-                                seqFileNumber += 1
-                                Dim sp As System.Drawing.Point = visualForm.GMapControl1.PointToScreen(New Drawing.Point(0, 0)) 'Absolute Position of GMapControl1
-                                Dim ds As System.Drawing.Size = visualForm.GMapControl1.Size
-                                Dim sr As New System.Drawing.Rectangle(sp, ds)
-                                'Convert the Image to a PNG
-                                Dim tmpImage As System.Drawing.Image
-                                tmpImage = visualForm.CaptureImage(sp, System.Drawing.Point.Empty, sr, "")
-                                Dim AppPath As String = Application.StartupPath() & "\"
-                                If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
-                                    Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
-                                End If
-                                visualForm.Refresh()
-                                System.Windows.Forms.Application.DoEvents()
-                                tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
-                                tmpImage.Dispose()
+                                    'End Update stat display
+                                    seqFileNumber += 1
+                                    'Dim sp As System.Drawing.Point = visualForm.GMapControl1.PointToScreen(New Drawing.Point(0, 0)) 'Absolute Position of GMapControl1
+                                    'Dim ds As System.Drawing.Size = visualForm.GMapControl1.Size
+                                    'Dim sr As New System.Drawing.Rectangle(sp, ds)
+                                    'Convert the Image to a PNG
+
+                                    'tmpImage = visualForm.CaptureImage(sp, System.Drawing.Point.Empty, sr, "")
+
+                                    Dim AppPath As String = Application.StartupPath() & "\"
+                                    If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
+                                        Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
+                                    End If
+                                    visualForm.Refresh()
+                                    System.Windows.Forms.Application.DoEvents()
+                                    tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
+                                End Using
                             End If
                         End If
                     Next
@@ -1166,8 +1175,8 @@ skip_line:                      Loop
             'If map display is on, calculate & print basic bitmap-display
             If CheckBox15.Checked Then
                 Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCount.ToString("N0")
-                Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
-                grap2.Clear(Drawing.Color.Pink)
+                'Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
+                'grap2.Clear(Drawing.Color.Pink)
                 statImage = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
                 statImage.MakeTransparent(Color.Pink)
                 If visualForm.Button6.Text = "Stats On" Then
@@ -1248,17 +1257,18 @@ skip_line:                      Loop
         ' the font size in pixels     
         Dim newFontSizeInPoints As Single = fontSizeInPixelsInDPI96 * 72.0F / 96
         ' calculate the size in points
-        Dim g As Graphics = Graphics.FromImage(visMap)
-        Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", newFontSizeInPoints, FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        'Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", 9, FontStyle.Regular,)
-        Dim Rect As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80), New Size(200, 60))
-        Dim RectBG As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 81), New Size(200, 61))
-        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias
-        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit
-        g.FillRectangle(New SolidBrush(Color.FromArgb(180, 255, 255, 255)), RectBG)
-        g.DrawRectangle(Pens.LightGray, RectBG)
-        g.DrawString("Photos: " & vbCrLf & "Users: " & vbCrLf & "Total # of Tags: " & vbCrLf & "Distinct # of Tags: ", myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80))
-        g.DrawString(myText, myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 118, visMap.Height - 80))
+        Using g As Graphics = Graphics.FromImage(visMap)
+            Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", newFontSizeInPoints, FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+            'Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", 9, FontStyle.Regular,)
+            Dim Rect As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80), New Size(200, 60))
+            Dim RectBG As System.Drawing.Rectangle = New Rectangle(New System.Drawing.Point(visMap.Width - 220, visMap.Height - 81), New Size(200, 61))
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit
+            g.FillRectangle(New SolidBrush(Color.FromArgb(180, 255, 255, 255)), RectBG)
+            g.DrawRectangle(Pens.LightGray, RectBG)
+            g.DrawString("Photos: " & vbCrLf & "Users: " & vbCrLf & "Total # of Tags: " & vbCrLf & "Distinct # of Tags: ", myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80))
+            g.DrawString(myText, myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 118, visMap.Height - 80))
+        End Using
     End Sub
 
     Function LiesWithin(latP As Double, lngP As Double, rectBottomleft As PointLatLng, rectTopright As PointLatLng, shapefilesearch As Boolean, ShapefilePoly As Shapefile) As Boolean
