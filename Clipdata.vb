@@ -515,12 +515,12 @@ Public Class ClipDataForm
         Dim filenamepath As String
         Dim newfilenamepath As String = Nothing
         Dim visMap As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
+        Dim statImage As Bitmap
         Dim photocollection As Boolean = CheckBox30.Checked
         Dim userOriginExport As Boolean = CheckBox29.Checked
         Dim UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
         Dim maptouristslocals As Boolean = CheckBox32.Checked
         Dim mapPhotosFromLocals As Boolean = CheckBox33.Checked
-
         Dim PhotoIDc As Long = 0
         Dim Tagsc As Long = 0
         Dim UserIDc As String = Nothing
@@ -1066,15 +1066,16 @@ skip_line:                      Loop
                                 'If map display is on, calculate & print basic bitmap-display
                                 If CheckBox15.Checked Then
                                     Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCountB.ToString("N0")
-                                    Dim statImage As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
-                                    Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
-                                    grap2.Clear(Drawing.Color.Pink)
+                                    'Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
+                                    'grap2.Clear(Drawing.Color.Pink)
+                                    statImage = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
                                     statImage.MakeTransparent(Color.Pink)
                                     If visualForm.Button6.Text = "Stats On" Then
                                         visualForm.PictureBox6.Visible = True
                                     End If
                                     writeTextOnBitmap(statImage, statText)
                                     visualForm.PictureBox6.Image = statImage
+                                    'grap2.Dispose()
                                 End If
                                 'End Update stat display
                                 seqFileNumber += 1
@@ -1091,6 +1092,7 @@ skip_line:                      Loop
                                 visualForm.Refresh()
                                 System.Windows.Forms.Application.DoEvents()
                                 tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
+                                tmpImage.Dispose()
                             End If
                         End If
                     Next
@@ -1164,9 +1166,9 @@ skip_line:                      Loop
             'If map display is on, calculate & print basic bitmap-display
             If CheckBox15.Checked Then
                 Dim statText As String = Math.Round(countlines_sich + countlines, 0).ToString("N0") & vbCrLf & hashUser.Count.ToString("N0") & vbCrLf & Tagsc.ToString("N0") & vbCrLf & uTagsCount.ToString("N0")
-                Dim statImage As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
                 Dim grap2 As Drawing.Graphics = Drawing.Graphics.FromImage(statImage)
                 grap2.Clear(Drawing.Color.Pink)
+                statImage = New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
                 statImage.MakeTransparent(Color.Pink)
                 If visualForm.Button6.Text = "Stats On" Then
                     visualForm.PictureBox6.Visible = True

@@ -320,6 +320,7 @@ Public Class visualForm
             tmpImage = System.Drawing.Image.FromStream(ms)
             Return tmpImage
         End Using
+        tmpImage.Dispose()
     End Function
 
     'Equalize
