@@ -1075,7 +1075,6 @@ skip_line:                      Loop
                                     End If
                                     writeTextOnBitmap(statImage, statText)
                                     visualForm.PictureBox6.Image = statImage
-                                    visualForm.Refresh()
                                 End If
                                 'End Update stat display
                                 seqFileNumber += 1
@@ -1089,6 +1088,8 @@ skip_line:                      Loop
                                 If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
                                     Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
                                 End If
+                                visualForm.Refresh()
+                                System.Windows.Forms.Application.DoEvents()
                                 tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
                             End If
                         End If
