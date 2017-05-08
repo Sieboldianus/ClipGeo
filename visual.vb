@@ -35,7 +35,7 @@ Public Class visualForm
     'http://flickr.com/photo.gne?id=8897171833 id=8897171833
     Public Shared photoDict As Dictionary(Of GMap.NET.GPoint, PhotoRef) = New Dictionary(Of GMap.NET.GPoint, PhotoRef) 'Coordinate X/Y of Point in Graphics|Integer Value of Views|String of PhotoID|PhotoURL
 
-    Dim datacolor As Color = Color.Black
+    Public Shared datacolor As Color = Color.Black
     Dim bgColor As Color = Color.White
 
     <STAThread>

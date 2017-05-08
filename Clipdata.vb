@@ -552,6 +552,7 @@ Public Class ClipDataForm
         Dim GroupByTime As String = "yyyy-MM-d"
         Dim exportSequentialPNG As Boolean = CheckBox37.Checked 'If true: export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
         Dim seqFileNumber As Integer = 0
+        Dim printDate As Boolean = True 'enable for printing date (based on filename) on seqImage export
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
         grap.Clear(Drawing.Color.Pink)
@@ -1077,9 +1078,22 @@ skip_line:                      Loop
                                             If visualForm.Button6.Text = "Stats On" Then
                                                 visualForm.PictureBox6.Visible = True
                                             End If
-                                            writeTextOnBitmap(statImageTmp, statText)
+                                            If printDate Then
+                                                'Print Date in big letters, e.g. 2017-05-09
+                                                Dim fe1 = filename.Substring(0, filename.Length - 4)
+                                                'f1 = filename without extention
+                                                Dim fe2 = fe1.Substring(0, fe1.LastIndexOf("-"c) + 1)
+                                                'f2 = filename without day
+                                                Dim fe3 = fe1.Substring(fe2.length, fe1.length - fe2.length)
+                                                'fe3 = filename day
+                                                Dim fe3a As Integer = Val(fe3)
+                                                Dim fe4 = fe2 & fe3a.ToString("D2")
+                                                'filename formatted: fe4)
+                                                writeTextOnBitmap(statImageTmp, statText, fe4)
+                                            Else
+                                                writeTextOnBitmap(statImageTmp, statText)
+                                            End If
                                             'visualForm.PictureBox6.Image = statImageTmp
-
                                             Using g As Graphics = Graphics.FromImage(tmpImage)
                                                 g.DrawImage(statImageTmp, 0, 0)
                                             End Using
@@ -1087,13 +1101,6 @@ skip_line:                      Loop
                                     End If
                                     'End Update stat display
                                     seqFileNumber += 1
-                                    'Dim sp As System.Drawing.Point = visualForm.GMapControl1.PointToScreen(New Drawing.Point(0, 0)) 'Absolute Position of GMapControl1
-                                    'Dim ds As System.Drawing.Size = visualForm.GMapControl1.Size
-                                    'Dim sr As New System.Drawing.Rectangle(sp, ds)
-                                    'Convert the Image to a PNG
-
-                                    'tmpImage = visualForm.CaptureImage(sp, System.Drawing.Point.Empty, sr, "")
-
                                     Dim AppPath As String = Application.StartupPath() & "\"
                                     If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
                                         Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
@@ -1251,11 +1258,16 @@ skip_line:                      Loop
         searchexport(True)
     End Sub
 
-    Sub writeTextOnBitmap(ByRef visMap As Bitmap, ByVal myText As String)
+    Sub writeTextOnBitmap(ByRef visMap As Bitmap, ByVal myText As String, Optional CurdateString As String = "")
         'Calculate DPI independent Font size
         Dim fontSizeInPixelsInDPI96 As Single = 11.0F
         ' the font size in pixels     
         Dim newFontSizeInPoints As Single = fontSizeInPixelsInDPI96 * 72.0F / 96
+
+        Dim fontSizeInPixelsInDPI96_2 As Single = 30.0F
+        ' the font size in pixels     
+        Dim newFontSizeInPoints_2 As Single = fontSizeInPixelsInDPI96_2 * 72.0F / 96
+
         ' calculate the size in points
         Using g As Graphics = Graphics.FromImage(visMap)
             Dim myFont As System.Drawing.Font = New Drawing.Font("Arial", newFontSizeInPoints, FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
@@ -1267,6 +1279,8 @@ skip_line:                      Loop
             g.FillRectangle(New SolidBrush(Color.FromArgb(180, 255, 255, 255)), RectBG)
             g.DrawRectangle(Pens.LightGray, RectBG)
             g.DrawString("Photos: " & vbCrLf & "Users: " & vbCrLf & "Total # of Tags: " & vbCrLf & "Distinct # of Tags: ", myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 220, visMap.Height - 80))
+            Dim myFont2 As System.Drawing.Font = New Drawing.Font("Arial", newFontSizeInPoints_2, FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+            If Not CurdateString = "" Then g.DrawString(CurdateString, myFont2, New SolidBrush(visualForm.datacolor), New System.Drawing.Point(40, visMap.Height - 80))
             g.DrawString(myText, myFont, New SolidBrush(Color.FromArgb(255, 10, 10, 10)), New System.Drawing.Point(visMap.Width - 118, visMap.Height - 80))
         End Using
     End Sub
