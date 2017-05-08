@@ -552,7 +552,7 @@ Public Class ClipDataForm
         Dim GroupByTime As String = "yyyy-MM-d"
         Dim exportSequentialPNG As Boolean = CheckBox37.Checked 'If true: export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
         Dim seqFileNumber As Integer = 0
-        Dim printDate As Boolean = True 'enable for printing date (based on filename) on seqImage export
+        Dim printDate As Boolean = False 'enable for printing date (based on filename) on seqImage export
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
         grap.Clear(Drawing.Color.Pink)
