@@ -83,7 +83,13 @@ Public Class ClipDataForm
         Dim di As New DirectoryInfo(strPath)
         Dim filenamepath As String
         ' Get a reference to each directory in that directory.
-        Dim diArr As DirectoryInfo() = di.GetDirectories()
+        Dim diArrTemp As DirectoryInfo() = di.GetDirectories()
+        Dim diArr As New List(Of DirectoryInfo)
+        For Each directTemp As DirectoryInfo In diArrTemp
+            If Not directTemp.Name.StartsWith("0") Then
+                diArr.Add(directTemp)
+            End If
+        Next
         Dim leftpart As String
         ' Populate Combobox.
         Dim dri As DirectoryInfo
@@ -144,7 +150,7 @@ Public Class ClipDataForm
         Next dri
 
         'Load Single Folder (if no subfolders are found)
-        If diArr.Length = 0 Then
+        If diArr.Count = 0 Then
             currentSourceData = New SourceData
             If File.Exists(strPath & "settings.txt") Then
                 currentSourceData.filename = HelperFunctions.GetSettingItem(strPath & "settings.txt", "profilename")
@@ -1051,6 +1057,9 @@ skip_line:                      Loop
                         'if map photo locations is checked
                         If CheckBox15.Checked Then
                             'update VisMap for each Dataset
+                            If visualForm.equalizeImg Then
+                                visMap = visualForm.equalize(visMap)
+                            End If
                             visualForm.PictureBox1.Image = visMap
                             visualForm.Refresh()
                             'export sequential PNG after each datafile is processed (and mapped)

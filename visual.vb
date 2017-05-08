@@ -36,6 +36,7 @@ Public Class visualForm
     Public Shared photoDict As Dictionary(Of GMap.NET.GPoint, PhotoRef) = New Dictionary(Of GMap.NET.GPoint, PhotoRef) 'Coordinate X/Y of Point in Graphics|Integer Value of Views|String of PhotoID|PhotoURL
 
     Public Shared datacolor As Color = Color.Black
+    Public Shared equalizeImg As Boolean = False
     Dim bgColor As Color = Color.White
 
     <STAThread>
@@ -326,21 +327,27 @@ Public Class visualForm
 
     'Equalize
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        'Set all Alpha to 255
+        If equalizeImg = False Then equalizeImg = True
         If Not PictureBox1.Image Is Nothing Then
             Dim bm As New Bitmap(PictureBox1.Image)
-            Using fp As New FastPix(bm, True)
-                Dim bytes As Byte() = fp.ColorByteArray
-                'NOTE: the bytes are in BRGA order, so the first Alpha byte is at index = 3. Example usage:
-                For i As Integer = 3 To bytes.Length - 1 Step 4 'Don't Change Alpha (=4)
-                    If Not bytes(i) = 0 Then
-                        bytes(i) = 255
-                    End If
-                Next
-            End Using
+            equalize(bm)
             PictureBox1.Image = bm
         End If
     End Sub
+
+    Shared Function equalize(bm As Bitmap) As Bitmap
+        'Set all Alpha to 255
+        Using fp As New FastPix(bm, True)
+            Dim bytes As Byte() = fp.ColorByteArray
+            'NOTE: the bytes are in BRGA order, so the first Alpha byte is at index = 3. Example usage:
+            For i As Integer = 3 To bytes.Length - 1 Step 4 'Don't Change Alpha (=4)
+                If Not bytes(i) = 0 Then
+                    bytes(i) = 255
+                End If
+            Next
+            Return bm
+        End Using
+    End Function
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         PictureBox1.Image = bmOrig
@@ -349,6 +356,7 @@ Public Class visualForm
         PictureBox3.BorderStyle = BorderStyle.FixedSingle
         PictureBox4.BorderStyle = BorderStyle.FixedSingle
         PictureBox5.BorderStyle = BorderStyle.FixedSingle
+        equalizeImg = False
     End Sub
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
