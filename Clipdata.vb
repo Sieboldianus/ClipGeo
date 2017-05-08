@@ -558,7 +558,7 @@ Public Class ClipDataForm
         Dim GroupByTime As String = "yyyy-MM-d"
         Dim exportSequentialPNG As Boolean = CheckBox37.Checked 'If true: export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
         Dim seqFileNumber As Integer = 0
-        Dim printDate As Boolean = False 'enable for printing date (based on filename) on seqImage export
+        Dim printDate As Boolean = True 'enable for printing date (based on filename) (only on seqImage export)
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
         grap.Clear(Drawing.Color.Pink)
@@ -1087,7 +1087,7 @@ skip_line:                      Loop
                                             If visualForm.Button6.Text = "Stats On" Then
                                                 visualForm.PictureBox6.Visible = True
                                             End If
-                                            If printDate Then
+                                            If exportSequentialPNG And printDate Then
                                                 'Print Date in big letters, e.g. 2017-05-09
                                                 Dim fe1 = filename.Substring(0, filename.Length - 4)
                                                 'f1 = filename without extention
