@@ -755,8 +755,8 @@ Public Class ClipDataForm
                 ' add the dataset-geometry to the featureset. 
                 Dim data_feature As IFeature = fs_data.AddFeature(geom)
 
-                If NoClip = True Then
-
+                If NoClip = True OrElse DataSet.filename = "World" Then
+                    'Filename = "World" is used when no settings.txt found / no boundary available (e.g. as is the case for temporal file structure)
                     filename_data_sel.Add(DataSet)
                     count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
 
