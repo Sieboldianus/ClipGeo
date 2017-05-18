@@ -766,7 +766,6 @@ Public Class FastPix
                 Marshal.Copy(_bmpData.Scan0, _PixelData, 0, _PixelData.Length)
             End If
         End If
-
     End Sub
 
     Public Overloads Sub Dispose() Implements IDisposable.Dispose
