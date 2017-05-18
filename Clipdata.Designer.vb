@@ -90,6 +90,7 @@ Partial Class ClipDataForm
         Me.CheckBox36 = New System.Windows.Forms.CheckBox()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
+        Me.CheckBox37 = New System.Windows.Forms.CheckBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.CheckBox35 = New System.Windows.Forms.CheckBox()
         Me.CheckBox34 = New System.Windows.Forms.CheckBox()
@@ -140,23 +141,27 @@ Partial Class ClipDataForm
         Me.RadioButton6 = New System.Windows.Forms.RadioButton()
         Me.RadioButton7 = New System.Windows.Forms.RadioButton()
         Me.RadioButton9 = New System.Windows.Forms.RadioButton()
+        Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Label48 = New System.Windows.Forms.Label()
+        Me.Label49 = New System.Windows.Forms.Label()
+        Me.Label47 = New System.Windows.Forms.Label()
+        Me.CheckBox38 = New System.Windows.Forms.CheckBox()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.CheckBox33 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox29 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox31 = New System.Windows.Forms.CheckBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.CheckBox15 = New System.Windows.Forms.CheckBox()
         Me.CheckBox16 = New System.Windows.Forms.CheckBox()
         Me.Button7 = New System.Windows.Forms.Button()
-        Me.CheckBox29 = New System.Windows.Forms.CheckBox()
         Me.CheckBox30 = New System.Windows.Forms.CheckBox()
         Me.Label40 = New System.Windows.Forms.Label()
-        Me.CheckBox31 = New System.Windows.Forms.CheckBox()
         Me.CheckBox32 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox33 = New System.Windows.Forms.CheckBox()
         Me.Label41 = New System.Windows.Forms.Label()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
-        Me.CheckBox37 = New System.Windows.Forms.CheckBox()
-        Me.TabPage5 = New System.Windows.Forms.TabPage()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -916,6 +921,18 @@ Partial Class ClipDataForm
         Me.Label15.TabIndex = 15
         Me.Label15.Text = "min"
         '
+        'CheckBox37
+        '
+        Me.CheckBox37.AutoSize = True
+        Me.CheckBox37.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox37.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox37.Location = New System.Drawing.Point(207, 116)
+        Me.CheckBox37.Name = "CheckBox37"
+        Me.CheckBox37.Size = New System.Drawing.Size(140, 17)
+        Me.CheckBox37.TabIndex = 35
+        Me.CheckBox37.Text = "Export Image Sequence"
+        Me.CheckBox37.UseVisualStyleBackColor = True
+        '
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
@@ -1533,6 +1550,108 @@ Partial Class ClipDataForm
         Me.RadioButton9.Text = "And"
         Me.RadioButton9.UseVisualStyleBackColor = True
         '
+        'TabPage5
+        '
+        Me.TabPage5.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage5.Controls.Add(Me.Label48)
+        Me.TabPage5.Controls.Add(Me.Label49)
+        Me.TabPage5.Controls.Add(Me.Label47)
+        Me.TabPage5.Controls.Add(Me.CheckBox38)
+        Me.TabPage5.Controls.Add(Me.Label46)
+        Me.TabPage5.Controls.Add(Me.CheckBox33)
+        Me.TabPage5.Controls.Add(Me.CheckBox29)
+        Me.TabPage5.Controls.Add(Me.CheckBox31)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 20)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Size = New System.Drawing.Size(415, 229)
+        Me.TabPage5.TabIndex = 4
+        Me.TabPage5.Text = "Origin"
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label48.Location = New System.Drawing.Point(32, 118)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(105, 13)
+        Me.Label48.TabIndex = 54
+        Me.Label48.Text = "Visualization options:"
+        '
+        'Label49
+        '
+        Me.Label49.AutoSize = True
+        Me.Label49.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label49.Location = New System.Drawing.Point(32, 35)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(97, 13)
+        Me.Label49.TabIndex = 54
+        Me.Label49.Text = "and export options:"
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label47.Location = New System.Drawing.Point(32, 21)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(88, 13)
+        Me.Label47.TabIndex = 54
+        Me.Label47.Text = "Selection criteria "
+        '
+        'CheckBox38
+        '
+        Me.CheckBox38.AutoSize = True
+        Me.CheckBox38.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox38.Location = New System.Drawing.Point(218, 114)
+        Me.CheckBox38.Name = "CheckBox38"
+        Me.CheckBox38.Size = New System.Drawing.Size(145, 17)
+        Me.CheckBox38.TabIndex = 53
+        Me.CheckBox38.Text = "Analyze Contribution Bias"
+        Me.CheckBox38.UseVisualStyleBackColor = True
+        '
+        'Label46
+        '
+        Me.Label46.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label46.Location = New System.Drawing.Point(31, 103)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(353, 1)
+        Me.Label46.TabIndex = 52
+        '
+        'CheckBox33
+        '
+        Me.CheckBox33.AutoSize = True
+        Me.CheckBox33.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox33.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox33.Location = New System.Drawing.Point(218, 46)
+        Me.CheckBox33.Name = "CheckBox33"
+        Me.CheckBox33.Size = New System.Drawing.Size(140, 17)
+        Me.CheckBox33.TabIndex = 35
+        Me.CheckBox33.Text = "Only Photos from Locals"
+        Me.CheckBox33.UseVisualStyleBackColor = True
+        '
+        'CheckBox29
+        '
+        Me.CheckBox29.AutoSize = True
+        Me.CheckBox29.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox29.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox29.Location = New System.Drawing.Point(218, 69)
+        Me.CheckBox29.Name = "CheckBox29"
+        Me.CheckBox29.Size = New System.Drawing.Size(130, 17)
+        Me.CheckBox29.TabIndex = 35
+        Me.CheckBox29.Text = "Export User Locations"
+        Me.CheckBox29.UseVisualStyleBackColor = True
+        '
+        'CheckBox31
+        '
+        Me.CheckBox31.AutoSize = True
+        Me.CheckBox31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox31.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox31.Location = New System.Drawing.Point(218, 136)
+        Me.CheckBox31.Name = "CheckBox31"
+        Me.CheckBox31.Size = New System.Drawing.Size(155, 19)
+        Me.CheckBox31.TabIndex = 50
+        Me.CheckBox31.Text = "Classify Tourists/ Locals"
+        Me.CheckBox31.UseVisualStyleBackColor = True
+        '
         'Label13
         '
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1589,18 +1708,6 @@ Partial Class ClipDataForm
         Me.Button7.Text = "Sync Area"
         Me.Button7.UseVisualStyleBackColor = True
         '
-        'CheckBox29
-        '
-        Me.CheckBox29.AutoSize = True
-        Me.CheckBox29.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox29.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox29.Location = New System.Drawing.Point(238, 73)
-        Me.CheckBox29.Name = "CheckBox29"
-        Me.CheckBox29.Size = New System.Drawing.Size(130, 17)
-        Me.CheckBox29.TabIndex = 35
-        Me.CheckBox29.Text = "Export User Locations"
-        Me.CheckBox29.UseVisualStyleBackColor = True
-        '
         'CheckBox30
         '
         Me.CheckBox30.AutoSize = True
@@ -1624,18 +1731,6 @@ Partial Class ClipDataForm
         Me.Label40.Text = "Statistics:"
         Me.Label40.Visible = False
         '
-        'CheckBox31
-        '
-        Me.CheckBox31.AutoSize = True
-        Me.CheckBox31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox31.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox31.Location = New System.Drawing.Point(238, 25)
-        Me.CheckBox31.Name = "CheckBox31"
-        Me.CheckBox31.Size = New System.Drawing.Size(155, 19)
-        Me.CheckBox31.TabIndex = 50
-        Me.CheckBox31.Text = "Classify Tourists/ Locals"
-        Me.CheckBox31.UseVisualStyleBackColor = True
-        '
         'CheckBox32
         '
         Me.CheckBox32.AutoSize = True
@@ -1646,18 +1741,6 @@ Partial Class ClipDataForm
         Me.CheckBox32.TabIndex = 35
         Me.CheckBox32.Text = "Map Tourists/ Locals"
         Me.CheckBox32.UseVisualStyleBackColor = True
-        '
-        'CheckBox33
-        '
-        Me.CheckBox33.AutoSize = True
-        Me.CheckBox33.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox33.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox33.Location = New System.Drawing.Point(238, 50)
-        Me.CheckBox33.Name = "CheckBox33"
-        Me.CheckBox33.Size = New System.Drawing.Size(140, 17)
-        Me.CheckBox33.TabIndex = 35
-        Me.CheckBox33.Text = "Map Photos from Locals"
-        Me.CheckBox33.UseVisualStyleBackColor = True
         '
         'Label41
         '
@@ -1705,30 +1788,6 @@ Partial Class ClipDataForm
         Me.Label44.TabIndex = 51
         Me.Label44.Text = "Shape 1 of 1."
         Me.Label44.Visible = False
-        '
-        'CheckBox37
-        '
-        Me.CheckBox37.AutoSize = True
-        Me.CheckBox37.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox37.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox37.Location = New System.Drawing.Point(207, 116)
-        Me.CheckBox37.Name = "CheckBox37"
-        Me.CheckBox37.Size = New System.Drawing.Size(140, 17)
-        Me.CheckBox37.TabIndex = 35
-        Me.CheckBox37.Text = "Export Image Sequence"
-        Me.CheckBox37.UseVisualStyleBackColor = True
-        '
-        'TabPage5
-        '
-        Me.TabPage5.BackColor = System.Drawing.Color.Gainsboro
-        Me.TabPage5.Controls.Add(Me.CheckBox33)
-        Me.TabPage5.Controls.Add(Me.CheckBox29)
-        Me.TabPage5.Controls.Add(Me.CheckBox31)
-        Me.TabPage5.Location = New System.Drawing.Point(4, 20)
-        Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(415, 229)
-        Me.TabPage5.TabIndex = 4
-        Me.TabPage5.Text = "Origin"
         '
         'ClipDataForm
         '
@@ -1929,4 +1988,9 @@ Partial Class ClipDataForm
     Friend WithEvents Label11 As Label
     Friend WithEvents CheckBox37 As CheckBox
     Friend WithEvents TabPage5 As TabPage
+    Friend WithEvents Label48 As Label
+    Friend WithEvents Label49 As Label
+    Friend WithEvents Label47 As Label
+    Friend WithEvents CheckBox38 As CheckBox
+    Friend WithEvents Label46 As Label
 End Class

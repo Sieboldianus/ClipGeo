@@ -77,22 +77,37 @@ Public Class HelperFunctions
 
     '' User Location Functions
     Public Shared UserGeocodeIndex_Path As String '= AppPath & "\Output\02_UserData\00_Index\UserGeocodeIndex.txt"
+    Public Shared UserGeocodeIndex_PathCC As String '= AppPath & "\Output\02_UserData\00_Index\UserGeocodeIndex_inclCountry.txt"
     Public Shared UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
+    Public Shared UserOriginCountryDict As Dictionary(Of String, KeyValuePair(Of String, String)) = New Dictionary(Of String, KeyValuePair(Of String, String))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-origin based on Country, e.g. "Userxyz, Germany"
 
     'Read UserGeocodeLocationDatabase into Dictionary
-    Public Shared Sub LoadUserLocationGeocodeIndex()
-
-        Dim filenamepath As String = UserGeocodeIndex_Path
+    Public Shared Sub LoadUserLocationGeocodeIndex(Optional CC As Boolean = False)
+        'if CC true, then a different file is loaded (UserGeocodeIndex_inclCountry.txt), which includes Country & Continent for each user
+        'these are aggregated to analyze & visualize user origin bias
+        Dim filenamepath As String
+        If CC = False Then
+            filenamepath = UserGeocodeIndex_Path
+        Else
+            filenamepath = UserGeocodeIndex_PathCC
+        End If
         Dim linetextArr As String()
         UserLocationGeocodeDict.Clear()
         If File.Exists(filenamepath) Then
             Dim objReader As New System.IO.StreamReader(filenamepath)
+            If CC Then linetextArr = objReader.ReadLine().Split(",") 'Skip first line (header) for CC
             Do While objReader.Peek() <> -1
                 linetextArr = objReader.ReadLine().Split(",")
                 Dim resultLatitude As Double = linetextArr(0)
                 Dim resultLongitude As Double = linetextArr(1)
                 Dim resultUserID As String = Replace(linetextArr(2), ";", ",") 'Location
-                UserLocationGeocodeDict(resultUserID) = New KeyValuePair(Of Double, Double)(resultLatitude, resultLongitude)
+                If CC = False Then
+                    UserLocationGeocodeDict(resultUserID) = New KeyValuePair(Of Double, Double)(resultLatitude, resultLongitude)
+                Else
+                    Dim resultUserCountry As String = linetextArr(3)
+                    Dim resultUserContinent As String = linetextArr(4)
+                    UserOriginCountryDict(resultUserID) = New KeyValuePair(Of String, String)(resultUserCountry, resultUserContinent)
+                End If
             Loop
             objReader.Close()
         End If

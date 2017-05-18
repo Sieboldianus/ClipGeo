@@ -99,6 +99,10 @@ Public Class ClipDataForm
             HelperFunctions.UserGeocodeIndex_Path = strPath & "02_UserData\00_Index\UserGeocodeIndex.txt"
             'MsgBox(strPath & "02 _UserData\00_Index\UserGeocodeIndex.txt")
         End If
+        If File.Exists(strPath & "02_UserData\00_Index\UserGeocodeIndex_inclCountry.txt") Then
+            HelperFunctions.UserGeocodeIndex_PathCC = strPath & "02_UserData\00_Index\UserGeocodeIndex_inclCountry.txt"
+            'MsgBox(strPath & "02 _UserData\00_Index\UserGeocodeIndex.txt")
+        End If
 
 
         'Load Multifolder
@@ -559,6 +563,8 @@ Public Class ClipDataForm
         Dim exportSequentialPNG As Boolean = CheckBox37.Checked 'If true: export PNG after each datafile was processed = each day, month or year, depending on structure of loaded data)
         Dim seqFileNumber As Integer = 0
         Dim printDate As Boolean = True 'enable for printing date (based on filename) (only on seqImage export)
+        Dim drawBiasGraph As Boolean = CheckBox38.Checked 'if enabled, bias graph will be drawn on temporal sequence
+
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
         grap.Clear(Drawing.Color.Pink)
@@ -605,6 +611,10 @@ Public Class ClipDataForm
         Dim localusercount As Long = 0
         If userOriginExport = True Or CheckBox31.Checked = True Or maptouristslocals = True Or mapPhotosFromLocals = True Then
             HelperFunctions.LoadUserLocationGeocodeIndex()
+        End If
+        If drawBiasGraph = True Then
+            'load User Country/Continent list from UserGeocodeIndex_inclCountry.txt
+            HelperFunctions.LoadUserLocationGeocodeIndex(True)
         End If
 
         If timetransponse Then
