@@ -564,6 +564,15 @@ Public Class ClipDataForm
         Dim seqFileNumber As Integer = 0
         Dim printDate As Boolean = True 'enable for printing date (based on filename) (only on seqImage export)
         Dim drawBiasGraph As Boolean = CheckBox38.Checked 'if enabled, bias graph will be drawn on temporal sequence
+        Dim temporalUserOriginCountDictionary_Country As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of Number of users per time-increment per origin string
+        Dim temporalUniqueUserIDCount As New HashSet(Of String)
+
+        'Initialize UserOriginCountDictionary based on total available Origin Countries
+        If drawBiasGraph Then
+            For Each a As KeyValuePair(Of String, KeyValuePair(Of String, String)) In HelperFunctions.UserOriginCountryDict
+                temporalUserOriginCountDictionary_Country.Add(a.Value.Key, 0)
+            Next
+        End If
 
         'Initialize Graphics/Point Map
         Dim grap As Drawing.Graphics = Drawing.Graphics.FromImage(visMap)
@@ -896,6 +905,14 @@ Public Class ClipDataForm
                                     Next
                                 End If
 
+                                'Reset User Origin Dictionaries per temporal increment (= per file)
+                                If drawBiasGraph Then
+                                    temporalUniqueUserIDCount.Clear()
+                                    For Each a As String In temporalUserOriginCountDictionary_Country.Keys.ToList()
+                                        temporalUserOriginCountDictionary_Country(a) = 0
+                                    Next
+                                End If
+
                                 Do While objReader.Peek() <> -1
                                     line = line + 1
                                     linetext = objReader.ReadLine()
@@ -935,6 +952,7 @@ Public Class ClipDataForm
                                             If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
                                                 countlines = countlines + 1
 
+                                                'Timetransponse data structure
                                                 If timetransponse Then
                                                     Dim daykey As String = PDate.ToString(GroupByTime)
                                                     If keyCreatedHash.Contains(daykey) = False Then
@@ -945,6 +963,15 @@ Public Class ClipDataForm
                                                     Else
                                                         PhotosPerDayLists(daykey).Add(linetext) 'add line to list based on key
                                                     End If
+                                                End If
+
+                                                'Draw Graph based on user Origin Counts per Country/Continent
+                                                If drawBiasGraph Then
+                                                    'only count UserID per day if not already counted
+                                                    If Not temporalUniqueUserIDCount.Contains(UserIDc) AndAlso HelperFunctions.UserOriginCountryDict.ContainsKey(UserIDc) Then
+                                                        temporalUserOriginCountDictionary_Country(HelperFunctions.UserOriginCountryDict(UserIDc).Key) += 1 'Count specific Origin upwards, e.g. Algeria = 0 + 1
+                                                    End If
+                                                    temporalUniqueUserIDCount.Add(UserIDc) 'Count all user IDs per day
                                                 End If
 
                                                 'Statistics
