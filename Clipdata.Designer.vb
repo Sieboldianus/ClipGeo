@@ -570,9 +570,9 @@ Partial Class ClipDataForm
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Controls.Add(Me.TabPage5)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.ItemSize = New System.Drawing.Size(44, 16)
         Me.TabControl1.Location = New System.Drawing.Point(18, 101)
@@ -1185,7 +1185,7 @@ Partial Class ClipDataForm
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Size = New System.Drawing.Size(415, 229)
         Me.TabPage4.TabIndex = 3
-        Me.TabPage4.Text = "Filter"
+        Me.TabPage4.Text = "Thematic"
         '
         'Label32
         '
