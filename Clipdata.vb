@@ -31,7 +31,7 @@ Public Class ClipDataForm
     Public hashTags As HashSet(Of String) = New HashSet(Of String)
     'Public values for data filter
     Public Operator1, Operator2 As Integer
-    Public SearchTitle1, SearchMtags1, SearchTags1, SearchTitle2, SearchMtags2, SearchTags2, SearchTitle3, SearchMtags3, SearchTags3 As Boolean
+    Public SearchTitle1, SearchMtags1, SearchTags1, SearchDesc1, SearchTitle2, SearchMtags2, SearchTags2, SearchDesc2, SearchTitle3, SearchMtags3, SearchTags3, SearchDesc3 As Boolean
     Public searchFullWords As Boolean = True
     Public DataFiltering As Boolean = False
     Public noboundary As Boolean = False
@@ -566,6 +566,9 @@ Public Class ClipDataForm
         Dim drawBiasGraph As Boolean = CheckBox38.Checked 'if enabled, bias graph will be drawn on temporal sequence
         Dim temporalUserOriginCountDictionary_Country As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of Number of users per time-increment per origin string
         Dim temporalUniqueUserIDCount As New HashSet(Of String)
+        Dim pAccuracy As String
+        Dim pLicense As Integer
+        Dim pDescription As String
 
         'Initialize UserOriginCountDictionary based on total available Origin Countries
         If drawBiasGraph Then
@@ -613,6 +616,10 @@ Public Class ClipDataForm
             If CheckBox11.Checked = True Then dataSelList.Add("Views")
             If CheckBox12.Checked = True Then dataSelList.Add("Tags")
             If CheckBox13.Checked = True Then dataSelList.Add("MTags")
+            If CheckBox40.Checked = True Then dataSelList.Add("Accuracy")
+            If CheckBox39.Checked = True Then dataSelList.Add("Description")
+            If CheckBox41.Checked = True Then dataSelList.Add("License")
+            If CheckBox42.Checked = True Then dataSelList.Add("GeoContext")
         End If
 
         'userExport preparations
@@ -648,11 +655,13 @@ Public Class ClipDataForm
             SearchTags1 = CheckBox17.Checked
             SearchTitle1 = CheckBox18.Checked
             SearchMtags1 = CheckBox19.Checked
+            SearchDesc1 = CheckBox43.Checked
             If Not TextBox11.Text = String.Empty Then
                 filtertext2 = TextBox11.Text.ToLower
                 SearchTags2 = CheckBox20.Checked
                 SearchTitle2 = CheckBox21.Checked
                 SearchMtags2 = CheckBox22.Checked
+                SearchDesc2 = CheckBox44.Checked
                 If RadioButton2.Checked = True Then
                     Operator1 = 1 'And
                 ElseIf RadioButton5.Checked = True Then
@@ -665,6 +674,7 @@ Public Class ClipDataForm
                     SearchTags3 = CheckBox23.Checked
                     SearchTitle3 = CheckBox24.Checked
                     SearchMtags3 = CheckBox25.Checked
+                    SearchDesc3 = CheckBox45.Checked
                     If RadioButton9.Checked = True Then
                         Operator1 = 1 'And
                     ElseIf RadioButton7.Checked = True Then
@@ -929,6 +939,10 @@ Public Class ClipDataForm
                                             Views = Val(linetextArr(10)) 'Views
                                             PhotoURL = linetextArr(4) 'URL
                                         End If
+                                        '14 = Desc
+                                        '15 = Acc
+                                        '16 = Lic
+                                        '17 = GeoContext
                                     Else : GoTo skip_line 'Skip erroneous line with less entries than expected
                                     End If
 
@@ -1467,6 +1481,9 @@ skip_line:                      Loop
         linetextArr(11) = linetextArr(11).ToLower
         linetextArr(12) = linetextArr(12).ToLower
         linetextArr(3) = linetextArr(3).ToLower
+        If linetextArr.Length > 13 Then
+            linetextArr(14) = linetextArr(14).ToLower
+        End If
         'Operator1 = 1 'And
         'Operator1 = 2 'or
         'Operator1 = 3 'not
@@ -1481,6 +1498,10 @@ skip_line:                      Loop
             GoTo Search2
         End If
         If SearchTitle1 AndAlso linetextArr(3) Like "* " & string1 & " *" Then
+            data_contains = True
+            GoTo Search2
+        End If
+        If SearchDesc1 AndAlso linetextArr(14) Like "* " & string1 & " *" Then
             data_contains = True
             GoTo Search2
         End If
@@ -1514,6 +1535,15 @@ Search2:  'String2
                     Exit Function
                 End If
             End If
+            If SearchDesc2 AndAlso linetextArr(14) Like "* " & string2 & " *" Then
+                data_contains = True
+                GoTo Search3
+            Else
+                If Operator1 = 1 Then
+                    data_contains = False
+                    Exit Function
+                End If
+            End If
         Else 'Operator1 = 3
             If SearchTags2 AndAlso linetextArr(11) Like "*;" & string2 & ";*" Then
                 data_contains = False
@@ -1524,6 +1554,10 @@ Search2:  'String2
                 Exit Function
             End If
             If SearchTitle2 AndAlso linetextArr(3) Like "* " & string2 & " *" Then
+                data_contains = False
+                Exit Function
+            End If
+            If SearchDesc2 AndAlso linetextArr(14) Like "* " & string2 & " *" Then
                 data_contains = False
                 Exit Function
             End If
@@ -1558,6 +1592,15 @@ Search3:  'String3
                     Exit Function
                 End If
             End If
+            If SearchDesc3 AndAlso linetextArr(14) Like "* " & string3 & " *" Then
+                data_contains = True
+                Exit Function
+            Else
+                If Operator2 = 1 Then
+                    data_contains = False
+                    Exit Function
+                End If
+            End If
         Else 'Operator1 = 3
             If SearchTags3 AndAlso linetextArr(11) Like "*;" & string3 & ";*" Then
                 data_contains = False
@@ -1568,6 +1611,10 @@ Search3:  'String3
                 Exit Function
             End If
             If SearchTitle3 AndAlso linetextArr(3) Like "* " & string3 & " *" Then
+                data_contains = False
+                Exit Function
+            End If
+            If SearchDesc3 AndAlso linetextArr(14) Like "* " & string3 & " *" Then
                 data_contains = False
                 Exit Function
             End If
@@ -1731,7 +1778,7 @@ Search3:  'String3
         End If
     End Sub
 
-    Private Sub CheckBox3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox9.CheckedChanged, CheckBox8.CheckedChanged, CheckBox7.CheckedChanged, CheckBox6.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox13.CheckedChanged, CheckBox12.CheckedChanged, CheckBox11.CheckedChanged, CheckBox10.CheckedChanged
+    Private Sub CheckBox3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox9.CheckedChanged, CheckBox8.CheckedChanged, CheckBox7.CheckedChanged, CheckBox6.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox13.CheckedChanged, CheckBox12.CheckedChanged, CheckBox11.CheckedChanged, CheckBox10.CheckedChanged, CheckBox41.CheckedChanged, CheckBox40.CheckedChanged, CheckBox39.CheckedChanged, CheckBox42.CheckedChanged
         If formfullyloaded Then
             changeSelTextStatus()
         End If

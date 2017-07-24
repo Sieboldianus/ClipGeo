@@ -91,23 +91,6 @@ Partial Class ClipDataForm
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.CheckBox37 = New System.Windows.Forms.CheckBox()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.CheckBox35 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox34 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox27 = New System.Windows.Forms.CheckBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.CheckBox13 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox12 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox11 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox10 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox9 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox8 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox7 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox6 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -150,6 +133,27 @@ Partial Class ClipDataForm
         Me.CheckBox33 = New System.Windows.Forms.CheckBox()
         Me.CheckBox29 = New System.Windows.Forms.CheckBox()
         Me.CheckBox31 = New System.Windows.Forms.CheckBox()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.CheckBox35 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox34 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox27 = New System.Windows.Forms.CheckBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.CheckBox42 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox41 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox13 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox12 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox40 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox39 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox11 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox10 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox9 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox8 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox7 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox6 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.CheckBox15 = New System.Windows.Forms.CheckBox()
@@ -162,6 +166,9 @@ Partial Class ClipDataForm
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
+        Me.CheckBox43 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox44 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox45 = New System.Windows.Forms.CheckBox()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -170,11 +177,11 @@ Partial Class ClipDataForm
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel5.SuspendLayout()
         Me.TabPage5.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
         Me.SuspendLayout()
         '
         'TextBox9
@@ -933,225 +940,6 @@ Partial Class ClipDataForm
         Me.CheckBox37.Text = "Export Image Sequence"
         Me.CheckBox37.UseVisualStyleBackColor = True
         '
-        'TabPage3
-        '
-        Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
-        Me.TabPage3.Controls.Add(Me.CheckBox35)
-        Me.TabPage3.Controls.Add(Me.CheckBox34)
-        Me.TabPage3.Controls.Add(Me.CheckBox27)
-        Me.TabPage3.Controls.Add(Me.Label17)
-        Me.TabPage3.Controls.Add(Me.Label11)
-        Me.TabPage3.Controls.Add(Me.CheckBox13)
-        Me.TabPage3.Controls.Add(Me.CheckBox12)
-        Me.TabPage3.Controls.Add(Me.CheckBox11)
-        Me.TabPage3.Controls.Add(Me.CheckBox10)
-        Me.TabPage3.Controls.Add(Me.CheckBox9)
-        Me.TabPage3.Controls.Add(Me.CheckBox8)
-        Me.TabPage3.Controls.Add(Me.CheckBox7)
-        Me.TabPage3.Controls.Add(Me.CheckBox6)
-        Me.TabPage3.Controls.Add(Me.CheckBox5)
-        Me.TabPage3.Controls.Add(Me.CheckBox4)
-        Me.TabPage3.Controls.Add(Me.CheckBox3)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 20)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(415, 229)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Data"
-        '
-        'CheckBox35
-        '
-        Me.CheckBox35.AutoSize = True
-        Me.CheckBox35.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox35.Location = New System.Drawing.Point(224, 172)
-        Me.CheckBox35.Name = "CheckBox35"
-        Me.CheckBox35.Size = New System.Drawing.Size(101, 17)
-        Me.CheckBox35.TabIndex = 51
-        Me.CheckBox35.Text = "Anonymize data"
-        Me.CheckBox35.UseVisualStyleBackColor = True
-        '
-        'CheckBox34
-        '
-        Me.CheckBox34.AutoSize = True
-        Me.CheckBox34.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox34.Location = New System.Drawing.Point(224, 149)
-        Me.CheckBox34.Name = "CheckBox34"
-        Me.CheckBox34.Size = New System.Drawing.Size(117, 17)
-        Me.CheckBox34.TabIndex = 51
-        Me.CheckBox34.Text = "Export settings only"
-        Me.CheckBox34.UseVisualStyleBackColor = True
-        '
-        'CheckBox27
-        '
-        Me.CheckBox27.AutoSize = True
-        Me.CheckBox27.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox27.Location = New System.Drawing.Point(224, 126)
-        Me.CheckBox27.Name = "CheckBox27"
-        Me.CheckBox27.Size = New System.Drawing.Size(166, 17)
-        Me.CheckBox27.TabIndex = 51
-        Me.CheckBox27.Text = "Retain original folder structure"
-        Me.CheckBox27.UseVisualStyleBackColor = True
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label17.Location = New System.Drawing.Point(14, 16)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(135, 13)
-        Me.Label17.TabIndex = 50
-        Me.Label17.Text = "Select data to be exported:"
-        '
-        'Label11
-        '
-        Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label11.Location = New System.Drawing.Point(37, 121)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(353, 1)
-        Me.Label11.TabIndex = 49
-        '
-        'CheckBox13
-        '
-        Me.CheckBox13.AutoSize = True
-        Me.CheckBox13.Checked = True
-        Me.CheckBox13.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox13.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox13.Location = New System.Drawing.Point(331, 92)
-        Me.CheckBox13.Name = "CheckBox13"
-        Me.CheckBox13.Size = New System.Drawing.Size(59, 17)
-        Me.CheckBox13.TabIndex = 38
-        Me.CheckBox13.Text = "MTags"
-        Me.CheckBox13.UseVisualStyleBackColor = True
-        '
-        'CheckBox12
-        '
-        Me.CheckBox12.AutoSize = True
-        Me.CheckBox12.Checked = True
-        Me.CheckBox12.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox12.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox12.Location = New System.Drawing.Point(268, 92)
-        Me.CheckBox12.Name = "CheckBox12"
-        Me.CheckBox12.Size = New System.Drawing.Size(50, 17)
-        Me.CheckBox12.TabIndex = 39
-        Me.CheckBox12.Text = "Tags"
-        Me.CheckBox12.UseVisualStyleBackColor = True
-        '
-        'CheckBox11
-        '
-        Me.CheckBox11.AutoSize = True
-        Me.CheckBox11.Checked = True
-        Me.CheckBox11.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox11.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox11.Location = New System.Drawing.Point(205, 92)
-        Me.CheckBox11.Name = "CheckBox11"
-        Me.CheckBox11.Size = New System.Drawing.Size(54, 17)
-        Me.CheckBox11.TabIndex = 40
-        Me.CheckBox11.Text = "Views"
-        Me.CheckBox11.UseVisualStyleBackColor = True
-        '
-        'CheckBox10
-        '
-        Me.CheckBox10.AutoSize = True
-        Me.CheckBox10.Checked = True
-        Me.CheckBox10.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox10.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox10.Location = New System.Drawing.Point(119, 92)
-        Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(83, 17)
-        Me.CheckBox10.TabIndex = 41
-        Me.CheckBox10.Text = "UploadDate"
-        Me.CheckBox10.UseVisualStyleBackColor = True
-        '
-        'CheckBox9
-        '
-        Me.CheckBox9.AutoSize = True
-        Me.CheckBox9.Checked = True
-        Me.CheckBox9.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox9.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox9.Location = New System.Drawing.Point(119, 59)
-        Me.CheckBox9.Name = "CheckBox9"
-        Me.CheckBox9.Size = New System.Drawing.Size(80, 17)
-        Me.CheckBox9.TabIndex = 42
-        Me.CheckBox9.Text = "DateTaken"
-        Me.CheckBox9.UseVisualStyleBackColor = True
-        '
-        'CheckBox8
-        '
-        Me.CheckBox8.AutoSize = True
-        Me.CheckBox8.Checked = True
-        Me.CheckBox8.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox8.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox8.Location = New System.Drawing.Point(331, 59)
-        Me.CheckBox8.Name = "CheckBox8"
-        Me.CheckBox8.Size = New System.Drawing.Size(59, 17)
-        Me.CheckBox8.TabIndex = 43
-        Me.CheckBox8.Text = "UserID"
-        Me.CheckBox8.UseVisualStyleBackColor = True
-        '
-        'CheckBox7
-        '
-        Me.CheckBox7.AutoSize = True
-        Me.CheckBox7.Checked = True
-        Me.CheckBox7.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox7.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox7.Location = New System.Drawing.Point(268, 59)
-        Me.CheckBox7.Name = "CheckBox7"
-        Me.CheckBox7.Size = New System.Drawing.Size(57, 17)
-        Me.CheckBox7.TabIndex = 44
-        Me.CheckBox7.Text = "Owner"
-        Me.CheckBox7.UseVisualStyleBackColor = True
-        '
-        'CheckBox6
-        '
-        Me.CheckBox6.AutoSize = True
-        Me.CheckBox6.Checked = True
-        Me.CheckBox6.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox6.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox6.Location = New System.Drawing.Point(205, 59)
-        Me.CheckBox6.Name = "CheckBox6"
-        Me.CheckBox6.Size = New System.Drawing.Size(65, 17)
-        Me.CheckBox6.TabIndex = 45
-        Me.CheckBox6.Text = "PhotoID"
-        Me.CheckBox6.UseVisualStyleBackColor = True
-        '
-        'CheckBox5
-        '
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.Checked = True
-        Me.CheckBox5.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox5.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox5.Location = New System.Drawing.Point(331, 28)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(48, 17)
-        Me.CheckBox5.TabIndex = 46
-        Me.CheckBox5.Text = "URL"
-        Me.CheckBox5.UseVisualStyleBackColor = True
-        '
-        'CheckBox4
-        '
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.Checked = True
-        Me.CheckBox4.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox4.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox4.Location = New System.Drawing.Point(268, 28)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(46, 17)
-        Me.CheckBox4.TabIndex = 47
-        Me.CheckBox4.Text = "Title"
-        Me.CheckBox4.UseVisualStyleBackColor = True
-        '
-        'CheckBox3
-        '
-        Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.Checked = True
-        Me.CheckBox3.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox3.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox3.Location = New System.Drawing.Point(205, 28)
-        Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(64, 17)
-        Me.CheckBox3.TabIndex = 48
-        Me.CheckBox3.Text = "Lat/Lng"
-        Me.CheckBox3.UseVisualStyleBackColor = True
-        '
         'TabPage4
         '
         Me.TabPage4.BackColor = System.Drawing.Color.Gainsboro
@@ -1171,12 +959,15 @@ Partial Class ClipDataForm
         Me.TabPage4.Controls.Add(Me.CheckBox24)
         Me.TabPage4.Controls.Add(Me.CheckBox22)
         Me.TabPage4.Controls.Add(Me.CheckBox21)
+        Me.TabPage4.Controls.Add(Me.CheckBox45)
         Me.TabPage4.Controls.Add(Me.CheckBox23)
         Me.TabPage4.Controls.Add(Me.CheckBox19)
+        Me.TabPage4.Controls.Add(Me.CheckBox44)
         Me.TabPage4.Controls.Add(Me.CheckBox20)
         Me.TabPage4.Controls.Add(Me.TextBox12)
         Me.TabPage4.Controls.Add(Me.CheckBox18)
         Me.TabPage4.Controls.Add(Me.TextBox11)
+        Me.TabPage4.Controls.Add(Me.CheckBox43)
         Me.TabPage4.Controls.Add(Me.CheckBox17)
         Me.TabPage4.Controls.Add(Me.TextBox10)
         Me.TabPage4.Controls.Add(Me.Panel4)
@@ -1314,11 +1105,12 @@ Partial Class ClipDataForm
         Me.CheckBox25.AutoSize = True
         Me.CheckBox25.Enabled = False
         Me.CheckBox25.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox25.Location = New System.Drawing.Point(329, 124)
+        Me.CheckBox25.Location = New System.Drawing.Point(372, 124)
         Me.CheckBox25.Name = "CheckBox25"
-        Me.CheckBox25.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox25.Size = New System.Drawing.Size(42, 17)
         Me.CheckBox25.TabIndex = 1
-        Me.CheckBox25.Text = "MTags"
+        Me.CheckBox25.Text = "MT"
+        Me.ToolTip1.SetToolTip(Me.CheckBox25, "Machine Tags")
         Me.CheckBox25.UseVisualStyleBackColor = True
         '
         'CheckBox24
@@ -1340,11 +1132,12 @@ Partial Class ClipDataForm
         Me.CheckBox22.AutoSize = True
         Me.CheckBox22.Enabled = False
         Me.CheckBox22.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox22.Location = New System.Drawing.Point(329, 87)
+        Me.CheckBox22.Location = New System.Drawing.Point(372, 87)
         Me.CheckBox22.Name = "CheckBox22"
-        Me.CheckBox22.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox22.Size = New System.Drawing.Size(42, 17)
         Me.CheckBox22.TabIndex = 1
-        Me.CheckBox22.Text = "MTags"
+        Me.CheckBox22.Text = "MT"
+        Me.ToolTip1.SetToolTip(Me.CheckBox22, "Machine Tags")
         Me.CheckBox22.UseVisualStyleBackColor = True
         '
         'CheckBox21
@@ -1380,11 +1173,12 @@ Partial Class ClipDataForm
         Me.CheckBox19.AutoSize = True
         Me.CheckBox19.Enabled = False
         Me.CheckBox19.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox19.Location = New System.Drawing.Point(329, 53)
+        Me.CheckBox19.Location = New System.Drawing.Point(372, 53)
         Me.CheckBox19.Name = "CheckBox19"
-        Me.CheckBox19.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox19.Size = New System.Drawing.Size(42, 17)
         Me.CheckBox19.TabIndex = 1
-        Me.CheckBox19.Text = "MTags"
+        Me.CheckBox19.Text = "MT"
+        Me.ToolTip1.SetToolTip(Me.CheckBox19, "Machine Tags")
         Me.CheckBox19.UseVisualStyleBackColor = True
         '
         'CheckBox20
@@ -1652,6 +1446,281 @@ Partial Class ClipDataForm
         Me.CheckBox31.Text = "Classify Tourists/ Locals"
         Me.CheckBox31.UseVisualStyleBackColor = True
         '
+        'TabPage3
+        '
+        Me.TabPage3.BackColor = System.Drawing.Color.Gainsboro
+        Me.TabPage3.Controls.Add(Me.CheckBox35)
+        Me.TabPage3.Controls.Add(Me.CheckBox34)
+        Me.TabPage3.Controls.Add(Me.CheckBox27)
+        Me.TabPage3.Controls.Add(Me.Label17)
+        Me.TabPage3.Controls.Add(Me.Label11)
+        Me.TabPage3.Controls.Add(Me.CheckBox42)
+        Me.TabPage3.Controls.Add(Me.CheckBox41)
+        Me.TabPage3.Controls.Add(Me.CheckBox13)
+        Me.TabPage3.Controls.Add(Me.CheckBox12)
+        Me.TabPage3.Controls.Add(Me.CheckBox40)
+        Me.TabPage3.Controls.Add(Me.CheckBox39)
+        Me.TabPage3.Controls.Add(Me.CheckBox11)
+        Me.TabPage3.Controls.Add(Me.CheckBox10)
+        Me.TabPage3.Controls.Add(Me.CheckBox9)
+        Me.TabPage3.Controls.Add(Me.CheckBox8)
+        Me.TabPage3.Controls.Add(Me.CheckBox7)
+        Me.TabPage3.Controls.Add(Me.CheckBox6)
+        Me.TabPage3.Controls.Add(Me.CheckBox5)
+        Me.TabPage3.Controls.Add(Me.CheckBox4)
+        Me.TabPage3.Controls.Add(Me.CheckBox3)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 20)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(415, 229)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Data"
+        '
+        'CheckBox35
+        '
+        Me.CheckBox35.AutoSize = True
+        Me.CheckBox35.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox35.Location = New System.Drawing.Point(224, 200)
+        Me.CheckBox35.Name = "CheckBox35"
+        Me.CheckBox35.Size = New System.Drawing.Size(101, 17)
+        Me.CheckBox35.TabIndex = 51
+        Me.CheckBox35.Text = "Anonymize data"
+        Me.CheckBox35.UseVisualStyleBackColor = True
+        '
+        'CheckBox34
+        '
+        Me.CheckBox34.AutoSize = True
+        Me.CheckBox34.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox34.Location = New System.Drawing.Point(224, 177)
+        Me.CheckBox34.Name = "CheckBox34"
+        Me.CheckBox34.Size = New System.Drawing.Size(117, 17)
+        Me.CheckBox34.TabIndex = 51
+        Me.CheckBox34.Text = "Export settings only"
+        Me.CheckBox34.UseVisualStyleBackColor = True
+        '
+        'CheckBox27
+        '
+        Me.CheckBox27.AutoSize = True
+        Me.CheckBox27.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox27.Location = New System.Drawing.Point(224, 154)
+        Me.CheckBox27.Name = "CheckBox27"
+        Me.CheckBox27.Size = New System.Drawing.Size(166, 17)
+        Me.CheckBox27.TabIndex = 51
+        Me.CheckBox27.Text = "Retain original folder structure"
+        Me.CheckBox27.UseVisualStyleBackColor = True
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label17.Location = New System.Drawing.Point(14, 16)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(135, 13)
+        Me.Label17.TabIndex = 50
+        Me.Label17.Text = "Select data to be exported:"
+        '
+        'Label11
+        '
+        Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label11.Location = New System.Drawing.Point(37, 149)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(353, 1)
+        Me.Label11.TabIndex = 49
+        '
+        'CheckBox42
+        '
+        Me.CheckBox42.AutoSize = True
+        Me.CheckBox42.Checked = True
+        Me.CheckBox42.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox42.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox42.Location = New System.Drawing.Point(268, 121)
+        Me.CheckBox42.Name = "CheckBox42"
+        Me.CheckBox42.Size = New System.Drawing.Size(82, 17)
+        Me.CheckBox42.TabIndex = 38
+        Me.CheckBox42.Text = "GeoContext"
+        Me.CheckBox42.UseVisualStyleBackColor = True
+        '
+        'CheckBox41
+        '
+        Me.CheckBox41.AutoSize = True
+        Me.CheckBox41.Checked = True
+        Me.CheckBox41.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox41.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox41.Location = New System.Drawing.Point(331, 121)
+        Me.CheckBox41.Name = "CheckBox41"
+        Me.CheckBox41.Size = New System.Drawing.Size(63, 17)
+        Me.CheckBox41.TabIndex = 38
+        Me.CheckBox41.Text = "License"
+        Me.CheckBox41.UseVisualStyleBackColor = True
+        '
+        'CheckBox13
+        '
+        Me.CheckBox13.AutoSize = True
+        Me.CheckBox13.Checked = True
+        Me.CheckBox13.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox13.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox13.Location = New System.Drawing.Point(331, 92)
+        Me.CheckBox13.Name = "CheckBox13"
+        Me.CheckBox13.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox13.TabIndex = 38
+        Me.CheckBox13.Text = "MTags"
+        Me.CheckBox13.UseVisualStyleBackColor = True
+        '
+        'CheckBox12
+        '
+        Me.CheckBox12.AutoSize = True
+        Me.CheckBox12.Checked = True
+        Me.CheckBox12.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox12.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox12.Location = New System.Drawing.Point(268, 92)
+        Me.CheckBox12.Name = "CheckBox12"
+        Me.CheckBox12.Size = New System.Drawing.Size(50, 17)
+        Me.CheckBox12.TabIndex = 39
+        Me.CheckBox12.Text = "Tags"
+        Me.CheckBox12.UseVisualStyleBackColor = True
+        '
+        'CheckBox40
+        '
+        Me.CheckBox40.AutoSize = True
+        Me.CheckBox40.Checked = True
+        Me.CheckBox40.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox40.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox40.Location = New System.Drawing.Point(37, 92)
+        Me.CheckBox40.Name = "CheckBox40"
+        Me.CheckBox40.Size = New System.Drawing.Size(71, 17)
+        Me.CheckBox40.TabIndex = 40
+        Me.CheckBox40.Text = "Accuracy"
+        Me.CheckBox40.UseVisualStyleBackColor = True
+        '
+        'CheckBox39
+        '
+        Me.CheckBox39.AutoSize = True
+        Me.CheckBox39.Checked = True
+        Me.CheckBox39.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox39.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox39.Location = New System.Drawing.Point(119, 92)
+        Me.CheckBox39.Name = "CheckBox39"
+        Me.CheckBox39.Size = New System.Drawing.Size(79, 17)
+        Me.CheckBox39.TabIndex = 40
+        Me.CheckBox39.Text = "Description"
+        Me.CheckBox39.UseVisualStyleBackColor = True
+        '
+        'CheckBox11
+        '
+        Me.CheckBox11.AutoSize = True
+        Me.CheckBox11.Checked = True
+        Me.CheckBox11.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox11.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox11.Location = New System.Drawing.Point(205, 92)
+        Me.CheckBox11.Name = "CheckBox11"
+        Me.CheckBox11.Size = New System.Drawing.Size(54, 17)
+        Me.CheckBox11.TabIndex = 40
+        Me.CheckBox11.Text = "Views"
+        Me.CheckBox11.UseVisualStyleBackColor = True
+        '
+        'CheckBox10
+        '
+        Me.CheckBox10.AutoSize = True
+        Me.CheckBox10.Checked = True
+        Me.CheckBox10.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox10.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox10.Location = New System.Drawing.Point(37, 59)
+        Me.CheckBox10.Name = "CheckBox10"
+        Me.CheckBox10.Size = New System.Drawing.Size(83, 17)
+        Me.CheckBox10.TabIndex = 41
+        Me.CheckBox10.Text = "UploadDate"
+        Me.CheckBox10.UseVisualStyleBackColor = True
+        '
+        'CheckBox9
+        '
+        Me.CheckBox9.AutoSize = True
+        Me.CheckBox9.Checked = True
+        Me.CheckBox9.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox9.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox9.Location = New System.Drawing.Point(119, 59)
+        Me.CheckBox9.Name = "CheckBox9"
+        Me.CheckBox9.Size = New System.Drawing.Size(80, 17)
+        Me.CheckBox9.TabIndex = 42
+        Me.CheckBox9.Text = "DateTaken"
+        Me.CheckBox9.UseVisualStyleBackColor = True
+        '
+        'CheckBox8
+        '
+        Me.CheckBox8.AutoSize = True
+        Me.CheckBox8.Checked = True
+        Me.CheckBox8.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox8.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox8.Location = New System.Drawing.Point(331, 59)
+        Me.CheckBox8.Name = "CheckBox8"
+        Me.CheckBox8.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox8.TabIndex = 43
+        Me.CheckBox8.Text = "UserID"
+        Me.CheckBox8.UseVisualStyleBackColor = True
+        '
+        'CheckBox7
+        '
+        Me.CheckBox7.AutoSize = True
+        Me.CheckBox7.Checked = True
+        Me.CheckBox7.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox7.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox7.Location = New System.Drawing.Point(268, 59)
+        Me.CheckBox7.Name = "CheckBox7"
+        Me.CheckBox7.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox7.TabIndex = 44
+        Me.CheckBox7.Text = "Owner"
+        Me.CheckBox7.UseVisualStyleBackColor = True
+        '
+        'CheckBox6
+        '
+        Me.CheckBox6.AutoSize = True
+        Me.CheckBox6.Checked = True
+        Me.CheckBox6.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox6.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox6.Location = New System.Drawing.Point(205, 59)
+        Me.CheckBox6.Name = "CheckBox6"
+        Me.CheckBox6.Size = New System.Drawing.Size(65, 17)
+        Me.CheckBox6.TabIndex = 45
+        Me.CheckBox6.Text = "PhotoID"
+        Me.CheckBox6.UseVisualStyleBackColor = True
+        '
+        'CheckBox5
+        '
+        Me.CheckBox5.AutoSize = True
+        Me.CheckBox5.Checked = True
+        Me.CheckBox5.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox5.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox5.Location = New System.Drawing.Point(331, 28)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(48, 17)
+        Me.CheckBox5.TabIndex = 46
+        Me.CheckBox5.Text = "URL"
+        Me.CheckBox5.UseVisualStyleBackColor = True
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.AutoSize = True
+        Me.CheckBox4.Checked = True
+        Me.CheckBox4.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox4.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox4.Location = New System.Drawing.Point(268, 28)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(46, 17)
+        Me.CheckBox4.TabIndex = 47
+        Me.CheckBox4.Text = "Title"
+        Me.CheckBox4.UseVisualStyleBackColor = True
+        '
+        'CheckBox3
+        '
+        Me.CheckBox3.AutoSize = True
+        Me.CheckBox3.Checked = True
+        Me.CheckBox3.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox3.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox3.Location = New System.Drawing.Point(205, 28)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(64, 17)
+        Me.CheckBox3.TabIndex = 48
+        Me.CheckBox3.Text = "Lat/Lng"
+        Me.CheckBox3.UseVisualStyleBackColor = True
+        '
         'Label13
         '
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1789,6 +1858,48 @@ Partial Class ClipDataForm
         Me.Label44.Text = "Shape 1 of 1."
         Me.Label44.Visible = False
         '
+        'CheckBox43
+        '
+        Me.CheckBox43.AutoSize = True
+        Me.CheckBox43.Checked = True
+        Me.CheckBox43.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox43.Enabled = False
+        Me.CheckBox43.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox43.Location = New System.Drawing.Point(323, 53)
+        Me.CheckBox43.Name = "CheckBox43"
+        Me.CheckBox43.Size = New System.Drawing.Size(51, 17)
+        Me.CheckBox43.TabIndex = 1
+        Me.CheckBox43.Text = "Desc"
+        Me.CheckBox43.UseVisualStyleBackColor = True
+        '
+        'CheckBox44
+        '
+        Me.CheckBox44.AutoSize = True
+        Me.CheckBox44.Checked = True
+        Me.CheckBox44.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox44.Enabled = False
+        Me.CheckBox44.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox44.Location = New System.Drawing.Point(323, 87)
+        Me.CheckBox44.Name = "CheckBox44"
+        Me.CheckBox44.Size = New System.Drawing.Size(51, 17)
+        Me.CheckBox44.TabIndex = 1
+        Me.CheckBox44.Text = "Desc"
+        Me.CheckBox44.UseVisualStyleBackColor = True
+        '
+        'CheckBox45
+        '
+        Me.CheckBox45.AutoSize = True
+        Me.CheckBox45.Checked = True
+        Me.CheckBox45.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox45.Enabled = False
+        Me.CheckBox45.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox45.Location = New System.Drawing.Point(323, 124)
+        Me.CheckBox45.Name = "CheckBox45"
+        Me.CheckBox45.Size = New System.Drawing.Size(51, 17)
+        Me.CheckBox45.TabIndex = 1
+        Me.CheckBox45.Text = "Desc"
+        Me.CheckBox45.UseVisualStyleBackColor = True
+        '
         'ClipDataForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1838,8 +1949,6 @@ Partial Class ClipDataForm
         Me.TabPage2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.TabPage3.ResumeLayout(False)
-        Me.TabPage3.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
         Me.Panel4.ResumeLayout(False)
@@ -1848,6 +1957,8 @@ Partial Class ClipDataForm
         Me.Panel5.PerformLayout()
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1993,4 +2104,11 @@ Partial Class ClipDataForm
     Friend WithEvents Label47 As Label
     Friend WithEvents CheckBox38 As CheckBox
     Friend WithEvents Label46 As Label
+    Friend WithEvents CheckBox41 As CheckBox
+    Friend WithEvents CheckBox40 As CheckBox
+    Friend WithEvents CheckBox39 As CheckBox
+    Friend WithEvents CheckBox42 As CheckBox
+    Friend WithEvents CheckBox45 As CheckBox
+    Friend WithEvents CheckBox44 As CheckBox
+    Friend WithEvents CheckBox43 As CheckBox
 End Class
