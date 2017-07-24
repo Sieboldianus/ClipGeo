@@ -1821,6 +1821,10 @@ Search3:  'String3
     Private Sub ClipDataForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         formfullyloaded = True
         TextBox1.Text = My.Settings.Sourcepath
+        For i As Integer = 0 To CheckedListBox1.Items.Count - 1
+            CheckedListBox1.SetItemChecked(i, True)
+        Next
+        CheckedListBox2.SetItemChecked(0, True) 'Only Check Highest Accuracy
     End Sub
 
     'Shapefile load
