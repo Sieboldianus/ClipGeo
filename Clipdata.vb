@@ -566,9 +566,6 @@ Public Class ClipDataForm
         Dim drawBiasGraph As Boolean = CheckBox38.Checked 'if enabled, bias graph will be drawn on temporal sequence
         Dim temporalUserOriginCountDictionary_Country As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of Number of users per time-increment per origin string
         Dim temporalUniqueUserIDCount As New HashSet(Of String)
-        Dim pAccuracy As String
-        Dim pLicense As Integer
-        Dim pDescription As String
 
         'Initialize UserOriginCountDictionary based on total available Origin Countries
         If drawBiasGraph Then
@@ -938,6 +935,12 @@ Public Class ClipDataForm
                                         If photocollection Then
                                             Views = Val(linetextArr(10)) 'Views
                                             PhotoURL = linetextArr(4) 'URL
+                                        End If
+                                        If linetextArr.Length < 14 Then
+                                            'Unselect if no data exists
+                                            SearchDesc1 = False
+                                            SearchDesc2 = False
+                                            SearchDesc3 = False
                                         End If
                                         '14 = Desc
                                         '15 = Acc
