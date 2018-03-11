@@ -26,12 +26,17 @@ Public Class ClipDataForm
     Public SetStartDatasetName As String = "Greater Toronto Area"
     Public formfullyloaded As Boolean = False 'set to true after form is fully loaded
     Public dataselall As Boolean = True '..true, if all datasets are to be exported, false if user made selection
-    Public hash As HashSet(Of Long) = New HashSet(Of Long)
+    Public hash As HashSet(Of String) = New HashSet(Of String) 'this could be Long, but LBSN_Guids may be strings!
     Public hashUser As HashSet(Of String) = New HashSet(Of String)
     Public hashTags As HashSet(Of String) = New HashSet(Of String)
+
+    'Filter Usersettings
+    Public Filterusers As Boolean = False
+    Public UserIDFilterListHash As HashSet(Of String) = New HashSet(Of String)
+
     'Public values for data filter
     Public Operator1, Operator2 As Integer
-    Public SearchTitle1, SearchMtags1, SearchTags1, SearchDesc1, SearchTitle2, SearchMtags2, SearchTags2, SearchDesc2, SearchTitle3, SearchMtags3, SearchTags3, SearchDesc3 As Boolean
+    Public SearchTitle1, SearchTags1, SearchDesc1, SearchTitle2, SearchTags2, SearchDesc2, SearchTitle3, SearchTags3, SearchDesc3 As Boolean
     Public searchFullWords As Boolean = True
     Public DataFiltering As Boolean = False
     Public noboundary As Boolean = False
@@ -59,6 +64,8 @@ Public Class ClipDataForm
     '  float  multiple[] = storage for precalculated multipliers (same size as polyX)
     Public constant() As Double
     Public multiple() As Double
+    'Source of data ("LBSN" or "Flickr")
+    Public DSMapping As sourcetype
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         maploaded = False
@@ -104,11 +111,23 @@ Public Class ClipDataForm
             'MsgBox(strPath & "02 _UserData\00_Index\UserGeocodeIndex.txt")
         End If
 
-
         'Load Multifolder
         For Each dri In diArr
             currentSourceData = New SourceData
             If File.Exists(strPath & dri.Name & "\settings.txt") Then
+                'Load Sourcetype Mapping (Column Names & Numbers)
+                Dim sourcetype_string As String
+                sourcetype_string = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "sourcetype")
+                If sourcetype_string = "" Then
+                    sourcetype_string = "flickr"
+                End If
+                Dim sourcetype_path As String = strPath & "01_Config\sourcemapping_" & sourcetype_string & ".txt"
+                If File.Exists(sourcetype_path) Then
+                    DSMapping = HelperFunctions.LoadSourceTypeMapping(sourcetype_path)
+                Else
+                    MsgBox("Could not find SourceTypeMapping for given Type '" & sourcetype_string & "'")
+                    Exit Sub
+                End If
                 currentSourceData.TotalPhotos = 0
                 currentSourceData.filename = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "profilename")
                 currentSourceData.bottomlat = HelperFunctions.GetSettingItem(strPath & dri.Name & "\settings.txt", "bottomlat")
@@ -531,7 +550,7 @@ Public Class ClipDataForm
         Dim UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
         Dim maptouristslocals As Boolean = CheckBox32.Checked
         Dim mapPhotosFromLocals As Boolean = CheckBox33.Checked
-        Dim PhotoIDc As Long = 0
+        Dim PhotoIDc As String = ""
         Dim Tagsc As Long = 0
         Dim UserIDc As String = Nothing
         Dim Views As Integer = 0
@@ -566,7 +585,21 @@ Public Class ClipDataForm
         Dim drawBiasGraph As Boolean = CheckBox38.Checked 'if enabled, bias graph will be drawn on temporal sequence
         Dim temporalUserOriginCountDictionary_Country As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of Number of users per time-increment per origin string
         Dim temporalUniqueUserIDCount As New HashSet(Of String)
-
+        'If Datasource from LBSN: define which sourcetypes should be exported
+        If DSMapping.name = "lbsn" Then
+            Dim DataSourceExportTypes As New List(Of Integer)
+            'define list of sources to be exported
+            '1 = Instagram, 2 = Flickr, 3 = Twitter
+            If CheckBox48.Checked = True Then
+                DataSourceExportTypes.Add(2)
+            End If
+            If CheckBox47.Checked = True Then
+                DataSourceExportTypes.Add(1)
+            End If
+            If CheckBox48.Checked = True Then
+                DataSourceExportTypes.Add(3)
+            End If
+        End If
         'Initialize UserOriginCountDictionary based on total available Origin Countries
         If drawBiasGraph Then
             For Each a As KeyValuePair(Of String, KeyValuePair(Of String, String)) In HelperFunctions.UserOriginCountryDict
@@ -600,23 +633,23 @@ Public Class ClipDataForm
         Dim dataSelList As New List(Of String)
         If Not dataselall = True Then
             If CheckBox3.Checked = True Then
-                dataSelList.Add("Latitude")
-                dataSelList.Add("Longitude")
+                dataSelList.Add(DSMapping.latitude_colName)
+                dataSelList.Add(DSMapping.longitude_colName)
             End If
-            If CheckBox4.Checked = True Then dataSelList.Add("NAME")
-            If CheckBox5.Checked = True Then dataSelList.Add("URL")
-            If CheckBox6.Checked = True Then dataSelList.Add("PhotoID")
-            If CheckBox7.Checked = True Then dataSelList.Add("Owner")
-            If CheckBox8.Checked = True Then dataSelList.Add("UserID")
-            If CheckBox9.Checked = True Then dataSelList.Add("DateTaken")
-            If CheckBox10.Checked = True Then dataSelList.Add("UploadDate")
-            If CheckBox11.Checked = True Then dataSelList.Add("Views")
-            If CheckBox12.Checked = True Then dataSelList.Add("Tags")
-            If CheckBox13.Checked = True Then dataSelList.Add("MTags")
-            If CheckBox40.Checked = True Then dataSelList.Add("Accuracy")
-            If CheckBox39.Checked = True Then dataSelList.Add("Description")
-            If CheckBox41.Checked = True Then dataSelList.Add("License")
-            If CheckBox42.Checked = True Then dataSelList.Add("GeoContext")
+            If CheckBox4.Checked = True Then dataSelList.Add(DSMapping.post_title_colName)
+            If CheckBox5.Checked = True Then dataSelList.Add(DSMapping.post_thumbnail_url_colName)
+            If CheckBox6.Checked = True Then dataSelList.Add(DSMapping.post_guid_colName)
+            If CheckBox7.Checked = True Then dataSelList.Add(DSMapping.username_colName)
+            If CheckBox8.Checked = True Then dataSelList.Add(DSMapping.user_guid_colName)
+            If CheckBox9.Checked = True Then dataSelList.Add(DSMapping.post_create_date_colName)
+            If CheckBox10.Checked = True Then dataSelList.Add(DSMapping.post_publish_date_colName)
+            If CheckBox11.Checked = True Then dataSelList.Add(DSMapping.post_view_count_colName)
+            If CheckBox12.Checked = True Then dataSelList.Add(DSMapping.tags_colName)
+            'If CheckBox13.Checked = True Then dataSelList.Add("MTags")
+            'If CheckBox40.Checked = True Then dataSelList.Add("Accuracy")
+            'If CheckBox39.Checked = True Then dataSelList.Add("Description")
+            'If CheckBox41.Checked = True Then dataSelList.Add("License")
+            'If CheckBox42.Checked = True Then dataSelList.Add("GeoContext")
         End If
 
         'userExport preparations
@@ -646,18 +679,16 @@ Public Class ClipDataForm
         'Check for Advanced Filter Criteria
         If Not CheckBox26.Checked = True And Not TextBox10.Text = String.Empty Then
             DataFiltering = True
-            searchFullWords = CheckBox24.Checked
+            searchFullWords = CheckBox28.Checked
 
             filtertext1 = TextBox10.Text.ToLower
             SearchTags1 = CheckBox17.Checked
             SearchTitle1 = CheckBox18.Checked
-            SearchMtags1 = CheckBox19.Checked
             SearchDesc1 = CheckBox43.Checked
             If Not TextBox11.Text = String.Empty Then
                 filtertext2 = TextBox11.Text.ToLower
                 SearchTags2 = CheckBox20.Checked
                 SearchTitle2 = CheckBox21.Checked
-                SearchMtags2 = CheckBox22.Checked
                 SearchDesc2 = CheckBox44.Checked
                 If RadioButton2.Checked = True Then
                     Operator1 = 1 'And
@@ -670,7 +701,6 @@ Public Class ClipDataForm
                     filtertext3 = TextBox12.Text.ToLower
                     SearchTags3 = CheckBox23.Checked
                     SearchTitle3 = CheckBox24.Checked
-                    SearchMtags3 = CheckBox25.Checked
                     SearchDesc3 = CheckBox45.Checked
                     If RadioButton9.Checked = True Then
                         Operator1 = 1 'And
@@ -833,7 +863,7 @@ Public Class ClipDataForm
                     If Not (Directory.Exists(outputdir)) Then
                         Directory.CreateDirectory(outputdir)
                     End If
-                    If export = True And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                    If export = True And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension)
                 End If
             End If
 
@@ -853,7 +883,7 @@ Public Class ClipDataForm
                         'File.Copy(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
                         HelperFunctions.TransferSettings(Path.GetDirectoryName(dataSource.datafiles(0)) & "\settings.txt", outputdir & "\settings.txt")
                     End If
-                    If settingsExportOnly = False And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt") 'create first file container for data
+                    If settingsExportOnly = False And timetransponse = False Then outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension) 'create first file container for data
                 End If
 
                 If settingsExportOnly = False Then 'skip export of datafiles if only settings export selected (if true, will created empty folder structure with settings.txt's)
@@ -871,10 +901,10 @@ Public Class ClipDataForm
                                 'Start Reading File
                                 Dim objReader As New System.IO.StreamReader(filenamepath)
                                 Dim result As String() = Nothing
-                                Dim resultNum As Integer
+                                Dim sourceID As Integer = 0
                                 Dim resultLat, resultLng As Double
                                 Dim linetext As String
-                                Dim linetextArr As String()
+                                Dim linetextArr As String() = Nothing
                                 Dim dateColumn As Integer = 0
                                 Dim headerline_arr As String()
                                 Dim headerline_arr_sel As New List(Of String)
@@ -889,10 +919,10 @@ Public Class ClipDataForm
                                 For Each d As String In headerline_arr
                                     If dataSelList.Contains(d) Then headerline_arr_sel.Add(d) 'Add Items to Export-Selection if user has selected them
                                     If RadioButton1.Checked = False Or timetransponse = True Then
-                                        If d = "DateTaken" Then
+                                        If d = DSMapping.post_create_date_colName Then
                                             If RadioButton3.Checked = True Then dateColumn = c
                                         End If
-                                        If d = "UploadDate" Then
+                                        If d = DSMapping.post_publish_date_colName Then
                                             If RadioButton3.Checked = False Then dateColumn = c
                                         End If
                                     End If
@@ -923,30 +953,61 @@ Public Class ClipDataForm
                                 Do While objReader.Peek() <> -1
                                     line = line + 1
                                     linetext = objReader.ReadLine()
-                                    linetextArr = linetext.Split(",")
+                                    'Dim t As New FileIO.TextFieldParser(New System.IO.StringReader("thestringinside"))
+                                    'we'll split data up to the first position where Quotes might ocur (title, content)
+                                    linetextArr = Split(linetext, ",", 13)
+                                    If DataFiltering = True And (SearchDesc1 = True Or SearchTitle1 = True) Then
+                                        'It requires about 10x computing to split quoted fields, we only do this if really necessary
+                                        'We'll use TextFieldParser to get the fields after 13, if user searches for specific terms
+                                        Dim linetextArr2 As String()
+                                        Using fieldReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(New System.IO.StringReader(linetextArr(12)))
+                                            fieldReader.TextFieldType = FileIO.FieldType.Delimited
+                                            fieldReader.SetDelimiters(DSMapping.delimiter)
+                                            fieldReader.HasFieldsEnclosedInQuotes = True
+                                            fieldReader.TrimWhiteSpace = True
+                                            'we do not need to read all data into fields, only what is required
+                                            While Not fieldReader.EndOfData
+                                                linetextArr2 = fieldReader.ReadFields()
+                                            End While
+                                        End Using
+                                        linetextArr = linetextArr.Concat(linetextArr).ToArray()
+                                    End If
                                     If linetextArr.Length >= 11 Then
-                                        resultNum = Val(linetextArr(0)) 'ID
-                                        resultLat = Val(linetextArr(1)) 'Lat
-                                        resultLng = Val(linetextArr(2)) 'Long
-
-                                        PhotoIDc = Val(linetextArr(5)) 'PhotoID
-                                        UserIDc = linetextArr(7) 'UserID (String!)
-                                        If timetransponse Then PDate = DateTime.Parse(linetextArr(8))
-                                        If photocollection Then
-                                            Views = Val(linetextArr(10)) 'Views
-                                            PhotoURL = linetextArr(4) 'URL
+                                        If DSMapping.name = "lbsn" Then sourceID = Val(linetextArr(DSMapping.origin_id_colNr)) 'ID
+                                        resultLat = Val(linetextArr(DSMapping.latitude_colNr)) 'Lat
+                                        resultLng = Val(linetextArr(DSMapping.longitude_colNr)) 'Long
+                                        If DSMapping.name = "lbsn" And sourceID = 1 Then
+                                            PhotoIDc = linetextArr(DSMapping.post_url_colNr).Substring(linetextArr(DSMapping.post_url_colNr).LastIndexOf("/"c) + 1) 'PhotoShortcode
+                                        Else
+                                            PhotoIDc = linetextArr(DSMapping.post_guid_colNr) 'PhotoID
                                         End If
-                                        If linetextArr.Length < 14 Then
-                                            'Unselect if no data exists
-                                            SearchDesc1 = False
-                                            SearchDesc2 = False
-                                            SearchDesc3 = False
-                                        End If
-                                        '14 = Desc
-                                        '15 = Acc
-                                        '16 = Lic
-                                        '17 = GeoContext
-                                    Else : GoTo skip_line 'Skip erroneous line with less entries than expected
+                                        UserIDc = linetextArr(DSMapping.user_guid_colNr) 'UserID (String!)
+                                            If timetransponse Then
+                                                If DSMapping.name = "flickr" Then
+                                                    PDate = DateTime.Parse(linetextArr(DSMapping.post_create_date_colNr))
+                                                ElseIf DSMapping.name = "lbsn" Then
+                                                    PDate = DateTime.Parse(linetextArr(DSMapping.post_publish_date_colNr))
+                                                End If
+                                            End If
+                                            If photocollection Then
+                                                If IsNothing(DSMapping.post_view_count_colNr) Or sourceID = 1 Then
+                                                    Views = Val(linetextArr(DSMapping.post_like_count_colNr))
+                                                Else
+                                                    Views = Val(linetextArr(DSMapping.post_view_count_colNr)) 'Views
+                                                End If
+                                                PhotoURL = linetextArr(DSMapping.post_thumbnail_url_colNr) 'URL
+                                            End If
+                                            If linetextArr.Length < 14 Then
+                                                'Unselect if no data exists
+                                                SearchDesc1 = False
+                                                SearchDesc2 = False
+                                                SearchDesc3 = False
+                                            End If
+                                            '14 = Desc
+                                            '15 = Acc
+                                            '16 = Lic
+                                            '17 = GeoContext
+                                        Else : GoTo skip_line 'Skip erroneous line with less entries than expected
                                     End If
 
                                     'Check Local Photos (optional)
@@ -960,9 +1021,14 @@ Public Class ClipDataForm
                                             GoTo skip_line 'Skip all photos from users with no info
                                         End If
                                     End If
+                                    If Filterusers = True Then
+                                        If testUserList(UserIDc) = False Then
+                                            GoTo skip_line 'Skip all photos from users not in list
+                                        End If
+                                    End If
 
                                     'Read DateValue from Line if DateLimit specified
-                                    If Not dateColumn = 0 Then UDate = DateTime.Parse(linetext.Split(",")(dateColumn))
+                                    If Not dateColumn = 0 Then UDate = DateTime.Parse(linetextArr(dateColumn))
 
                                     If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
                                         If dateColumn = 0 OrElse LiesWithinDateRange(UDate, minDate, maxDate) Then
@@ -1007,7 +1073,8 @@ Public Class ClipDataForm
                                                     'End If
 
                                                     hashUser.Add(UserIDc) 'Count Unique Users
-                                                    Tagsc = Tagsc + CountCharacter(linetextArr(11), ";"c) - 2
+                                                    'Dim trimChars() As Char = {"{", "}", DSMapping.arraySeparator}
+                                                    Tagsc = Tagsc + CountCharacter(linetextArr(DSMapping.tags_colNr), DSMapping.arraySeparator)
                                                     If estimateUnique = False AndAlso hashTags.Count > 10000000 Then 'Max size of Hashset = 2 Billion, but Strings consume more. Test Exception reached at 11,998,949
                                                         estimateUnique = True
                                                         estPhotosBase = countlines_sich + countlines
@@ -1015,7 +1082,8 @@ Public Class ClipDataForm
                                                         hashTags.Clear()
                                                     Else
                                                         Try
-                                                            hashTags.UnionWith(linetextArr(11).Split(";")) 'Count Unique Tags
+                                                            'MsgBox(linetextArr(DSMapping.hashtags_colNr).Trim(trimChars))
+                                                            hashTags.UnionWith(linetextArr(DSMapping.tags_colNr).Split(DSMapping.arraySeparator)) 'Count Unique Tags
                                                         Catch ex As OutOfMemoryException
                                                             If Not IsNothing(ex.Message) Then
                                                                 MsgBox("System.OutOfMemoryException at HashTagsCount: " & hashTags.Count & ", freeing up memory..")
@@ -1047,7 +1115,7 @@ Public Class ClipDataForm
                                                         End If
                                                     End If
                                                     If photocollection Then
-                                                        visualForm.mapcoords(resultLat, resultLng, fp, localtourist, Views, PhotoIDc, PhotoURL)
+                                                        visualForm.mapcoords(resultLat, resultLng, fp, localtourist, Views, PhotoIDc, PhotoURL, sourceID)
                                                     Else
                                                         visualForm.mapcoords(resultLat, resultLng, fp, localtourist)
                                                     End If
@@ -1059,9 +1127,11 @@ Public Class ClipDataForm
                                                             header_line_written = True
                                                         End If
                                                         If dataselall = True Then 'If all data is to be exported
-                                                            linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
+                                                            If DSMapping.name = "flickr" Then
+                                                                linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
+                                                            End If
                                                         Else 'if only some data is to be exported
-                                                            linetext = countlines
+                                                                linetext = countlines
                                                             Dim ii As Integer = 0
                                                             For Each d As String In headerline_arr
                                                                 If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
@@ -1086,13 +1156,13 @@ Public Class ClipDataForm
                                                             outputfile.Flush()
                                                             outputfile.Close()
                                                             If retainfolderstructure = True Then
-                                                                FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & ".txt", newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part.txt")
+                                                                FileSystem.Rename(newfilenamepath & "_" & countnewfiles - 1 & "." & DSMapping.fileExtension, newfilenamepath & "_" & countnewfiles - 1 & "_" & 50000 & "_Part." & DSMapping.fileExtension)
                                                             End If
-                                                            outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & ".txt")
+                                                            outputfile = System.IO.File.CreateText(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension)
                                                             header_line_written = False
                                                         Else 'timetransponse true
                                                             For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
-                                                                Dim path As String = newfilenamepath & Daylist.Key & ".txt"
+                                                                Dim path As String = newfilenamepath & Daylist.Key & "." & DSMapping.fileExtension
                                                                 System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
                                                             Next
                                                             PhotosPerDayLists.Clear()
@@ -1183,11 +1253,11 @@ skip_line:                      Loop
                     outputfile.Close()
                     'Delete Empty Output File
                     If countnewfiles = 1 AndAlso countlines = 0 Then
-                        File.Delete(newfilenamepath & "_" & countnewfiles & ".txt")
+                        File.Delete(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension)
                         Directory.Delete(outputdir, True)
                     Else
                         If retainfolderstructure = True Then
-                            FileSystem.Rename(newfilenamepath & "_" & countnewfiles & ".txt", newfilenamepath & "_" & countnewfiles & "_" & countlines & "_Part.txt")
+                            FileSystem.Rename(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension, newfilenamepath & "_" & countnewfiles & "_" & countlines & "_Part." & DSMapping.fileExtension)
                         End If
                     End If
                     countlines_sich = countlines_sich + countlines
@@ -1200,7 +1270,7 @@ skip_line:                      Loop
             'Write one last time if timetransponse (below 50k) and then Sort Data based on Date Taken
             If timetransponse = True Then
                 For Each Daylist As KeyValuePair(Of String, List(Of String)) In PhotosPerDayLists
-                    Dim path As String = newfilenamepath & Daylist.Key & ".txt"
+                    Dim path As String = newfilenamepath & Daylist.Key & "." & DSMapping.fileExtension
                     System.IO.File.AppendAllLines(path, Daylist.Value) 'Append all photovalues from line to day-txt
                 Next
                 PhotosPerDayLists.Clear()
@@ -1263,7 +1333,7 @@ skip_line:                      Loop
                 outputfile.Close()
                 'if no photos  written
                 If countlines = 0 Then
-                    System.IO.File.Delete(newfilenamepath & "_" & countnewfiles & ".txt")
+                    System.IO.File.Delete(newfilenamepath & "_" & countnewfiles & "." & DSMapping.fileExtension)
                     If countnewfiles = 1 Then
                         Directory.Delete(outputdir)
                     End If
@@ -1476,42 +1546,41 @@ skip_line:                      Loop
 
     Function data_contains(ByVal string1 As String, ByVal string2 As String, ByVal string3 As String, ByVal linetextArr As String()) As Boolean
         data_contains = False
+        Dim trimChars() As Char = {"{", "}", DSMapping.arraySeparator}
         If searchFullWords = False Then 'Add wildcards for non-full-word searches
             string1 = "*" & string1 & "*"
             string2 = "*" & string2 & "*"
             string3 = "*" & string3 & "*"
         End If
-        linetextArr(11) = linetextArr(11).ToLower
-        linetextArr(12) = linetextArr(12).ToLower
-        linetextArr(3) = linetextArr(3).ToLower
-        If linetextArr.Length > 13 Then
-            linetextArr(14) = linetextArr(14).ToLower
+        If Not DSMapping.arraySeparator = ";" Then
+            linetextArr(DSMapping.tags_colNr) = linetextArr(DSMapping.tags_colNr).Replace(DSMapping.arraySeparator, ";")
+        End If
+        linetextArr(DSMapping.tags_colNr) = ";" & linetextArr(DSMapping.tags_colNr).ToLower.Trim(trimChars) & ";"
+        If SearchTitle1 Or SearchDesc1 Then
+            linetextArr(DSMapping.post_title_colNr) = linetextArr(DSMapping.post_title_colNr).ToLower
+            linetextArr(DSMapping.post_body_colNr) = linetextArr(DSMapping.post_body_colNr).ToLower
         End If
         'Operator1 = 1 'And
         'Operator1 = 2 'or
         'Operator1 = 3 'not
 
         'String1
-        If SearchTags1 AndAlso linetextArr(11) Like "*;" & string1 & ";*" Then
+        If SearchTags1 AndAlso linetextArr(DSMapping.tags_colNr) Like ("*;" & string1 & ";*") Then
             data_contains = True
             GoTo Search2
         End If
-        If SearchMtags1 AndAlso linetextArr(12) Like "*;" & string1 & ";*" Then
+        If SearchTitle1 AndAlso linetextArr(DSMapping.post_title_colNr) Like ("* " & string1 & " *") Then
             data_contains = True
             GoTo Search2
         End If
-        If SearchTitle1 AndAlso linetextArr(3) Like "* " & string1 & " *" Then
-            data_contains = True
-            GoTo Search2
-        End If
-        If SearchDesc1 AndAlso linetextArr(14) Like "* " & string1 & " *" Then
+        If SearchDesc1 AndAlso linetextArr(DSMapping.post_body_colNr) Like ("* " & string1 & " *") Then
             data_contains = True
             GoTo Search2
         End If
 Search2:  'String2
         If string2 = String.Empty OrElse (Operator1 = 2 AndAlso data_contains = True) OrElse (Operator1 = 1 AndAlso data_contains = False) Then GoTo Search3
         If Operator1 < 3 Then 'and
-            If SearchTags2 AndAlso linetextArr(11) Like "*;" & string2 & ";*" Then
+            If SearchTags2 AndAlso linetextArr(DSMapping.tags_colNr) Like ("*;" & string2 & ";*") Then
                 data_contains = True
                 GoTo Search3
             Else
@@ -1520,7 +1589,7 @@ Search2:  'String2
                     Exit Function
                 End If
             End If
-            If SearchMtags2 AndAlso linetextArr(12) Like "*;" & string2 & ";*" Then
+            If SearchTitle2 AndAlso linetextArr(DSMapping.post_title_colNr) Like ("* " & string2 & " *") Then
                 data_contains = True
                 GoTo Search3
             Else
@@ -1529,16 +1598,7 @@ Search2:  'String2
                     Exit Function
                 End If
             End If
-            If SearchTitle2 AndAlso linetextArr(3) Like "* " & string2 & " *" Then
-                data_contains = True
-                GoTo Search3
-            Else
-                If Operator1 = 1 Then
-                    data_contains = False
-                    Exit Function
-                End If
-            End If
-            If SearchDesc2 AndAlso linetextArr(14) Like "* " & string2 & " *" Then
+            If SearchDesc2 AndAlso linetextArr(DSMapping.post_body_colNr) Like ("* " & string2 & " *") Then
                 data_contains = True
                 GoTo Search3
             Else
@@ -1548,19 +1608,15 @@ Search2:  'String2
                 End If
             End If
         Else 'Operator1 = 3
-            If SearchTags2 AndAlso linetextArr(11) Like "*;" & string2 & ";*" Then
+            If SearchTags2 AndAlso linetextArr(DSMapping.tags_colNr) Like ("*;" & string2 & ";*") Then
                 data_contains = False
                 Exit Function
             End If
-            If SearchMtags2 AndAlso linetextArr(12) Like "*;" & string2 & ";*" Then
+            If SearchTitle2 AndAlso linetextArr(DSMapping.post_title_colNr) Like ("* " & string2 & " *") Then
                 data_contains = False
                 Exit Function
             End If
-            If SearchTitle2 AndAlso linetextArr(3) Like "* " & string2 & " *" Then
-                data_contains = False
-                Exit Function
-            End If
-            If SearchDesc2 AndAlso linetextArr(14) Like "* " & string2 & " *" Then
+            If SearchDesc2 AndAlso linetextArr(DSMapping.post_body_colNr) Like ("* " & string2 & " *") Then
                 data_contains = False
                 Exit Function
             End If
@@ -1568,7 +1624,7 @@ Search2:  'String2
 Search3:  'String3
         If string3 = String.Empty OrElse (Operator2 = 2 AndAlso data_contains = True) OrElse (Operator2 = 1 AndAlso data_contains = False) Then Exit Function
         If Operator2 < 3 Then 'and
-            If SearchTags3 AndAlso linetextArr(11) Like "*;" & string3 & ";*" Then
+            If SearchTags3 AndAlso linetextArr(DSMapping.tags_colNr) Like ("*;" & string3 & ";*") Then
                 data_contains = True
                 Exit Function
             Else
@@ -1577,7 +1633,7 @@ Search3:  'String3
                     Exit Function
                 End If
             End If
-            If SearchMtags3 AndAlso linetextArr(12) Like "*;" & string3 & ";*" Then
+            If SearchTitle3 AndAlso linetextArr(DSMapping.post_title_colNr) Like ("* " & string3 & " *") Then
                 data_contains = True
                 Exit Function
             Else
@@ -1586,16 +1642,7 @@ Search3:  'String3
                     Exit Function
                 End If
             End If
-            If SearchTitle3 AndAlso linetextArr(3) Like "* " & string3 & " *" Then
-                data_contains = True
-                Exit Function
-            Else
-                If Operator2 = 1 Then
-                    data_contains = False
-                    Exit Function
-                End If
-            End If
-            If SearchDesc3 AndAlso linetextArr(14) Like "* " & string3 & " *" Then
+            If SearchDesc3 AndAlso linetextArr(DSMapping.post_body_colNr) Like ("* " & string3 & " *") Then
                 data_contains = True
                 Exit Function
             Else
@@ -1605,19 +1652,15 @@ Search3:  'String3
                 End If
             End If
         Else 'Operator1 = 3
-            If SearchTags3 AndAlso linetextArr(11) Like "*;" & string3 & ";*" Then
+            If SearchTags3 AndAlso linetextArr(DSMapping.tags_colNr) Like ("*;" & string3 & ";*") Then
                 data_contains = False
                 Exit Function
             End If
-            If SearchMtags3 AndAlso linetextArr(12) Like "*;" & string3 & ";*" Then
+            If SearchTitle3 AndAlso linetextArr(DSMapping.post_title_colNr) Like ("* " & string3 & " *") Then
                 data_contains = False
                 Exit Function
             End If
-            If SearchTitle3 AndAlso linetextArr(3) Like "* " & string3 & " *" Then
-                data_contains = False
-                Exit Function
-            End If
-            If SearchDesc3 AndAlso linetextArr(14) Like "* " & string3 & " *" Then
+            If SearchDesc3 AndAlso linetextArr(DSMapping.tags_colNr) Like ("* " & string3 & " *") Then
                 data_contains = False
                 Exit Function
             End If
@@ -1786,6 +1829,42 @@ Search3:  'String3
             changeSelTextStatus()
         End If
     End Sub
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Dim filedialog As OpenFileDialog = New OpenFileDialog()
+        filedialog.Title = "Select userlist (txt)"
+
+        filedialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+        filedialog.RestoreDirectory = True
+        If filedialog.ShowDialog() = DialogResult.OK Then
+            TextBox15.Text = filedialog.FileName
+        Else
+            Exit Sub
+        End If
+
+        'Check
+        If File.Exists(filedialog.FileName.Substring(0, filedialog.FileName.Length - 4) & ".txt") Then
+            Dim sr As StreamReader = File.OpenText(filedialog.FileName.Substring(0, filedialog.FileName.Length - 4) & ".txt")
+            Dim line As Integer
+            Dim linetext As String
+            Do While sr.Peek() <> -1
+                line = line + 1
+                linetext = sr.ReadLine()
+                UserIDFilterListHash.Add(linetext)
+            Loop
+            Dim prj As String = sr.ReadLine()
+            sr.Close()
+            MsgBox("Loaded " & UserIDFilterListHash.Count & " UserIDs.")
+            Filterusers = True
+        End If
+    End Sub
+
+    Function testUserList(ByVal UserID As String) As Boolean
+        testUserList = False
+        If UserIDFilterListHash.Contains(UserID) Then
+            testUserList = True
+        End If
+    End Function
 
     'Sub changes Color of Checkboxes in panel 5
     Sub changeSelTextStatus()
@@ -2061,7 +2140,6 @@ Search3:  'String3
         RadioButton8.Enabled = True
         CheckBox17.Enabled = True
         CheckBox18.Enabled = True
-        CheckBox19.Enabled = True
         CheckBox28.Enabled = True
         TextBox11.Enabled = True
         RadioButton2.Checked = True
@@ -2077,7 +2155,6 @@ Search3:  'String3
             RadioButton8.Enabled = False
             CheckBox17.Enabled = False
             CheckBox18.Enabled = False
-            CheckBox19.Enabled = False
             TextBox11.Enabled = False
             CheckBox28.Enabled = False
 
@@ -2092,7 +2169,6 @@ Search3:  'String3
         RadioButton6.Enabled = True
         CheckBox20.Enabled = True
         CheckBox21.Enabled = True
-        CheckBox22.Enabled = True
         RadioButton9.Checked = True
         TextBox12.Enabled = True
     End Sub
@@ -2104,7 +2180,6 @@ Search3:  'String3
             RadioButton6.Enabled = False
             CheckBox20.Enabled = False
             CheckBox21.Enabled = False
-            CheckBox22.Enabled = False
             TextBox12.Enabled = False
         End If
     End Sub
@@ -2112,14 +2187,12 @@ Search3:  'String3
     Private Sub TextBox12_Click(sender As Object, e As EventArgs) Handles TextBox12.Click
         CheckBox23.Enabled = True
         CheckBox24.Enabled = True
-        CheckBox25.Enabled = True
     End Sub
 
     Private Sub TextBox12_Validated(sender As Object, e As EventArgs) Handles TextBox12.Validated
         If TextBox12.Text = String.Empty Then
             CheckBox23.Enabled = False
             CheckBox24.Enabled = False
-            CheckBox25.Enabled = False
         End If
     End Sub
 
@@ -2237,6 +2310,496 @@ Public Class SourceData
         End Get
         Set(value As Long)
             _TotalPhotos = value
+        End Set
+    End Property
+End Class
+
+'Datasource Type Mapping Structure
+Public Class sourcetype
+    Private _name As String
+    Public Property name() As String
+        Get
+            Return _name
+        End Get
+        Set(value As String)
+            _name = value
+        End Set
+    End Property
+    Private _fileExtension As String
+    Public Property fileExtension() As String
+        Get
+            Return _fileExtension
+        End Get
+        Set(value As String)
+            _fileExtension = value
+        End Set
+    End Property
+    Private _delimiter As Char
+    Public Property delimiter() As Char
+        Get
+            Return _delimiter
+        End Get
+        Set(value As Char)
+            _delimiter = value
+        End Set
+    End Property
+    Private _arraySeparator As Char
+    Public Property arraySeparator() As Char
+        Get
+            Return _arraySeparator
+        End Get
+        Set(value As Char)
+            _arraySeparator = value
+        End Set
+    End Property
+    Private _origin_id_colNr As Integer
+    Public Property origin_id_colNr() As Integer
+        Get
+            Return _origin_id_colNr
+        End Get
+        Set(value As Integer)
+            _origin_id_colNr = value
+        End Set
+    End Property
+    Private _post_guid_colNr As Integer
+    Public Property post_guid_colNr() As Integer
+        Get
+            Return _post_guid_colNr
+        End Get
+        Set(value As Integer)
+            _post_guid_colNr = value
+        End Set
+    End Property
+    Private _latitude_colNr As Integer
+    Public Property latitude_colNr() As Integer
+        Get
+            Return _latitude_colNr
+        End Get
+        Set(value As Integer)
+            _latitude_colNr = value
+        End Set
+    End Property
+    Private _longitude_colNr As Integer
+    Public Property longitude_colNr() As Integer
+        Get
+            Return _longitude_colNr
+        End Get
+        Set(value As Integer)
+            _longitude_colNr = value
+        End Set
+    End Property
+    Private _place_guid_colNr As Integer
+    Public Property place_guid_colNr() As Integer
+        Get
+            Return _place_guid_colNr
+        End Get
+        Set(value As Integer)
+            _place_guid_colNr = value
+        End Set
+    End Property
+    Private _city_guid_colNr As Integer
+    Public Property city_guid_colNr() As Integer
+        Get
+            Return _city_guid_colNr
+        End Get
+        Set(value As Integer)
+            _city_guid_colNr = value
+        End Set
+    End Property
+    Private _country_guid_colNr As Integer
+    Public Property country_guid_colNr() As Integer
+        Get
+            Return _country_guid_colNr
+        End Get
+        Set(value As Integer)
+            _country_guid_colNr = value
+        End Set
+    End Property
+    Private _user_guid_colNr As Integer
+    Public Property user_guid_colNr() As Integer
+        Get
+            Return _user_guid_colNr
+        End Get
+        Set(value As Integer)
+            _user_guid_colNr = value
+        End Set
+    End Property
+    Private _post_publish_date_colNr As Integer
+    Public Property post_publish_date_colNr() As Integer
+        Get
+            Return _post_publish_date_colNr
+        End Get
+        Set(value As Integer)
+            _post_publish_date_colNr = value
+        End Set
+    End Property
+    Private _post_body_colNr As Integer
+    Public Property post_body_colNr() As Integer
+        Get
+            Return _post_body_colNr
+        End Get
+        Set(value As Integer)
+            _post_body_colNr = value
+        End Set
+    End Property
+    Private _post_geoaccuracy_colNr As Integer
+    Public Property post_geoaccuracy_colNr() As Integer
+        Get
+            Return _post_geoaccuracy_colNr
+        End Get
+        Set(value As Integer)
+            _post_geoaccuracy_colNr = value
+        End Set
+    End Property
+    Private _tags_colNr As Integer
+    Public Property tags_colNr() As Integer
+        Get
+            Return _tags_colNr
+        End Get
+        Set(value As Integer)
+            _tags_colNr = value
+        End Set
+    End Property
+    Private _emojis_colNr As Integer
+    Public Property emojis_colNr() As Integer
+        Get
+            Return _emojis_colNr
+        End Get
+        Set(value As Integer)
+            _emojis_colNr = value
+        End Set
+    End Property
+    Private _post_like_count_colNr As Integer
+    Public Property post_like_count_colNr() As Integer
+        Get
+            Return _post_like_count_colNr
+        End Get
+        Set(value As Integer)
+            _post_like_count_colNr = value
+        End Set
+    End Property
+    Private _post_comment_count_colNr As Integer
+    Public Property post_comment_count_colNr() As Integer
+        Get
+            Return _post_comment_count_colNr
+        End Get
+        Set(value As Integer)
+            _post_comment_count_colNr = value
+        End Set
+    End Property
+    Private _post_title_colNr As Integer
+    Public Property post_title_colNr() As Integer
+        Get
+            Return _post_title_colNr
+        End Get
+        Set(value As Integer)
+            _post_title_colNr = value
+        End Set
+    End Property
+    Private _post_create_date_colNr As Integer
+    Public Property post_create_date_colNr() As Integer
+        Get
+            Return _post_create_date_colNr
+        End Get
+        Set(value As Integer)
+            _post_create_date_colNr = value
+        End Set
+    End Property
+    Private _post_thumbnail_url_colNr As Integer
+    Public Property post_thumbnail_url_colNr() As Integer
+        Get
+            Return _post_thumbnail_url_colNr
+        End Get
+        Set(value As Integer)
+            _post_thumbnail_url_colNr = value
+        End Set
+    End Property
+    Private _post_url_colNr As Integer
+    Public Property post_url_colNr() As Integer
+        Get
+            Return _post_url_colNr
+        End Get
+        Set(value As Integer)
+            _post_url_colNr = value
+        End Set
+    End Property
+    Private _post_type_colNr As Integer
+    Public Property post_type_colNr() As Integer
+        Get
+            Return _post_type_colNr
+        End Get
+        Set(value As Integer)
+            _post_type_colNr = value
+        End Set
+    End Property
+    Private _post_filter_colNr As Integer
+    Public Property post_filter_colNr() As Integer
+        Get
+            Return _post_filter_colNr
+        End Get
+        Set(value As Integer)
+            _post_filter_colNr = value
+        End Set
+    End Property
+    Private _place_name_colNr As Integer
+    Public Property place_name_colNr() As Integer
+        Get
+            Return _place_name_colNr
+        End Get
+        Set(value As Integer)
+            _place_name_colNr = value
+        End Set
+    End Property
+    Private _place_post_count_colNr As Integer
+    Public Property place_post_count_colNr() As Integer
+        Get
+            Return _place_post_count_colNr
+        End Get
+        Set(value As Integer)
+            _place_post_count_colNr = value
+        End Set
+    End Property
+    Private _post_view_count_colNr As Integer
+    Public Property post_view_count_colNr() As Integer
+        Get
+            Return _post_view_count_colNr
+        End Get
+        Set(value As Integer)
+            _post_view_count_colNr = value
+        End Set
+    End Property
+    Private _username_colNr As Integer
+    Public Property username_colNr() As Integer
+        Get
+            Return _username_colNr
+        End Get
+        Set(value As Integer)
+            _username_colNr = value
+        End Set
+    End Property
+    Private _origin_id_colName As String
+    Public Property origin_id_colName() As String
+        Get
+            Return _origin_id_colName
+        End Get
+        Set(value As String)
+            _origin_id_colName = value
+        End Set
+    End Property
+    Private _post_guid_colName As String
+    Public Property post_guid_colName() As String
+        Get
+            Return _post_guid_colName
+        End Get
+        Set(value As String)
+            _post_guid_colName = value
+        End Set
+    End Property
+    Private _latitude_colName As String
+    Public Property latitude_colName() As String
+        Get
+            Return _latitude_colName
+        End Get
+        Set(value As String)
+            _latitude_colName = value
+        End Set
+    End Property
+    Private _longitude_colName As String
+    Public Property longitude_colName() As String
+        Get
+            Return _longitude_colName
+        End Get
+        Set(value As String)
+            _longitude_colName = value
+        End Set
+    End Property
+    Private _place_guid_colName As String
+    Public Property place_guid_colName() As String
+        Get
+            Return _place_guid_colName
+        End Get
+        Set(value As String)
+            _place_guid_colName = value
+        End Set
+    End Property
+    Private _city_guid_colName As String
+    Public Property city_guid_colName() As String
+        Get
+            Return _city_guid_colName
+        End Get
+        Set(value As String)
+            _city_guid_colName = value
+        End Set
+    End Property
+    Private _country_guid_colName As String
+    Public Property country_guid_colName() As String
+        Get
+            Return _country_guid_colName
+        End Get
+        Set(value As String)
+            _country_guid_colName = value
+        End Set
+    End Property
+    Private _user_guid_colName As String
+    Public Property user_guid_colName() As String
+        Get
+            Return _user_guid_colName
+        End Get
+        Set(value As String)
+            _user_guid_colName = value
+        End Set
+    End Property
+    Private _post_publish_date_colName As String
+    Public Property post_publish_date_colName() As String
+        Get
+            Return _post_publish_date_colName
+        End Get
+        Set(value As String)
+            _post_publish_date_colName = value
+        End Set
+    End Property
+    Private _post_body_colName As String
+    Public Property post_body_colName() As String
+        Get
+            Return _post_body_colName
+        End Get
+        Set(value As String)
+            _post_body_colName = value
+        End Set
+    End Property
+    Private _post_geoaccuracy_colName As String
+    Public Property post_geoaccuracy_colName() As String
+        Get
+            Return _post_geoaccuracy_colName
+        End Get
+        Set(value As String)
+            _post_geoaccuracy_colName = value
+        End Set
+    End Property
+    Private _tags_colName As String
+    Public Property tags_colName() As String
+        Get
+            Return _tags_colName
+        End Get
+        Set(value As String)
+            _tags_colName = value
+        End Set
+    End Property
+    Private _emojis_colName As String
+    Public Property emojis_colName() As String
+        Get
+            Return _emojis_colName
+        End Get
+        Set(value As String)
+            _emojis_colName = value
+        End Set
+    End Property
+    Private _post_like_count_colName As String
+    Public Property post_like_count_colName() As String
+        Get
+            Return _post_like_count_colName
+        End Get
+        Set(value As String)
+            _post_like_count_colName = value
+        End Set
+    End Property
+    Private _post_comment_count_colName As String
+    Public Property post_comment_count_colName() As String
+        Get
+            Return _post_comment_count_colName
+        End Get
+        Set(value As String)
+            _post_comment_count_colName = value
+        End Set
+    End Property
+    Private _post_title_colName As String
+    Public Property post_title_colName() As String
+        Get
+            Return _post_title_colName
+        End Get
+        Set(value As String)
+            _post_title_colName = value
+        End Set
+    End Property
+    Private _post_create_date_colName As String
+    Public Property post_create_date_colName() As String
+        Get
+            Return _post_create_date_colName
+        End Get
+        Set(value As String)
+            _post_create_date_colName = value
+        End Set
+    End Property
+    Private _post_thumbnail_url_colName As String
+    Public Property post_thumbnail_url_colName() As String
+        Get
+            Return _post_thumbnail_url_colName
+        End Get
+        Set(value As String)
+            _post_thumbnail_url_colName = value
+        End Set
+    End Property
+    Private _post_url_colName As String
+    Public Property post_url_colName() As String
+        Get
+            Return _post_url_colName
+        End Get
+        Set(value As String)
+            _post_url_colName = value
+        End Set
+    End Property
+    Private _post_type_colName As String
+    Public Property post_type_colName() As String
+        Get
+            Return _post_type_colName
+        End Get
+        Set(value As String)
+            _post_type_colName = value
+        End Set
+    End Property
+    Private _post_filter_colName As String
+    Public Property post_filter_colName() As String
+        Get
+            Return _post_filter_colName
+        End Get
+        Set(value As String)
+            _post_filter_colName = value
+        End Set
+    End Property
+    Private _place_name_colName As String
+    Public Property place_name_colName() As String
+        Get
+            Return _place_name_colName
+        End Get
+        Set(value As String)
+            _place_name_colName = value
+        End Set
+    End Property
+    Private _place_post_count_colName As String
+    Public Property place_post_count_colName() As String
+        Get
+            Return _place_post_count_colName
+        End Get
+        Set(value As String)
+            _place_post_count_colName = value
+        End Set
+    End Property
+    Private _post_view_count_colName As String
+    Public Property post_view_count_colName() As String
+        Get
+            Return _post_view_count_colName
+        End Get
+        Set(value As String)
+            _post_view_count_colName = value
+        End Set
+    End Property
+    Private _username_colName As String
+    Public Property username_colName() As String
+        Get
+            Return _username_colName
+        End Get
+        Set(value As String)
+            _username_colName = value
         End Set
     End Property
 End Class

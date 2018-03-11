@@ -58,7 +58,7 @@ Public Class visualForm
         m_poperContainerForForm = New PoperContainer(m_popedContainerForForm)
     End Sub
 
-    Sub mapcoords(ByVal latitude As Double, ByVal longitude As Double, ByRef fp As FastPix, Optional ByVal localtourist As Integer = Nothing, Optional ByVal views As Integer = Nothing, Optional ByVal photoid As Long = Nothing, Optional ByVal photourl As String = Nothing)
+    Sub mapcoords(ByVal latitude As Double, ByVal longitude As Double, ByRef fp As FastPix, Optional ByVal localtourist As Integer = Nothing, Optional ByVal views As Integer = Nothing, Optional ByVal photoid As String = Nothing, Optional ByVal photourl As String = Nothing, Optional ByVal photoOrigin As Integer = 2)
         Dim latcord As Double
         Dim longcord As Double
         If localtourist = 1 Then datacolor = Color.Turquoise
@@ -80,6 +80,7 @@ Public Class visualForm
                 If Not views = Nothing AndAlso views > photoDict(result).views Then
                     photoDict(result).views = views
                     photoDict(result).photoid = photoid
+                    photoDict(result).photoOrigin = photoOrigin
                     photoDict(result).pUrl = photourl
                     photoDict(result).lat = latitude
                     photoDict(result).lng = longitude
@@ -823,20 +824,26 @@ Public Class FastPix
 
 End Class
 
-
-
 'Definition of advanced photo data (still smaller than Flickr.Net.Photo)
 Public Class PhotoRef
-    Private _photoid As Long
-    Public Property photoid() As Long
+    Private _photoid As String
+    Public Property photoid() As String
         Get
             Return _photoid
         End Get
-        Set(value As Long)
+        Set(value As String)
             _photoid = value
         End Set
     End Property
-
+    Private _photoOrigin As Integer
+    Public Property photoOrigin() As Integer
+        Get
+            Return _photoOrigin
+        End Get
+        Set(value As Integer)
+            _photoOrigin = value
+        End Set
+    End Property
     Private _views As Integer
     Public Property views() As Integer
         Get

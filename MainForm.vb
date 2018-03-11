@@ -1,5 +1,5 @@
 Public Class MainForm
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click, Button4.Click, Button3.Click, Button5.Click, Button2.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click, Button5.Click, Button2.Click
         'MsgBox("Version: " & Environment.Version.ToString())
         ClipDataForm.Text = "ClipGeo v." & Application.ProductVersion
         ClipDataForm.Show()

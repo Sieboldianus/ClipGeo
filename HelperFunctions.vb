@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports GMap.NET
 Imports GMap.NET.WindowsForms
+Imports System.Reflection
 
 Public Class HelperFunctions
     Public Shared AppPath As String = Application.StartupPath() & "\"
@@ -18,6 +19,33 @@ Public Class HelperFunctions
         End Using
         'S.Close()
         'S = Nothing
+    End Function
+    'Load Source Mapping for different types of data
+    Public Shared Function LoadSourceTypeMapping(ByVal File As String) As sourcetype
+        Dim currentDataSourceType As New sourcetype
+        Dim config_properties As New List(Of String)
+        Dim _type As Type = currentDataSourceType.GetType()
+        Dim properties() As PropertyInfo = _type.GetProperties()
+        Using S As New IO.StreamReader(File)
+            Do While (S.Peek <> -1)
+                Dim line As String = S.ReadLine
+                For Each _property As PropertyInfo In properties
+                    If line.StartsWith(_property.Name) Then
+                        'MsgBox(_property.Name & " set to : " & line.Substring(_property.Name.Length + 2))
+                        Dim pvalue As String = line.Substring(_property.Name.Length + 2)
+                        If _property.PropertyType Is GetType(Integer) Then
+                            _property.SetValue(currentDataSourceType, Convert.ToInt32(pvalue))
+                        ElseIf _property.PropertyType Is GetType(Char) Then
+                            _property.SetValue(currentDataSourceType, Convert.ToChar(pvalue))
+                        Else
+                            _property.SetValue(currentDataSourceType, pvalue)
+                        End If
+                        Exit For
+                    End If
+                Next
+            Loop
+            Return currentDataSourceType
+        End Using
     End Function
 
     Public Shared Sub InitialDrawMarkers(centerlat As Double, centerlong As Double, toplat As Double, bottomlat As Double, leftlong As Double, rightlong As Double, ByRef points As List(Of PointLatLng), ByRef polygon_red As GMapPolygon, startDataset As SourceData, ByRef overlayOne As GMapOverlay, ByRef MarkerOverlay As GMapOverlay)

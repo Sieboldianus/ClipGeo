@@ -23,8 +23,6 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
@@ -35,35 +33,13 @@ Partial Class MainForm
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(125, 12)
+        Me.Button1.Location = New System.Drawing.Point(153, 12)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(132, 24)
+        Me.Button1.Size = New System.Drawing.Size(104, 24)
         Me.Button1.TabIndex = 16
-        Me.Button1.Text = "Clip Data: Flickr"
+        Me.Button1.Text = "Clip Data"
         Me.ToolTip1.SetToolTip(Me.Button1, "Tool for clipping existing data to new extent.")
         Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Button3
-        '
-        Me.Button3.Enabled = False
-        Me.Button3.Location = New System.Drawing.Point(125, 42)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(132, 24)
-        Me.Button3.TabIndex = 16
-        Me.Button3.Text = "Clip Data: Twitter"
-        Me.ToolTip1.SetToolTip(Me.Button3, "Not yet implemented")
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'Button4
-        '
-        Me.Button4.Enabled = False
-        Me.Button4.Location = New System.Drawing.Point(125, 72)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(132, 24)
-        Me.Button4.TabIndex = 16
-        Me.Button4.Text = "Clip Data: Instagram"
-        Me.ToolTip1.SetToolTip(Me.Button4, "Not yet implemented")
-        Me.Button4.UseVisualStyleBackColor = True
         '
         'Label16
         '
@@ -94,7 +70,7 @@ Partial Class MainForm
         'Button2
         '
         Me.Button2.Enabled = False
-        Me.Button2.Location = New System.Drawing.Point(15, 72)
+        Me.Button2.Location = New System.Drawing.Point(153, 72)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(104, 24)
         Me.Button2.TabIndex = 16
@@ -104,7 +80,7 @@ Partial Class MainForm
         'Button5
         '
         Me.Button5.Enabled = False
-        Me.Button5.Location = New System.Drawing.Point(15, 42)
+        Me.Button5.Location = New System.Drawing.Point(153, 42)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(104, 24)
         Me.Button5.TabIndex = 16
@@ -119,8 +95,6 @@ Partial Class MainForm
         Me.ClientSize = New System.Drawing.Size(292, 142)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label16)
@@ -138,8 +112,6 @@ Partial Class MainForm
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ErrorProvider1 As System.Windows.Forms.ErrorProvider
     Private WithEvents Button1 As System.Windows.Forms.Button
-    Private WithEvents Button4 As Button
-    Private WithEvents Button3 As Button
     Private WithEvents Button5 As Button
     Private WithEvents Button2 As Button
 End Class

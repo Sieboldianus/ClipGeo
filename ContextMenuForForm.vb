@@ -267,7 +267,13 @@ Partial Public Class ContextMenuForForm
     End Sub
 
     Public Shared Sub openAdress()
-        Dim webAddress As String = "http://flickr.com/photo.gne?id=" & visualForm.pList(visualForm.pListCursor).photoid
+        Dim basURL As String = ""
+        If visualForm.pList(visualForm.pListCursor).photoOrigin = 1 Then
+            basURL = "https://www.instagram.com/p/"
+        ElseIf visualForm.pList(visualForm.pListCursor).photoOrigin = 2 Then
+            basURL = "http://flickr.com/photo.gne?id="
+        End If
+        Dim webAddress As String = basURL & visualForm.pList(visualForm.pListCursor).photoid
         Process.Start(webAddress)
     End Sub
 
