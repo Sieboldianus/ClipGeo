@@ -69,7 +69,7 @@ Partial Public Class ContextMenuForForm
         Me.label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.label3.Location = New System.Drawing.Point(127, 54)
         Me.label3.Name = "label3"
-        Me.label3.Size = New System.Drawing.Size(44, 13)
+        Me.label3.Size = New System.Drawing.Size(53, 16)
         Me.label3.TabIndex = 3
         Me.label3.Text = "Views:"
         '
@@ -91,6 +91,7 @@ Partial Public Class ContextMenuForForm
         Me.pictureBox1.Size = New System.Drawing.Size(240, 240)
         Me.pictureBox1.TabIndex = 31
         Me.pictureBox1.TabStop = False
+        Me.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom
         '
         'PreviousB
         '
@@ -136,7 +137,7 @@ Partial Public Class ContextMenuForForm
         Me.label2.AutoSize = True
         Me.label2.Location = New System.Drawing.Point(127, 36)
         Me.label2.Name = "label2"
-        Me.label2.Size = New System.Drawing.Size(49, 13)
+        Me.label2.Size = New System.Drawing.Size(54, 15)
         Me.label2.TabIndex = 1
         Me.label2.Text = "PhotoID:"
         '
@@ -156,7 +157,7 @@ Partial Public Class ContextMenuForForm
         Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(14, 36)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(25, 13)
+        Me.Label7.Size = New System.Drawing.Size(27, 15)
         Me.Label7.TabIndex = 1
         Me.Label7.Text = "Lat:"
         '
@@ -165,7 +166,7 @@ Partial Public Class ContextMenuForForm
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(14, 54)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(28, 13)
+        Me.Label8.Size = New System.Drawing.Size(31, 15)
         Me.Label8.TabIndex = 3
         Me.Label8.Text = "Lng:"
         '
@@ -240,7 +241,7 @@ Partial Public Class ContextMenuForForm
             Label9.Text = visualForm.pList(visualForm.pListCursor).lat
             Label10.Text = visualForm.pList(visualForm.pListCursor).lng
             Label11.Text = visualForm.pList.Count - visualForm.pListCursor & " of " & visualForm.pList.Count
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom
             pictureBox1.WaitOnLoad = False
             pictureBox1.LoadAsync(url)
             isfirstpaint = False

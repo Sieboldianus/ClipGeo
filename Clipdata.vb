@@ -540,7 +540,7 @@ Public Class ClipDataForm
     Private Sub searchexport(export As Boolean)
         Dim InputDir As String = TextBox1.Text.Replace("...", Application.StartupPath())
         Dim outputname As String = TextBox9.Text
-        Dim outputdir As String = AppPath & "Output\03_ClippedData\" & outputname & "\"
+        Dim outputdir As String = AppPath & "02_Output\01_ClippedData\" & outputname & "\"
         Dim filenamepath As String
         Dim newfilenamepath As String = Nothing
         Dim visMap As New Bitmap(visualForm.PictureBox1.Width, visualForm.PictureBox1.Height)
@@ -874,7 +874,7 @@ Public Class ClipDataForm
                 If retainfolderstructure = True AndAlso export = True Then
                     Dim split As String() = dataSource.datafiles(0).Split("\") 'Split Full Path into segments
                     Dim parentFolder As String = split(split.Length - 2)
-                    outputdir = AppPath & "Output\03_ClippedData\" & outputname & "\" & parentFolder & "\"
+                    outputdir = AppPath & "02_Output\01_ClippedData\" & outputname & "\" & parentFolder & "\"
                     newfilenamepath = outputdir & parentFolder
                     If Not (Directory.Exists(outputdir)) Then
                         Directory.CreateDirectory(outputdir)
@@ -899,7 +899,7 @@ Public Class ClipDataForm
                                 Label5.Text = "Processing file " & filename & " (" & i & " of " & count_filelist_sel.ToString & ")."
                                 Me.Refresh()
                                 'Start Reading File
-                                Dim objReader As New System.IO.StreamReader(filenamepath)
+                                Dim objReader As New System.IO.StreamReader(filenamepath, Encoding.UTF8)
                                 Dim result As String() = Nothing
                                 Dim sourceID As Integer = 0
                                 Dim resultLat, resultLng As Double
@@ -955,12 +955,13 @@ Public Class ClipDataForm
                                     linetext = objReader.ReadLine()
                                     'Dim t As New FileIO.TextFieldParser(New System.IO.StringReader("thestringinside"))
                                     'we'll split data up to the first position where Quotes might ocur (title, content)
-                                    linetextArr = Split(linetext, ",", 13)
-                                    If DataFiltering = True And (SearchDesc1 = True Or SearchTitle1 = True) Then
+                                    linetextArr = Split(linetext, ",", DSMapping.nonQuotedColumns)
+                                    If DataFiltering = True And (SearchDesc1 = True Or SearchTitle1 = True) AndAlso (linetextArr.Length >= DSMapping.nonQuotedColumns - 1) AndAlso Not linetextArr(DSMapping.nonQuotedColumns - 1) = "" Then
                                         'It requires about 10x computing to split quoted fields, we only do this if really necessary
                                         'We'll use TextFieldParser to get the fields after 13, if user searches for specific terms
                                         Dim linetextArr2 As String()
-                                        Using fieldReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(New System.IO.StringReader(linetextArr(12)))
+                                        Using fieldReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(New System.IO.StringReader(linetextArr(DSMapping.nonQuotedColumns - 1)))
+                                            'MsgBox(linetextArr(DSMapping.nonQuotedColumns - 1))
                                             fieldReader.TextFieldType = FileIO.FieldType.Delimited
                                             fieldReader.SetDelimiters(DSMapping.delimiter)
                                             fieldReader.HasFieldsEnclosedInQuotes = True
@@ -972,7 +973,8 @@ Public Class ClipDataForm
                                         End Using
                                         linetextArr = linetextArr.Concat(linetextArr).ToArray()
                                     End If
-                                    If linetextArr.Length >= 11 Then
+                                    'we need at least 11 columns, otherwise skip the row
+                                    If linetextArr.Length >= DSMapping.tags_colNr Then
                                         If DSMapping.name = "lbsn" Then sourceID = Val(linetextArr(DSMapping.origin_id_colNr)) 'ID
                                         resultLat = Val(linetextArr(DSMapping.latitude_colNr)) 'Lat
                                         resultLng = Val(linetextArr(DSMapping.longitude_colNr)) 'Long
@@ -982,32 +984,32 @@ Public Class ClipDataForm
                                             PhotoIDc = linetextArr(DSMapping.post_guid_colNr) 'PhotoID
                                         End If
                                         UserIDc = linetextArr(DSMapping.user_guid_colNr) 'UserID (String!)
-                                            If timetransponse Then
-                                                If DSMapping.name = "flickr" Then
-                                                    PDate = DateTime.Parse(linetextArr(DSMapping.post_create_date_colNr))
-                                                ElseIf DSMapping.name = "lbsn" Then
-                                                    PDate = DateTime.Parse(linetextArr(DSMapping.post_publish_date_colNr))
-                                                End If
+                                        If timetransponse Then
+                                            If DSMapping.name = "flickr" Then
+                                                PDate = DateTime.Parse(linetextArr(DSMapping.post_create_date_colNr))
+                                            ElseIf DSMapping.name = "lbsn" Then
+                                                PDate = DateTime.Parse(linetextArr(DSMapping.post_publish_date_colNr))
                                             End If
-                                            If photocollection Then
-                                                If IsNothing(DSMapping.post_view_count_colNr) Or sourceID = 1 Then
-                                                    Views = Val(linetextArr(DSMapping.post_like_count_colNr))
-                                                Else
-                                                    Views = Val(linetextArr(DSMapping.post_view_count_colNr)) 'Views
-                                                End If
-                                                PhotoURL = linetextArr(DSMapping.post_thumbnail_url_colNr) 'URL
+                                        End If
+                                        If photocollection Then
+                                            If IsNothing(DSMapping.post_view_count_colNr) Or sourceID = 1 Then
+                                                Views = Val(linetextArr(DSMapping.post_like_count_colNr))
+                                            Else
+                                                Views = Val(linetextArr(DSMapping.post_view_count_colNr)) 'Views
                                             End If
-                                            If linetextArr.Length < 14 Then
-                                                'Unselect if no data exists
-                                                SearchDesc1 = False
-                                                SearchDesc2 = False
-                                                SearchDesc3 = False
-                                            End If
-                                            '14 = Desc
-                                            '15 = Acc
-                                            '16 = Lic
-                                            '17 = GeoContext
-                                        Else : GoTo skip_line 'Skip erroneous line with less entries than expected
+                                            PhotoURL = linetextArr(DSMapping.post_thumbnail_url_colNr) 'URL
+                                        End If
+                                        If linetextArr.Length < 14 Then
+                                            'Unselect if no data exists
+                                            SearchDesc1 = False
+                                            SearchDesc2 = False
+                                            SearchDesc3 = False
+                                        End If
+                                        '14 = Desc
+                                        '15 = Acc
+                                        '16 = Lic
+                                        '17 = GeoContext
+                                    Else : GoTo skip_line 'Skip erroneous line with less entries than expected
                                     End If
 
                                     'Check Local Photos (optional)
@@ -1027,14 +1029,12 @@ Public Class ClipDataForm
                                         End If
                                     End If
 
-                                    'Read DateValue from Line if DateLimit specified
-                                    If Not dateColumn = 0 Then UDate = DateTime.Parse(linetextArr(dateColumn))
-
+                                    'Read DateValue from Line if DateLimit specified and Date exists
+                                    If Not dateColumn = 0 AndAlso Not linetextArr(dateColumn) = "" Then UDate = DateTime.ParseExact(linetextArr(dateColumn), DSMapping.DateTimeFormat, System.Globalization.CultureInfo.InvariantCulture)
                                     If Not resultLat = 0 AndAlso Not resultLng = 0 AndAlso hash.Contains(PhotoIDc) = False AndAlso (SpatialSkip OrElse LiesWithin(resultLat, resultLng, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly)) Then
-                                        If dateColumn = 0 OrElse LiesWithinDateRange(UDate, minDate, maxDate) Then
+                                        If dateColumn = 0 OrElse (Not linetextArr(dateColumn) = "" AndAlso LiesWithinDateRange(UDate, minDate, maxDate)) Then
                                             If DataFiltering = False OrElse data_contains(filtertext1, filtertext2, filtertext3, linetextArr) = True Then 'linetextArr(11).Contains(filtertext1) Then
                                                 countlines = countlines + 1
-
                                                 'Timetransponse data structure
                                                 If timetransponse Then
                                                     Dim daykey As String = PDate.ToString(GroupByTime)
@@ -1131,7 +1131,7 @@ Public Class ClipDataForm
                                                                 linetext = countlines & linetext.Substring(linetext.IndexOf(",")) 'Starts writing after first comma (ignores original ID's and appends new countlines)
                                                             End If
                                                         Else 'if only some data is to be exported
-                                                                linetext = countlines
+                                                            linetext = countlines
                                                             Dim ii As Integer = 0
                                                             For Each d As String In headerline_arr
                                                                 If headerline_arr_sel.Contains(d) Then linetext = linetext & "," & linetextArr(ii)
@@ -1235,12 +1235,12 @@ skip_line:                      Loop
                                     'End Update stat display
                                     seqFileNumber += 1
                                     Dim AppPath As String = Application.StartupPath() & "\"
-                                    If Not (Directory.Exists(AppPath & "Output\04_MapVis\" & outputname)) Then
-                                        Directory.CreateDirectory(AppPath & "Output\04_MapVis\" & outputname)
+                                    If Not (Directory.Exists(AppPath & "02_Output\02_MapVis\" & outputname)) Then
+                                        Directory.CreateDirectory(AppPath & "02_Output\02_MapVis\" & outputname)
                                     End If
                                     visualForm.Refresh()
                                     System.Windows.Forms.Application.DoEvents()
-                                    tmpImage.Save(AppPath & "Output\04_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
+                                    tmpImage.Save(AppPath & "02_Output\02_MapVis\" & outputname & "\" & seqFileNumber.ToString("D5") & ".png", ImageFormat.Png)
                                 End Using
                             End If
                         End If
@@ -2350,6 +2350,24 @@ Public Class sourcetype
         End Get
         Set(value As Char)
             _arraySeparator = value
+        End Set
+    End Property
+    Private _DateTimeFormat As String
+    Public Property DateTimeFormat() As String
+        Get
+            Return _DateTimeFormat
+        End Get
+        Set(value As String)
+            _DateTimeFormat = value
+        End Set
+    End Property
+    Private _nonQuotedColumns As Integer
+    Public Property nonQuotedColumns() As Integer
+        Get
+            Return _nonQuotedColumns
+        End Get
+        Set(value As Integer)
+            _nonQuotedColumns = value
         End Set
     End Property
     Private _origin_id_colNr As Integer

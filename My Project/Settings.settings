@@ -15,7 +15,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Sourcepath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">...\Output\</Value>
+      <Value Profile="(Default)">...\01_Input\</Value>
     </Setting>
     <Setting Name="Shapepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

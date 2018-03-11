@@ -208,7 +208,7 @@ Partial Class ClipDataForm
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(229, 20)
         Me.TextBox1.TabIndex = 13
-        Me.TextBox1.Text = "...\Output\"
+        Me.TextBox1.Text = "...\01_Input\"
         Me.ToolTip1.SetToolTip(Me.TextBox1, "Source folder, all *.txt files will be imported, except *_settings.txt, Gridcoord" &
         "inates.txt and log.txt")
         '
@@ -340,7 +340,7 @@ Partial Class ClipDataForm
         '
         'max_date
         '
-        Me.max_date.CustomFormat = "M/dd/yyyy h:mm:ss t"
+        Me.max_date.CustomFormat = "yyyy-MM-dd HH:mm:ss"
         Me.max_date.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right
         Me.max_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.max_date.Location = New System.Drawing.Point(238, 77)
@@ -353,7 +353,7 @@ Partial Class ClipDataForm
         '
         'min_date
         '
-        Me.min_date.CustomFormat = "M/dd/yyyy h:mm:ss t"
+        Me.min_date.CustomFormat = "yyyy-MM-dd HH:mm:ss"
         Me.min_date.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right
         Me.min_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.min_date.ImeMode = System.Windows.Forms.ImeMode.NoControl
