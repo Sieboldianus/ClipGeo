@@ -69,9 +69,9 @@ Partial Public Class ContextMenuForForm
         Me.label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.label3.Location = New System.Drawing.Point(127, 54)
         Me.label3.Name = "label3"
-        Me.label3.Size = New System.Drawing.Size(53, 16)
+        Me.label3.Size = New System.Drawing.Size(95, 16)
         Me.label3.TabIndex = 3
-        Me.label3.Text = "Views:"
+        Me.label3.Text = "Views/Likes:"
         '
         'label1
         '
@@ -89,9 +89,9 @@ Partial Public Class ContextMenuForForm
         Me.pictureBox1.Location = New System.Drawing.Point(17, 76)
         Me.pictureBox1.Name = "pictureBox1"
         Me.pictureBox1.Size = New System.Drawing.Size(240, 240)
+        Me.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pictureBox1.TabIndex = 31
         Me.pictureBox1.TabStop = False
-        Me.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom
         '
         'PreviousB
         '
