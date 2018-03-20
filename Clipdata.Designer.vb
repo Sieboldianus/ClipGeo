@@ -134,6 +134,7 @@ Partial Class ClipDataForm
         Me.Label47 = New System.Windows.Forms.Label()
         Me.CheckBox38 = New System.Windows.Forms.CheckBox()
         Me.Label46 = New System.Windows.Forms.Label()
+        Me.CheckBox19 = New System.Windows.Forms.CheckBox()
         Me.CheckBox33 = New System.Windows.Forms.CheckBox()
         Me.CheckBox49 = New System.Windows.Forms.CheckBox()
         Me.CheckBox48 = New System.Windows.Forms.CheckBox()
@@ -390,7 +391,7 @@ Partial Class ClipDataForm
         '
         'TextBox15
         '
-        Me.TextBox15.Location = New System.Drawing.Point(166, 118)
+        Me.TextBox15.Location = New System.Drawing.Point(166, 126)
         Me.TextBox15.Name = "TextBox15"
         Me.TextBox15.Size = New System.Drawing.Size(229, 19)
         Me.TextBox15.TabIndex = 56
@@ -1362,6 +1363,7 @@ Partial Class ClipDataForm
         Me.TabPage5.Controls.Add(Me.Label47)
         Me.TabPage5.Controls.Add(Me.CheckBox38)
         Me.TabPage5.Controls.Add(Me.Label46)
+        Me.TabPage5.Controls.Add(Me.CheckBox19)
         Me.TabPage5.Controls.Add(Me.CheckBox33)
         Me.TabPage5.Controls.Add(Me.CheckBox49)
         Me.TabPage5.Controls.Add(Me.CheckBox48)
@@ -1386,7 +1388,7 @@ Partial Class ClipDataForm
         '
         Me.Button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button9.Location = New System.Drawing.Point(93, 118)
+        Me.Button9.Location = New System.Drawing.Point(93, 126)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(63, 20)
         Me.Button9.TabIndex = 57
@@ -1397,7 +1399,7 @@ Partial Class ClipDataForm
         '
         Me.Label52.AutoSize = True
         Me.Label52.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label52.Location = New System.Drawing.Point(19, 121)
+        Me.Label52.Location = New System.Drawing.Point(19, 129)
         Me.Label52.Name = "Label52"
         Me.Label52.Size = New System.Drawing.Size(44, 13)
         Me.Label52.TabIndex = 55
@@ -1407,7 +1409,7 @@ Partial Class ClipDataForm
         '
         Me.Label48.AutoSize = True
         Me.Label48.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label48.Location = New System.Drawing.Point(32, 164)
+        Me.Label48.Location = New System.Drawing.Point(32, 172)
         Me.Label48.Name = "Label48"
         Me.Label48.Size = New System.Drawing.Size(105, 13)
         Me.Label48.TabIndex = 54
@@ -1437,7 +1439,7 @@ Partial Class ClipDataForm
         '
         Me.CheckBox38.AutoSize = True
         Me.CheckBox38.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox38.Location = New System.Drawing.Point(218, 160)
+        Me.CheckBox38.Location = New System.Drawing.Point(218, 168)
         Me.CheckBox38.Name = "CheckBox38"
         Me.CheckBox38.Size = New System.Drawing.Size(145, 17)
         Me.CheckBox38.TabIndex = 53
@@ -1447,10 +1449,22 @@ Partial Class ClipDataForm
         'Label46
         '
         Me.Label46.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label46.Location = New System.Drawing.Point(31, 149)
+        Me.Label46.Location = New System.Drawing.Point(31, 157)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(353, 1)
         Me.Label46.TabIndex = 52
+        '
+        'CheckBox19
+        '
+        Me.CheckBox19.AutoSize = True
+        Me.CheckBox19.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox19.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.CheckBox19.Location = New System.Drawing.Point(48, 103)
+        Me.CheckBox19.Name = "CheckBox19"
+        Me.CheckBox19.Size = New System.Drawing.Size(146, 17)
+        Me.CheckBox19.TabIndex = 35
+        Me.CheckBox19.Text = "Only Photos from Tourists"
+        Me.CheckBox19.UseVisualStyleBackColor = True
         '
         'CheckBox33
         '
@@ -1521,7 +1535,7 @@ Partial Class ClipDataForm
         Me.CheckBox31.AutoSize = True
         Me.CheckBox31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox31.ForeColor = System.Drawing.SystemColors.InactiveCaptionText
-        Me.CheckBox31.Location = New System.Drawing.Point(218, 182)
+        Me.CheckBox31.Location = New System.Drawing.Point(218, 190)
         Me.CheckBox31.Name = "CheckBox31"
         Me.CheckBox31.Size = New System.Drawing.Size(155, 19)
         Me.CheckBox31.TabIndex = 50
@@ -2214,4 +2228,5 @@ Partial Class ClipDataForm
     Friend WithEvents CheckBox49 As CheckBox
     Friend WithEvents CheckBox48 As CheckBox
     Friend WithEvents CheckBox47 As CheckBox
+    Friend WithEvents CheckBox19 As CheckBox
 End Class

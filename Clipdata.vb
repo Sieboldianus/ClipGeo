@@ -296,41 +296,33 @@ Public Class ClipDataForm
         For Each x As SourceData In filename_data
             If Not IsNothing(x.toDate) Then
                 'First Draw red & grey rectangles
-                If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2015 Then
-                    centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
-                    centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
+                centerlong = Math.Min(x.leftlong + (x.rightlong - x.leftlong) / 2, 180) 'Addiere halben Abstand zu leftlong
+                centerlat = Math.Min(x.bottomlat + (x.toplat - x.bottomlat) / 2, 90) 'Addiere halben Abstand zu bottomlat
 
-                    i = i + 1
-                    toplat = x.toplat
-                    bottomlat = x.bottomlat
-                    rightlong = x.rightlong
-                    leftlong = x.leftlong
+                i = i + 1
+                toplat = x.toplat
+                bottomlat = x.bottomlat
+                rightlong = x.rightlong
+                leftlong = x.leftlong
 
-                    points = New List(Of PointLatLng)
-                    points.Add(New PointLatLng(toplat, leftlong))
-                    points.Add(New PointLatLng(toplat, rightlong))
-                    points.Add(New PointLatLng(bottomlat, rightlong))
-                    points.Add(New PointLatLng(bottomlat, leftlong))
-                    points.Add(New PointLatLng(toplat, leftlong))
+                points = New List(Of PointLatLng)
+                points.Add(New PointLatLng(toplat, leftlong))
+                points.Add(New PointLatLng(toplat, rightlong))
+                points.Add(New PointLatLng(bottomlat, rightlong))
+                points.Add(New PointLatLng(bottomlat, leftlong))
+                points.Add(New PointLatLng(toplat, leftlong))
 
-                    Dim polygon_grey As GMapPolygon = Nothing
-                    If x.toDate.Length >= 4 And Val(x.toDate.Substring(x.toDate.Length - 4)) = 2015 Then
-                        polygon_red = New GMapPolygon(points, x.filename)
-                        polygon_red.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-                        polygon_red.Stroke = New Pen(Color.Red, 0.25)
-                    Else
-                        polygon_grey = New GMapPolygon(points, x.filename)
-                        polygon_grey.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
-                        polygon_grey.Stroke = New Pen(Color.DarkGray, 0.25)
-                    End If
+                Dim polygon_grey As GMapPolygon = Nothing
+                polygon_red = New GMapPolygon(points, x.filename)
+                polygon_red.Fill = New SolidBrush(Color.FromArgb(0, Color.White))
+                polygon_red.Stroke = New Pen(Color.Red, 0.25)
 
-                    MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
-                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
-                    MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
-                    If Not IsNothing(polygon_grey) Then overlayOne.Polygons.Add(polygon_grey)
-                    If Not IsNothing(polygon_red) Then overlayOne.Polygons.Add(polygon_red)
-                    GMapControl1.Overlays.Add(MarkerOverlay)
-                End If
+                MarkerOverlay.Markers.Add(New GMap.NET.WindowsForms.Markers.GMapMarkerCross(New PointLatLng(centerlat, centerlong)))
+                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTip = New GMapToolTip(MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1))
+                MarkerOverlay.Markers.Item(MarkerOverlay.Markers.Count - 1).ToolTipText = x.filename & Environment.NewLine & "Period: " & x.fromDate & " to " & x.toDate & Environment.NewLine & Math.Round(x.TotalPhotos, 0).ToString("N0") & " Photos"
+                If Not IsNothing(polygon_grey) Then overlayOne.Polygons.Add(polygon_grey)
+                If Not IsNothing(polygon_red) Then overlayOne.Polygons.Add(polygon_red)
+                GMapControl1.Overlays.Add(MarkerOverlay)
             End If
         Next
         For Each x As SourceData In filename_data
@@ -550,6 +542,7 @@ Public Class ClipDataForm
         Dim UserLocationGeocodeDict As Dictionary(Of String, KeyValuePair(Of Double, Double)) = New Dictionary(Of String, KeyValuePair(Of Double, Double))(System.StringComparer.OrdinalIgnoreCase) 'Dictionary of String-Location to lat/lng values
         Dim maptouristslocals As Boolean = CheckBox32.Checked
         Dim mapPhotosFromLocals As Boolean = CheckBox33.Checked
+        Dim mapPhotosFromTourists As Boolean = CheckBox19.Checked
         Dim PhotoIDc As String = ""
         Dim Tagsc As Long = 0
         Dim UserIDc As String = Nothing
@@ -655,7 +648,7 @@ Public Class ClipDataForm
         'userExport preparations
         UserLocationGeocodeDict.Clear()
         Dim localusercount As Long = 0
-        If userOriginExport = True Or CheckBox31.Checked = True Or maptouristslocals = True Or mapPhotosFromLocals = True Then
+        If userOriginExport = True Or CheckBox31.Checked = True Or maptouristslocals = True Or mapPhotosFromLocals = True Or mapPhotosFromTourists = True Then
             HelperFunctions.LoadUserLocationGeocodeIndex()
         End If
         If drawBiasGraph = True Then
@@ -806,7 +799,7 @@ Public Class ClipDataForm
                     filename_data_sel.Add(DataSet)
                     count_filelist_sel = count_filelist_sel + DataSet.datafiles.Count
 
-                ElseIf ShapefileSearch = False Or mapPhotosFromLocals = True Then
+                ElseIf ShapefileSearch = False Or mapPhotosFromLocals = True Or mapPhotosFromTourists = True Then
                     Dim fs_SelBox As New FeatureSet(FeatureType.Polygon)
                     ' create a geometry from data_set extent
                     Dim vertices_Selbox As New List(Of Coordinate)()
@@ -888,7 +881,7 @@ Public Class ClipDataForm
 
                 If settingsExportOnly = False Then 'skip export of datafiles if only settings export selected (if true, will created empty folder structure with settings.txt's)
                     SpatialSkip = False
-                    If NoClip OrElse filename_data_sel_CompletelyWithin.Contains(dataSource) OrElse mapPhotosFromLocals = True Then SpatialSkip = True
+                    If NoClip OrElse filename_data_sel_CompletelyWithin.Contains(dataSource) OrElse mapPhotosFromLocals = True OrElse mapPhotosFromTourists = True Then SpatialSkip = True
                     For Each filename As String In dataSource.datafiles
                         Using fp As New FastPix(visMap)
                             Dim line As Long = 0
@@ -1013,10 +1006,12 @@ Public Class ClipDataForm
                                     End If
 
                                     'Check Local Photos (optional)
-                                    If mapPhotosFromLocals = True Then
+                                    If mapPhotosFromLocals = True Or mapPhotosFromTourists = True Then
                                         If hashUser.Contains(UserIDc) OrElse HelperFunctions.UserLocationGeocodeDict.ContainsKey(UserIDc) Then
                                             Dim ltlngPair As KeyValuePair(Of Double, Double) = HelperFunctions.UserLocationGeocodeDict(UserIDc)
-                                            If Not LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) = True Then
+                                            If mapPhotosFromLocals = True And Not LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) = True Then
+                                                GoTo skip_line 'Skip all photos not from locals
+                                            ElseIf mapPhotosFromTourists = True And LiesWithin(ltlngPair.Key, ltlngPair.Value, rectbottomleft, recttopright, ShapefileSearch, ShapefilePoly) = True Then
                                                 GoTo skip_line 'Skip all photos not from locals
                                             End If
                                         Else
@@ -2033,6 +2028,14 @@ Search3:  'String3
         GMapControl1.Overlays.Add(ShapeOverlay)
         GMapControl1.Refresh()
         CheckBox14.ForeColor = SystemColors.ControlText
+    End Sub
+
+    Private Sub CheckBox33_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox33.CheckedChanged
+        CheckBox19.Checked = False
+    End Sub
+
+    Private Sub CheckBox19_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox19.CheckedChanged
+        CheckBox33.Checked = False
     End Sub
 
     Private Sub CheckBox15_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox15.CheckedChanged
