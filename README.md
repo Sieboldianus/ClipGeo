@@ -13,7 +13,11 @@ For example, by using a geo-modified binary search, it is possible to map and ex
 
 Filtering, extracting, clipping and visualizing large georeferenced point datasets is not possible with common GIS Software, such as ESRI ArcGIS. 
 My experience was that beyond 5 million points, ArcGIS quits. This tool was build to initially extract parts of a larger point dataset to be imported into other Software, 
-such as ArcGIS, for more advanced analysis.
+such as ArcGIS, for more advanced analysis. How the speed of reading data and exporting CSV data is improved in ClipGeo:
+
+* CSV files are not read column by column, but line by line, using Streamreader, and only up to the point where data is required
+* When exporting/Clipping data, the CSV is not written again. Instead, each line is copied as a whole from original to output CSV
+* Data is pre-structured to improve clipping and filtering. So far, data can be structured spatially using QuadTrees (each subfolder represents a single Quad) or Temporally based on Days, Months or Years (etc.)
 
 ## Code Example
 
@@ -104,6 +108,13 @@ This project includes and makes use of several other projects/libraries/framewor
 GNU GPLv3
 
 ## Changelog & Download
+
+2018-03-21 [**ClipGeo v0.9.500**](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_500.zip)
+
+* Added support for custom CSV structure
+* Fixed Locals/Tourists function
+* Removed explicit references to Flickr-CSV structure
+* PhotoIDs are now handled as strings, not Long Integers (increased scope)
 
 2017-03-08: [**ClipGeo v0.9.300 Rev19**](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_300_Rev19.zip)
 

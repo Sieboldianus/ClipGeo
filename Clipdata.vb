@@ -1332,6 +1332,21 @@ skip_line:                      Loop
                     If countnewfiles = 1 Then
                         Directory.Delete(outputdir)
                     End If
+                Else
+                    'write settings txt
+                    Dim outputSettingsfile As System.IO.TextWriter = Nothing
+                    outputSettingsfile = System.IO.File.CreateText(outputdir & "settings.txt")
+                    outputSettingsfile.WriteLine("profilename: " & outputname)
+                    outputSettingsfile.WriteLine("sourcetype: " & DSMapping.name)
+                    outputSettingsfile.WriteLine("bottomlat: " & TextBox6.Text)
+                    outputSettingsfile.WriteLine("leftlong: " & TextBox2.Text)
+                    outputSettingsfile.WriteLine("toplat: " & TextBox5.Text)
+                    outputSettingsfile.WriteLine("rightlong: " & TextBox3.Text)
+                    outputSettingsfile.WriteLine("querytype: upload_time")
+                    outputSettingsfile.WriteLine("minuploaddate: 1/1/2007")
+                    outputSettingsfile.WriteLine("maxuploaddate: 1/1/2018")
+                    outputSettingsfile.Flush()
+                    outputSettingsfile.Close()
                 End If
             End If
             Label6.Text = "Photos found: " & Math.Round(countlines_sich + countlines, 0).ToString("N0")
@@ -2012,6 +2027,10 @@ Search3:  'String3
         End If
 
         GMapControl1.SetZoomToFitRect(New GMap.NET.RectLatLng(New GMap.NET.PointLatLng(b_yMax, b_xMin), New GMap.NET.SizeLatLng(New GMap.NET.PointLatLng(b_yMax - b_yMin, b_xMax - b_xMin))))
+        TextBox5.Text = b_yMax 'toplat
+        TextBox6.Text = b_yMin 'bottomlat
+        TextBox2.Text = b_xMin 'leftlong
+        TextBox3.Text = b_xMax 'rightlong
 
         If visualForm.fullyloaded = True Then
             syncMaps(True)
@@ -2031,11 +2050,15 @@ Search3:  'String3
     End Sub
 
     Private Sub CheckBox33_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox33.CheckedChanged
-        CheckBox19.Checked = False
+        If CheckBox33.Checked = True Then
+            CheckBox19.Checked = False
+        End If
     End Sub
 
     Private Sub CheckBox19_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox19.CheckedChanged
-        CheckBox33.Checked = False
+        If CheckBox19.Checked = True Then
+            CheckBox33.Checked = False
+        End If
     End Sub
 
     Private Sub CheckBox15_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox15.CheckedChanged
