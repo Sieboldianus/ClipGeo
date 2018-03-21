@@ -6,8 +6,8 @@ Large Spatial Point Dataset Extraction and Visualization
 large georeferenced point datasets (such as 200 Million Flickr photo locations). The tool is optimized for speed. 
 For example, by using a geo-modified binary search, it is possible to map and extract 6 million photo locations in Germany in under 2 Minutes on a regular laptop.
 
-![ClipGeo Vis Example](https://github.com/Sieboldianus/ClipGeo/blob/master/Resources/Europe_b.png?raw=true)
-![ClipGeo Interface Ani](https://github.com/Sieboldianus/ClipGeo/blob/master/Resources/interface.gif?raw=true)
+![ClipGeo Vis Example](https://raw.githubusercontent.com/Sieboldianus/ClipGeo/master/Resources/Europe_b.png)
+![ClipGeo Interface Ani](https://raw.githubusercontent.com/Sieboldianus/ClipGeo/master/Resources/interface.gif)
 
 ## Motivation
 
@@ -15,7 +15,7 @@ Filtering, extracting, clipping and visualizing large georeferenced point datase
 My experience was that beyond 5 million points, ArcGIS quits. This tool was build to initially extract parts of a larger point dataset to be imported into other Software, 
 such as ArcGIS, for more advanced analysis. How the speed of reading data and exporting CSV data is improved in ClipGeo:
 
-* CSV files are not read column by column, but line by line, using Streamreader, and only up to the point where data is required
+* CSV files are not read fully, column by column, but line by line, using Streamreader, and only up to the point where data is required
 * When exporting/Clipping data, the CSV is not written again. Instead, each line is copied as a whole from original to output CSV
 * Data is pre-structured to improve clipping and filtering. So far, data can be structured spatially using QuadTrees (each subfolder represents a single Quad) or Temporally based on Days, Months or Years (etc.)
 
