@@ -6,8 +6,8 @@ Large Spatial Point Dataset Extraction and Visualization
 large georeferenced point datasets (such as 200 Million Flickr photo locations). The tool is optimized for speed. 
 For example, by using a geo-modified binary search, it is possible to map and extract 6 million photo locations in Germany in under 2 Minutes on a regular laptop.
 
-![ClipGeo Vis Example](https://github.com/Sieboldianus/ClipGeo/blob/master/ressources/Europe_b.png?raw=true)
-![ClipGeo Interface Ani](https://github.com/Sieboldianus/ClipGeo/blob/master/ressources/interface.gif?raw=true)
+![ClipGeo Vis Example](https://github.com/Sieboldianus/ClipGeo/blob/master/Resources/Europe_b.png?raw=true)
+![ClipGeo Interface Ani](https://github.com/Sieboldianus/ClipGeo/blob/master/Resources/interface.gif?raw=true)
 
 ## Motivation
 
