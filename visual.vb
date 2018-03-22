@@ -261,10 +261,10 @@ Public Class visualForm
             Dim AppPath As String = Application.StartupPath() & "\"
             Dim visMap As New Bitmap(PictureBox1.Image)
             SaveFileDialog1.Filter = "PNG Files (*.png*)|*.png"
-            If Not (Directory.Exists(AppPath & "Output\04_MapVis")) Then
-                Directory.CreateDirectory(AppPath & "Output\04_MapVis")
+            If Not (Directory.Exists(AppPath & "02_Output\04_MapVis")) Then
+                Directory.CreateDirectory(AppPath & "02_Output\04_MapVis")
             End If
-            SaveFileDialog1.InitialDirectory = AppPath & "Output\04_MapVis"
+            SaveFileDialog1.InitialDirectory = AppPath & "02_Output\04_MapVis"
             If Not ClipDataForm.TextBox6.Text = "" Then
 
                 SaveFileDialog1.FileName = "visMap_" & Val(ClipDataForm.TextBox5.Text) & "_" & Val(ClipDataForm.TextBox6.Text) & "_" & Val(ClipDataForm.TextBox2.Text) & "_" & Val(ClipDataForm.TextBox3.Text)
@@ -290,10 +290,10 @@ Public Class visualForm
                 Dim AppPath As String = Application.StartupPath() & "\"
                 Dim visMap As New Bitmap(PictureBox1.Image)
                 SaveFileDialog1.Filter = "PNG Files (*.png*)|*.png"
-                If Not (Directory.Exists(AppPath & "Output\04_MapVis")) Then
-                    Directory.CreateDirectory(AppPath & "Output\04_MapVis")
+                If Not (Directory.Exists(AppPath & "02_Output\04_MapVis")) Then
+                    Directory.CreateDirectory(AppPath & "02_Output\04_MapVis")
                 End If
-                SaveFileDialog1.InitialDirectory = AppPath & "Output\04_MapVis"
+                SaveFileDialog1.InitialDirectory = AppPath & "02_Output\04_MapVis"
                 If Not ClipDataForm.TextBox6.Text = "" Then
 
                     SaveFileDialog1.FileName = "visMap_" & Val(ClipDataForm.TextBox5.Text) & "_" & Val(ClipDataForm.TextBox6.Text) & "_" & Val(ClipDataForm.TextBox2.Text) & "_" & Val(ClipDataForm.TextBox3.Text)
