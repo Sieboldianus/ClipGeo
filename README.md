@@ -16,7 +16,7 @@ My experience was that beyond 5 million points, ArcGIS quits. This tool was buil
 such as ArcGIS, for more advanced analysis. How the speed of reading data and exporting CSV data is improved in ClipGeo:
 
 * CSV files are not read fully, column by column, but line by line, using Streamreader, and only up to the point in each line where data is required
-* When exporting/clipping data, CSVs are re-formatted. Instead, each line is copied as a whole from original to output CSV
+* When exporting/clipping data, CSVs are not re-formatted. Instead, each line is copied as a whole from original to output CSV
 * Data is pre-structured to improve clipping and filtering. So far, data can be structured spatially using QuadTrees (each subfolder represents a single quad) or temporally based on Days, Months or Years (etc.)
 
 ## Code Example
