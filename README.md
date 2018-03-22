@@ -15,9 +15,9 @@ Filtering, extracting, clipping and visualizing large georeferenced point datase
 My experience was that beyond 5 million points, ArcGIS quits. This tool was build to initially extract parts of a larger point dataset to be imported into other Software, 
 such as ArcGIS, for more advanced analysis. How the speed of reading data and exporting CSV data is improved in ClipGeo:
 
-* CSV files are not read fully, column by column, but line by line, using Streamreader, and only up to the point where data is required
-* When exporting/Clipping data, the CSV is not written again. Instead, each line is copied as a whole from original to output CSV
-* Data is pre-structured to improve clipping and filtering. So far, data can be structured spatially using QuadTrees (each subfolder represents a single Quad) or Temporally based on Days, Months or Years (etc.)
+* CSV files are not read fully, column by column, but line by line, using Streamreader, and only up to the point in each line where data is required
+* When exporting/clipping data, CSVs are re-formatted. Instead, each line is copied as a whole from original to output CSV
+* Data is pre-structured to improve clipping and filtering. So far, data can be structured spatially using QuadTrees (each subfolder represents a single quad) or temporally based on Days, Months or Years (etc.)
 
 ## Code Example
 
@@ -74,6 +74,8 @@ The following code is at the heart of the Lat/Lng-point mapping. It is a fast, g
 ## Resources
 
 * [Installation/ Getting Started](../../wiki/Installation-&-Getting-started)
+    * [Loading, Clipping and Exporting Data](../../wiki/instructions-01-clipping)
+    * [Preview and Mapping of Data](../../wiki/instructions-02-preview)
 * [Basic File Structure](../../wiki/Basic-File-Structure)
 * [Format Conventions](../../wiki/Basic-Format-Conventions)
 
@@ -111,8 +113,9 @@ GNU GPLv3
 
 2018-03-21 [**ClipGeo v0.9.500**](https://github.com/Sieboldianus/ClipGeo/wiki/publish/ClipGeo_0_9_500.zip)
 
-* Added support for custom CSV structure
-* Fixed Locals/Tourists function
+* Added support for additional CSV structures
+    * Tested with Twitter and Instagram data
+* Fixed Locals/Tourists filtering
 * Removed explicit references to Flickr-CSV structure
 * PhotoIDs are now handled as strings, not Long Integers (increased scope)
 
